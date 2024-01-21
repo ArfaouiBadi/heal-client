@@ -1,7 +1,7 @@
 <template>
   <div class="authComponent">
     <Navbar />
-    <div class="fexing">
+    <div class="Wrapper">
       <div class="authContainer">
         <div class="imgContainer">
           <img src="../assets/authImg.png" alt="Auth Image" />
@@ -19,6 +19,7 @@
               <input
                 type="text"
                 id="email"
+                v-model="data.email"
                 placeholder="Enter Email Address"
                 class="inputForm"
               />
@@ -29,17 +30,20 @@
                 type="password"
                 id="password"
                 placeholder="Enter Password"
+                v-model="data.password"
                 class="inputForm"
               />
             </div>
             <div class="Links">
               <a href="#" class="recoverPassword">Recover Password?</a>
               <a href="signin" class="recoverPassword"
-                >Dont Have an Account Yet ?</a
+                >i Don't Have an Account ?</a
               >
             </div>
             <br />
-            <button type="button" class="signupButton">Sign Up</button>
+            <button type="button" class="signupButton" @click="handleSignin">
+              Sign In
+            </button>
             <div class="continu">
               <img src="../assets/Path 1.svg" alt="Path 1" />
               or continue with
@@ -62,7 +66,8 @@
 
 <script lang="ts">
 import Navbar from "./Navbar.vue";
-
+import { reactive } from "vue";
+import axios from "axios";
 export default {
   components: {
     Navbar,
@@ -76,6 +81,27 @@ export default {
       console.log("Google clicked!");
       // Add your Google login logic here
     },
+    async handleSignin() {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/auth/signin",
+          this.data
+        );
+        console.log(response);
+        localStorage.setItem("token", response.data.access_token);
+        this.$router.push("/dashboard");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+  data() {
+    return {
+      data: reactive({
+        email: "",
+        password: "",
+      }),
+    };
   },
 };
 </script>
@@ -110,7 +136,7 @@ export default {
   display: flex;
   flex-direction: row;
 }
-.fexing {
+.Wrapper {
   display: flex;
   flex-direction: row;
   height: 100%;

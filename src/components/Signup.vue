@@ -20,6 +20,7 @@
                 type="text"
                 id="email"
                 placeholder="Enter Email Address"
+                v-model="data.email"
                 class="inputForm"
               />
             </div>
@@ -30,6 +31,7 @@
                   type="password"
                   id="password"
                   placeholder="Enter Password"
+                  v-model="data.password"
                   class="inputForm"
                 />
               </div>
@@ -51,6 +53,7 @@
                   type="text"
                   id="phone"
                   placeholder="00-000-000"
+                  v-model="data.phone"
                   class="inputForm"
                 />
               </div>
@@ -60,6 +63,7 @@
                   type="text"
                   id="address"
                   placeholder="Enter Address"
+                  v-model="data.address"
                   class="inputForm"
                 />
               </div>
@@ -68,7 +72,9 @@
               >Alreadt Have an Account ?
               <a href="#" class="recoverPassword">Signin</a></span
             ><br />
-            <button type="button" class="signupButton">Sign Up</button>
+            <button type="button" class="signupButton" @click="handleSignUp">
+              Sign Up
+            </button>
           </form>
         </div>
       </div>
@@ -78,8 +84,19 @@
 
 <script lang="ts">
 import Navbar from "./Navbar.vue";
-
+import axios from "axios";
+import { reactive } from "vue";
 export default {
+  data() {
+    return {
+      data: reactive({
+        email: "",
+        password: "",
+        address: "",
+        phone: "",
+      }),
+    };
+  },
   components: {
     Navbar,
   },
@@ -92,6 +109,19 @@ export default {
       console.log("Google clicked!");
       // Add your Google login logic here
     },
+    async handleSignUp() {
+      try {
+        const User = await axios.post("http://localhost:3000/auth/signup", {
+          email: this.data.email,
+          password: this.data.password,
+          address: this.data.address,
+          phone: this.data.phone,
+        });
+        console.log(User);
+      } catch (err) {
+        console.log(err);
+      }
+    },
   },
 };
 </script>
@@ -100,6 +130,9 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+.form-group {
+  margin-bottom: 10px;
 }
 .form-group-double {
   display: flex;
