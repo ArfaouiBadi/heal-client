@@ -1,13 +1,14 @@
+<!-- SidebarNavItem.vue template -->
 <template>
   <div class="navItem">
     <i :class="props.customClass" />
-
-    <a :href="props.href">{{ props.text }}</a>
+    <a :href="props.href" @click.prevent="handleClick">{{ props.text }}</a>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   text: {
@@ -23,9 +24,15 @@ const props = defineProps({
     required: true,
   },
 });
+
+const router = useRouter();
+
+const handleClick = () => {
+  router.push(props.href);
+};
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .navItem {
   border-radius: 13px;
   width: 80%;
@@ -38,14 +45,17 @@ const props = defineProps({
   font-size: 16px;
   transition: background-color 0.4s ease-in-out;
 }
+
 .navItem:hover {
   background-color: #4461f2;
   cursor: pointer;
-  
 }
+
 .navItem a {
   color: white;
+  text-decoration: none; /* Remove default underline */
 }
+
 .navItem i {
   font-size: 23px;
   margin-right: 5%;

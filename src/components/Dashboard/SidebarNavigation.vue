@@ -1,18 +1,20 @@
-<template lang="">
+<template lang="" scope>
   <div class="navigationContainer">
-    <div class="logoContainer">Heal</div>
+    <div class="logoContainer" @click.prevent="handleClick">
+      <h4>HEAL</h4>
+    </div>
     <div class="navItemContainer">
       <i class="pi-calendar" />
       <SidebarNavItem
         text="Products"
         customClass="pi pi-cart-plus"
-        href="badi"
+        href="dashboard/product"
       />
-      <SidebarNavItem text="Category" customClass="pi pi-list" href="badi" />
+      <SidebarNavItem text="Category" customClass="pi pi-list" href="signin" />
       <SidebarNavItem
         text="Sub category"
         customClass="pi pi-sort-amount-down-alt"
-        href="badi"
+        href="signup"
       />
     </div>
   </div>
@@ -23,9 +25,14 @@ export default {
   components: {
     SidebarNavItem,
   },
+  methods: {
+    handleClick() {
+      this.$router.push("/dashboard");
+    },
+  },
 };
 </script>
-<style lang="css">
+<style lang="css" scoped>
 .navigationContainer {
   display: flex;
   flex-direction: column;
@@ -39,7 +46,13 @@ export default {
   color: #f4f4f4;
   font-weight: 900;
   font-variant: small-caps;
+
 }
+h4{
+  cursor: pointer;
+  font-weight: 500;
+}
+
 .navItemContainer {
   flex: 10;
 }

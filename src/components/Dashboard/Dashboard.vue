@@ -9,7 +9,6 @@
         <div class="DashboardNavbarContainer">
           <DashboardNavbar />
         </div>
-
         <div class="DashboardMainContent">
           <router-view></router-view>
         </div>
