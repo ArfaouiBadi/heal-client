@@ -3,7 +3,6 @@
     <div class="sideBarNavigationContainer">
       <SidebarNavigation />
     </div>
-
     <div class="DashboardContent">
       <div class="DashboardContentWrapper">
         <div class="DashboardNavbarContainer">
