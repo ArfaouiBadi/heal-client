@@ -1,6 +1,7 @@
 <template>
   <div class="navItem">
     <i :class="props.customClass" />
+
     <a :href="props.href">{{ props.text }}</a>
   </div>
 </template>
@@ -26,7 +27,6 @@ const props = defineProps({
 
 <style lang="css">
 .navItem {
-  background-color: #4461f2;
   border-radius: 13px;
   width: 80%;
   margin: 10px auto;
@@ -35,6 +35,13 @@ const props = defineProps({
   color: white;
   display: flex;
   align-items: center;
+  font-size: 16px;
+  transition: background-color 0.4s ease-in-out;
+}
+.navItem:hover {
+  background-color: #4461f2;
+  cursor: pointer;
+  
 }
 .navItem a {
   color: white;

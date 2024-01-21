@@ -2,11 +2,16 @@
   <div class="navigationContainer">
     <div class="logoContainer">Heal</div>
     <div class="navItemContainer">
-      <SidebarNavItem text="Products" customClass="pi-cart-plus" href="badi" />
-      <SidebarNavItem text="Category" customClass="pi-circle" href="badi" />
+      <i class="pi-calendar" />
+      <SidebarNavItem
+        text="Products"
+        customClass="pi pi-cart-plus"
+        href="badi"
+      />
+      <SidebarNavItem text="Category" customClass="pi pi-list" href="badi" />
       <SidebarNavItem
         text="Sub category"
-        customClass="pi pi-bell"
+        customClass="pi pi-sort-amount-down-alt"
         href="badi"
       />
     </div>
