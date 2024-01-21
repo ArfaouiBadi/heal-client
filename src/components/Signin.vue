@@ -41,9 +41,7 @@
               >
             </div>
             <br />
-            <Calendar v-model="data.date" dateFormat="dd/mm/yy" />
-            <Calendar v-model="data.date" dateFormat="dd/mm/yy" />
-            <Calendar v-model="data.date" />
+
             <button type="button" class="signupButton" @click="handleSignin">
               Sign In
             </button>
@@ -71,8 +69,6 @@
 import Navbar from "./Navbar.vue";
 import { reactive } from "vue";
 import axios from "axios";
-import Calendar from "primevue/calendar";
-
 export default {
   components: {
     Navbar,
