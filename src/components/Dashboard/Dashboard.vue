@@ -3,6 +3,7 @@
     <div class="sideBarNavigationContainer">
       <SidebarNavigation />
     </div>
+
     <div class="DashboardContent">
       <div class="DashboardContentWrapper">
         <div class="DashboardNavbarContainer">
@@ -31,8 +32,7 @@ export default {
   display: flex;
   flex-direction: row;
   height: 100vh;
-  font-family: "Nunito", sans-serif;
-  font-optical-sizing: auto;
+  font-family: "poppins";
   font-weight: 500;
   font-style: normal;
 }
@@ -44,7 +44,7 @@ export default {
 .DashboardContent {
   display: flex;
   flex-direction: row;
-  flex: 4;
+  flex: 5;
 }
 
 .DashboardContentWrapper {

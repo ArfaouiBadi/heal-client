@@ -1,14 +1,46 @@
-<template lang="">
-  <div></div>
+<template>
+  <div class="navItem">
+    <i :class="props.customClass" />
+    <a :href="props.href">{{ props.text }}</a>
+  </div>
 </template>
-<script lang="ts">
-export default {};
+
+<script setup lang="ts">
+import { defineProps } from "vue";
+
+const props = defineProps({
+  text: {
+    type: String,
+    required: true,
+  },
+  customClass: {
+    type: String,
+    required: true,
+  },
+  href: {
+    type: String,
+    required: true,
+  },
+});
 </script>
-<style lang=""></style>
-<template lang="">
-  <div></div>
-</template>
-<script lang="ts">
-export default {};
-</script>
-<style lang=""></style>
+
+<style lang="css">
+.navItem {
+  background-color: #4461f2;
+  border-radius: 13px;
+  width: 80%;
+  margin: 10px auto;
+  height: 50px;
+  padding: 0 0 0 15px;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+.navItem a {
+  color: white;
+}
+.navItem i {
+  font-size: 23px;
+  margin-right: 5%;
+}
+</style>
