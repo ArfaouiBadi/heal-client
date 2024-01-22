@@ -16,22 +16,27 @@
           <form>
             <div class="form-group">
               <label for="email" class="label">Email Address</label><br />
-              <input
-                type="text"
+              <InputText
                 id="email"
                 v-model="data.email"
-                placeholder="Enter Email Address"
+                aria-describedby="username-help"
                 class="inputForm"
+                :class="{ 'p-invalid': !data.emailValid }"
+                placeholder="Enter Email"
               />
             </div>
+
             <div class="form-group">
               <label for="password" class="label">Password</label><br />
-              <input
-                type="password"
+
+              <InputText
                 id="password"
-                placeholder="Enter Password"
                 v-model="data.password"
+                aria-describedby="username-help"
                 class="inputForm"
+                :class="{ 'p-invalid': !data.passwordValid }"
+                placeholder="Enter Password"
+                type="password"
               />
             </div>
             <div class="Links">
@@ -59,6 +64,11 @@
               /></a>
             </div>
           </form>
+          <div class="messageContainer">
+            <Message v-show="data.showInvalidMessage" class="popupMessage">
+              Invalid email or password. Please try again.
+            </Message>
+          </div>
         </div>
       </div>
     </div>
@@ -69,9 +79,22 @@
 import Navbar from "./Navbar.vue";
 import { reactive } from "vue";
 import axios from "axios";
+import InputText from "primevue/inputtext";
+
 export default {
   components: {
     Navbar,
+    InputText,
+  },
+  watch: {
+    "data.email": function (newEmail) {
+      // Update invalid flag based on email validation
+      this.data.emailValid = this.validateEmail(newEmail);
+    },
+    "data.password": function (newPassword) {
+      // Update invalid flag based on password validation
+      this.data.passwordValid = this.validatePassword(newPassword);
+    },
   },
   methods: {
     handleFacebookClick() {
@@ -81,6 +104,13 @@ export default {
     handleGoogleClick() {
       console.log("Google clicked!");
       // Add your Google login logic here
+    },
+    validateEmail(email: string): boolean {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    },
+    validatePassword(password: string): boolean {
+      return password.length >= 8;
     },
     async handleSignin() {
       try {
@@ -93,6 +123,13 @@ export default {
         this.$router.push("/dashboard");
       } catch (error) {
         console.log(error);
+        // Show the message if sign-in fails
+        this.data.showInvalidMessage = true;
+
+        // Reset the flag to false after 3 seconds
+        setTimeout(() => {
+          this.data.showInvalidMessage = false;
+        }, 3000);
       }
     },
   },
@@ -101,18 +138,16 @@ export default {
       data: reactive({
         email: "",
         password: "",
-        date: "",
+        emailValid: true,
+        passwordValid: true,
+        showInvalidMessage: false,
       }),
     };
   },
 };
 </script>
+
 <style lang="css">
-.authComponent {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 .Links {
   display: flex;
   flex-direction: row;
@@ -163,13 +198,11 @@ label {
 .inputForm {
   width: 100%;
   padding: 12px;
-  border: 1px solid #707070;
   border-radius: 15px;
   margin-top: 10px;
   padding-left: 20px;
   color: #707070;
   background-color: #eaf0f7;
-  border: none;
 }
 .inputForm:hover,
 .inputForm:focus {
@@ -266,7 +299,18 @@ h4 {
   font-family: "Poppins";
   font-weight: 300;
 }
-
+input::placeholder {
+  font-family: "Poppins";
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.455);
+  font-size: 15px;
+}
+input {
+  font-family: "Poppins";
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.455);
+  font-size: 15px;
+}
 @keyframes pulse512 {
   0% {
     box-shadow: 0 0 0 0 #7e7e7e64;

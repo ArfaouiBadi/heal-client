@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .searchField {
   background-color: #f4f4f4;
   color: black;

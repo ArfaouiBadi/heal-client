@@ -37,6 +37,8 @@ export default {
   display: flex;
   height: 15%;
   background-color: white;
+  width: 100%;
+  justify-content: space-between;
 }
 .navItems {
   display: flex;
@@ -48,7 +50,7 @@ export default {
   padding-left: 50px;
 }
 .navItem {
-  padding-left: 60px;
+  padding-left: 10%;
   color: black;
   font-size: 15px;
   font-family: "Poppins";

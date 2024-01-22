@@ -16,50 +16,57 @@
           <form>
             <div class="form-group">
               <label for="email" class="label">Email Address</label><br />
-              <input
+              <InputText
                 type="text"
                 id="email"
                 placeholder="Enter Email Address"
                 v-model="data.email"
                 class="inputForm"
+                :class="{ 'p-invalid': !data.emailValid }"
               />
             </div>
             <div class="form-group-double">
               <div class="password-group">
                 <label for="password" class="label">Password</label><br />
-                <input
+                <InputText
                   type="password"
                   id="password"
                   placeholder="Enter Password"
                   v-model="data.password"
                   class="inputForm"
+                  :class="{ 'p-invalid': !data.passwordValid }"
                 />
               </div>
               <div class="password-group">
-                <label for="password" class="label">Confirm Password</label
+                <label for="confirmPassword" class="label"
+                  >Confirm Password</label
                 ><br />
-                <input
+                <InputText
                   type="password"
                   id="confirmPassword"
                   placeholder="Confirm Password"
+                  v-model="data.confirmPassword"
                   class="inputForm"
+                  :class="{ 'p-invalid': !data.confirmPasswordValid }"
                 />
               </div>
             </div>
             <div class="form-group-double">
               <div class="phone-group">
                 <label for="phone" class="label">Phone</label><br />
-                <input
+                <InputText
                   type="text"
                   id="phone"
                   placeholder="00-000-000"
                   v-model="data.phone"
                   class="inputForm"
+                  :class="{ 'p-invalid': !data.phoneValid }"
                 />
               </div>
+
               <div class="address-group">
                 <label for="address" class="label">Address</label><br />
-                <input
+                <InputText
                   type="text"
                   id="address"
                   placeholder="Enter Address"
@@ -69,12 +76,27 @@
               </div>
             </div>
             <span
-              >Alreadt Have an Account ?
-              <a href="#" class="recoverPassword">Signin</a></span
+              >Already Have an Account ?
+              <a href="#" class="recoverPassword">Sign in</a></span
             ><br />
             <button type="button" class="signupButton" @click="handleSignUp">
               Sign Up
             </button>
+            <div class="messageContainer">
+              <Message
+                v-show="data.showInvalidMessage"
+                class="popupMessage"
+                severity="error"
+              >
+                Please fill in all required fields correctly.
+              </Message>
+              <Message
+                v-show="data.showSuccessMessage"
+                class="popupMessage"
+                severity="success"
+                >User Created</Message
+              >
+            </div>
           </form>
         </div>
       </div>
@@ -86,19 +108,49 @@
 import Navbar from "./Navbar.vue";
 import axios from "axios";
 import { reactive } from "vue";
+import InputText from "primevue/inputtext";
+import Message from "primevue/message";
 export default {
   data() {
     return {
       data: reactive({
         email: "",
         password: "",
+        confirmPassword: "",
         address: "",
         phone: "",
+        emailValid: true,
+        passwordValid: true,
+        confirmPasswordValid: true,
+        phoneValid: true,
+        showInvalidMessage: false,
+        showSuccessMessage: false,
       }),
     };
   },
   components: {
     Navbar,
+    InputText,
+    Message,
+  },
+  watch: {
+    "data.email": function (newEmail) {
+      // Update invalid flag based on email validation
+      this.data.emailValid = this.validateEmail(newEmail);
+    },
+    "data.password": function (newPassword) {
+      // Update invalid flag based on password validation
+      this.data.passwordValid = this.validatePassword(newPassword);
+    },
+    "data.confirmPassword": function (newConfirmPassword) {
+      // Update invalid flag based on confirmPassword validation
+      this.data.confirmPasswordValid =
+        newConfirmPassword === this.data.password;
+    },
+    "data.phone": function (newPhone) {
+      // Update invalid flag based on phone validation
+      this.data.phoneValid = this.validatePhone(newPhone);
+    },
   },
   methods: {
     handleFacebookClick() {
@@ -109,15 +161,69 @@ export default {
       console.log("Google clicked!");
       // Add your Google login logic here
     },
+    validateEmail(email: string): boolean {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    },
+    validatePassword(password: string): boolean {
+      // Implement your password validation logic here
+      // Example: Password must be at least 8 characters long
+      return password.length >= 8;
+    },
+    validatePhone(phone: string): boolean {
+      const phoneRegex = /^(\d{2}\d{3}\d{3})$/;
+      return phoneRegex.test(phone);
+    },
     async handleSignUp() {
       try {
-        const User = await axios.post("http://localhost:3000/auth/signup", {
-          email: this.data.email,
-          password: this.data.password,
-          address: this.data.address,
-          phone: this.data.phone,
-        });
-        console.log(User);
+        // Validate email
+        this.data.emailValid = this.validateEmail(this.data.email);
+
+        // Validate password
+        this.data.passwordValid = this.validatePassword(this.data.password);
+
+        // Verify password and confirm password match
+        this.data.confirmPasswordValid =
+          this.data.password === this.data.confirmPassword;
+
+        // Validate phone number
+        this.data.phoneValid = this.validatePhone(this.data.phone);
+
+        // Check if all validations passed
+        if (
+          this.data.emailValid &&
+          this.data.passwordValid &&
+          this.data.confirmPasswordValid &&
+          this.data.phoneValid
+        ) {
+          try {
+            const response = await axios.post(
+              "http://localhost:3000/auth/signup",
+              this.data
+            );
+            console.log(response);
+            this.data.showSuccessMessage = true;
+            setTimeout(() => {
+              this.data.showSuccessMessage = false;
+              this.$router.push("/signin  ");
+            }, 3000);
+          } catch (error) {
+            console.log(error);
+            // Show the message if sign-in fails
+            this.data.showInvalidMessage = true;
+
+            // Reset the flag to false after 3 seconds
+            setTimeout(() => {
+              this.data.showInvalidMessage = false;
+            }, 3000);
+          }
+        } else {
+          this.data.showInvalidMessage = true;
+          setTimeout(() => {
+            this.data.showInvalidMessage = false;
+          }, 3000);
+          console.log("Validation failed. Please check your inputs.");
+        }
       } catch (err) {
         console.log(err);
       }
@@ -125,6 +231,7 @@ export default {
   },
 };
 </script>
+
 <style lang="css">
 .authComponent {
   height: 100vh;
@@ -179,23 +286,13 @@ label {
   font-family: "Poppins";
   font-weight: 300;
   color: black;
-  font-size: 23px;
+  font-size: 18px;
 }
 
 .form-group + .form-group {
   margin-top: 20px;
 }
-.inputForm {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #707070;
-  border-radius: 15px;
-  margin-top: 10px;
-  padding-left: 20px;
-  color: #707070;
-  background-color: #eaf0f7;
-  border: none;
-}
+
 .inputForm:hover,
 .inputForm:focus {
   background-position: right center;
@@ -291,7 +388,15 @@ h4 {
   font-family: "Poppins";
   font-weight: 300;
 }
-
+.messageContainer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  height: 10%;
+  margin-bottom: 20px; /* Add margin from the bottom */
+}
 @keyframes pulse512 {
   0% {
     box-shadow: 0 0 0 0 #7e7e7e64;
@@ -313,6 +418,13 @@ h4 {
 
   .mainContainer {
     width: 100%;
+  }
+
+  label {
+    font-family: "Poppins";
+    font-weight: 300;
+    color: black;
+    font-size: 12px;
   }
 }
 </style>
