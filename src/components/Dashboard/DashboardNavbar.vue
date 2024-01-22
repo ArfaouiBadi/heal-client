@@ -1,14 +1,17 @@
 <template>
   <div class="navbarContainer">
-    <span class="p-input-icon-left">
-      <i v-show="!isInputFocused" class="pi pi-search searchIcon" />
-      <InputText
-        placeholder="Search"
-        class="searchField"
-        @focus="handleInputFocus"
-        @blur="handleInputBlur"
-      />
-    </span>
+    <div class="searchWrapper">
+      <span class="p-input-icon-left">
+        <i v-show="!isInputFocused" class="pi pi-search searchIcon" />
+        <InputText
+          placeholder="Search"
+          class="searchField"
+          @focus="handleInputFocus"
+          @blur="handleInputBlur"
+        />
+      </span>
+    </div>
+
     <div>
       <div class="circleContainer">
         <i v-badge="0" class="pi pi-bell p-overlay-badge circleIcon" />
@@ -40,7 +43,10 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
+.searchWrapper {
+  padding-left: 1%;
+}
 .searchField {
   background-color: #f4f4f4;
   color: black;
@@ -48,6 +54,7 @@ export default {
   border: none;
   border-radius: 10px;
   transition: width 0.3s ease-in-out;
+  padding-left: 10%;
 }
 
 .searchField::placeholder {
@@ -68,7 +75,7 @@ export default {
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  padding-right: 30px;
+  padding-right: 3%;
   padding-left: 30px;
   box-sizing: border-box;
   border-radius: 5px;
