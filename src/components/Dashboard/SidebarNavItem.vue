@@ -36,7 +36,7 @@ const handleClick = () => {
 .navItem {
   border-radius: 13px;
   width: 80%;
-  margin: 10px auto;
+  margin: 20px auto;
   height: 50px;
   padding: 0 0 0 15px;
   color: white;

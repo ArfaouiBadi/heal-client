@@ -30,7 +30,7 @@ export default {
 .DashboardWrapper {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: fit-content;
   font-family: "poppins";
   font-weight: 500;
   font-style: normal;

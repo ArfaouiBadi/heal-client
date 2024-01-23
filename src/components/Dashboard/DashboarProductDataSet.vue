@@ -124,12 +124,7 @@
           text
           @click="deleteProductsDialog = false"
         />
-        <Button
-          label="Yes"
-          icon="pi pi-check"
-          text
-          @click="deleteSelectedProducts(slotProps.data)"
-        />
+        <Button label="Yes" icon="pi pi-check" text @click="" />
       </template>
     </Dialog>
 
@@ -306,7 +301,9 @@ export default {
       productDialog: ref(false),
       deleteProductDialog: ref(false),
       deleteProductsDialog: ref(false),
+      statuses: [],
       product: ref({
+        id: null,
         ProductName: null,
         Marque: null,
         ExpirationDate: null,
@@ -314,6 +311,7 @@ export default {
         ProductCategory: null,
         price: null,
         Quantity: null,
+        Image: "",
       }),
       submitted: ref(false),
       selectedProducts: ref(null),
@@ -335,7 +333,12 @@ export default {
         console.log(err);
       }
     },
-    formatCurrency(value) {
+    formatCurrency(value: {
+      toLocaleString: (
+        arg0: string,
+        arg1: { style: string; currency: string }
+      ) => any;
+    }) {
       if (value) {
         return value.toLocaleString("en-US", {
           style: "currency",
@@ -344,6 +347,7 @@ export default {
       }
       return;
     },
+
     editProduct(prod: any) {
       this.product = { ...prod };
       this.productDialog = true;
@@ -377,6 +381,7 @@ export default {
         // Reset dialog and product object
         this.productDialog = false;
         this.product = {
+          id: null,
           ProductName: null,
           Marque: null,
           ExpirationDate: null,
@@ -384,6 +389,7 @@ export default {
           ProductCategory: null,
           price: null,
           Quantity: null,
+          Image: "",
         };
         this.fetchData(); // Refresh the product list
       } catch (error) {

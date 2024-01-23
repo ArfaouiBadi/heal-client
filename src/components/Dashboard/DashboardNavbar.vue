@@ -75,15 +75,10 @@ export default {
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  padding-right: 3%;
-  padding-left: 30px;
+  padding: 1.5% 3%;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #f5f5f5;
-}
-
-.searchField:focus {
-  width: 100%;
 }
 
 .searchField:focus::placeholder {

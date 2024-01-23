@@ -1,9 +1,3 @@
-<template>
-  <Password v-model="value" toggleMask />
-</template>
+<template></template>
 
-<script lang="ts" setup>
-import { ref } from "vue";
-import Password from "primevue/password";
-const value = ref(null);
-</script>
+<script lang="ts" setup></script>

@@ -244,6 +244,7 @@ export default {
 .form-group-double {
   display: flex;
   flex-direction: row;
+
   justify-content: space-between;
   margin-bottom: 20px;
 }
@@ -286,7 +287,7 @@ label {
   font-family: "Poppins";
   font-weight: 300;
   color: black;
-  font-size: 18px;
+  font-size: 0.8rem;
 }
 
 .form-group + .form-group {
@@ -376,13 +377,12 @@ form {
   width: 50%;
 }
 .text {
-  padding: 20px 0px 0px 40px;
+  padding: 3rem 0px 0px 40px;
 }
 h1 {
   font-size: 50px;
   font-weight: 700;
   font-family: "Poppins";
-  margin-top: 3px;
 }
 h4 {
   font-family: "Poppins";
@@ -395,7 +395,7 @@ h4 {
   transform: translateX(-50%);
   text-align: center;
   height: 10%;
-  margin-bottom: 20px; /* Add margin from the bottom */
+  margin-bottom: 20px;
 }
 @keyframes pulse512 {
   0% {
@@ -413,11 +413,16 @@ h4 {
 
 @media only screen and (max-width: 768px) {
   .authContainer {
-    display: none; /* Hide the authContainer on small screens */
+    display: none;
   }
 
   .mainContainer {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20%;
   }
 
   label {
@@ -425,6 +430,12 @@ h4 {
     font-weight: 300;
     color: black;
     font-size: 12px;
+  }
+  h1 {
+    text-align: center;
+  }
+  .form-group-double {
+    flex-direction: column;
   }
 }
 </style>
