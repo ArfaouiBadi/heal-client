@@ -28,68 +28,40 @@
           </div>
         </template>
 
+        <Column field="" header="ID" sortable style="width: 1rem"></Column>
         <Column
-          selectionMode="multiple"
-          style="width: 3rem"
-          :exportable="false"
-        ></Column>
-        <Column
-          field="code"
-          header="Code"
+          field="ProductName"
+          header="Product Name"
           sortable
-          style="min-width: 12rem"
-        ></Column>
-        <Column
-          field="name"
-          header="Name"
-          sortable
-          style="min-width: 16rem"
+          style="min-width: 2rem"
         ></Column>
         <Column header="Image">
           <template #body="slotProps">
             <img
-              :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
+              :src="slotProps.data.image"
               :alt="slotProps.data.image"
               class="shadow-2 border-round"
               style="width: 64px"
             />
           </template>
         </Column>
-        <Column field="price" header="Price" sortable style="min-width: 8rem">
+        <Column field="Price" header="Price" sortable style="min-width: 1px">
           <template #body="slotProps">
-            {{ formatCurrency(slotProps.data.price) }}
+            {{ formatCurrency(slotProps.data.Price) }}
           </template>
         </Column>
         <Column
-          field="category"
+          field="ProductCategory"
           header="Category"
           sortable
-          style="min-width: 10rem"
+          style="min-width: 1px"
         ></Column>
-        <Column
-          field="rating"
-          header="Reviews"
-          sortable
-          style="min-width: 12rem"
-        >
-          <template #body="slotProps">
-            <Rating
-              :modelValue="slotProps.data.rating"
-              :readonly="true"
-              :cancel="false"
-            />
-          </template>
-        </Column>
-        <Column
-          field="inventoryStatus"
-          header="Status"
-          sortable
-          style="min-width: 12rem"
-        >
+
+        <Column field="Status" header="Status" sortable style="min-width: 1px">
           <template #body="slotProps">
             <Tag
-              :value="slotProps.data.inventoryStatus"
-              :severity="getStatusLabel(slotProps.data.inventoryStatus)"
+              :value="slotProps.data.Status"
+              :severity="getStatusLabel(slotProps.data.Status)"
             />
           </template>
         </Column>
@@ -121,10 +93,6 @@
     >
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span v-if="product"
-          >Are you sure you want to delete <b>{{ product.name }}</b
-          >?</span
-        >
       </div>
       <template #footer>
         <Button
@@ -166,27 +134,29 @@
     </Dialog>
   </div>
 </template>
-
+<style lang="css" scoped></style>
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import { FilterMatchMode } from "primevue/api";
-import { useToast } from "primevue/usetoast";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
-import Rating from "primevue/rating";
+
 import Tag from "primevue/tag";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
-import "primevue/resources/themes/nova-light/theme.css";
-import "primevue/resources/primevue.min.css";
-import "primeicons/primeicons.css";
 
-onMounted(() => {
-  ProductService.getProducts().then((data) => (products.value = data));
+import axios from "axios";
+onMounted(async () => {
+  try {
+    const data = await axios.get("http://localhost:3000/products");
+    products.value = data.data;
+    console.log(products.value);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-const toast = useToast();
 const dt = ref();
 const products = ref();
 const productDialog = ref(false);
@@ -197,9 +167,13 @@ const selectedProducts = ref();
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
-const submitted = ref(false);
 
-const formatCurrency = (value) => {
+const formatCurrency = (value: {
+  toLocaleString: (
+    arg0: string,
+    arg1: { style: string; currency: string }
+  ) => any;
+}) => {
   if (value)
     return value.toLocaleString("en-US", {
       style: "currency",
@@ -208,46 +182,28 @@ const formatCurrency = (value) => {
   return;
 };
 
-const editProduct = (prod) => {
+const editProduct = (prod: {}) => {
   product.value = { ...prod };
   productDialog.value = true;
 };
-const confirmDeleteProduct = (prod) => {
+const confirmDeleteProduct = (prod: {}) => {
   product.value = prod;
   deleteProductDialog.value = true;
 };
 const deleteProduct = () => {
-  products.value = products.value.filter((val) => val.id !== product.value.id);
   deleteProductDialog.value = false;
   product.value = {};
-  toast.add({
-    severity: "success",
-    summary: "Successful",
-    detail: "Product Deleted",
-    life: 3000,
-  });
 };
-const exportCSV = ($event?: MouseEvent) => {
-  dt.value.exportCSV();
-};
-const confirmDeleteSelected = () => {
-  deleteProductsDialog.value = true;
-};
+
 const deleteSelectedProducts = () => {
   products.value = products.value.filter(
-    (val) => !selectedProducts.value.includes(val)
+    (val: any) => !selectedProducts.value.includes(val)
   );
   deleteProductsDialog.value = false;
   selectedProducts.value = null;
-  toast.add({
-    severity: "success",
-    summary: "Successful",
-    detail: "Products Deleted",
-    life: 3000,
-  });
 };
 
-const getStatusLabel = (status) => {
+const getStatusLabel = (status: any) => {
   switch (status) {
     case "INSTOCK":
       return "success";
@@ -259,7 +215,7 @@ const getStatusLabel = (status) => {
       return "danger";
 
     default:
-      return null;
+      return "warning";
   }
 };
 </script>

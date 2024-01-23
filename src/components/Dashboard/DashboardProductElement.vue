@@ -49,7 +49,6 @@ export default {
   align-items: center;
 }
 .elementheader p {
-  
   margin: 0;
 }
 

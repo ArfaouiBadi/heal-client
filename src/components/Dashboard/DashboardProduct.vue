@@ -34,9 +34,14 @@
     <Element text="Products Count" growth="18.9%" class="" data="5" />
   </div>
   <div class="productWrapper">
-    <div class="productList">Product List</div>
-    <div class="topSellingProducts"><p>Top Selling Products</p></div>
+    <div class="productList">
+      Product List
+      <DashboarProductDataSet />
+    </div>
+    <!--
+      <div class="topSellingProducts"><p>Top Selling Products</p></div>
     <div class="topSellingProducts"><p>Empty For Now</p></div>
+    -->
   </div>
 
   <Dialog
@@ -188,6 +193,7 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
 import Element from "./DashboardProductElement.vue";
+import DashboarProductDataSet from "./DashboarProductDataSet.vue";
 import axios from "axios";
 export default {
   components: {
@@ -200,6 +206,7 @@ export default {
     Dialog,
     Calendar,
     Element,
+    DashboarProductDataSet,
   },
   setup() {
     const isInputFocused = ref(false);
@@ -268,9 +275,6 @@ export default {
 </script>
 <style lang="css" scoped>
 .productWrapper {
-  display: grid;
-  grid-template-columns: 50% 45%;
-  grid-template-rows: 50% 50%;
   grid-gap: 30px;
   padding: 3%;
   font-weight: 600;
