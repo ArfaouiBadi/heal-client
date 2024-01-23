@@ -17,7 +17,6 @@
           <div
             class="flex flex-wrap gap-2 align-items-center justify-content-between"
           >
-            <h4 class="m-0">Manage Products</h4>
             <span class="p-input-icon-left">
               <i class="pi pi-search" />
               <InputText
@@ -93,6 +92,7 @@
     >
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
+        <span v-if="product">Are you sure you want to delete ?</span>
       </div>
       <template #footer>
         <Button
@@ -128,94 +128,284 @@
           label="Yes"
           icon="pi pi-check"
           text
-          @click="deleteSelectedProducts"
+          @click="deleteSelectedProducts(slotProps.data)"
         />
+      </template>
+    </Dialog>
+
+    <Dialog
+      v-model:visible="productDialog"
+      :style="{ width: '40%' }"
+      header="Product Details"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="field">
+        <label for="name">Name</label>
+        <InputText
+          id="name"
+          v-model.trim="product.ProductName"
+          required="true"
+          autofocus
+          :class="{ 'p-invalid': submitted && !product.ProductName }"
+        />
+        <small class="p-error" v-if="submitted && !product.ProductName"
+          >Name is required.</small
+        >
+      </div>
+      <div class="field">
+        <label for="Marque">Marque</label>
+        <InputText
+          id="Marque"
+          v-model="product.Marque"
+          required="true"
+          rows="3"
+          cols="20"
+        />
+      </div>
+      <div class="field">
+        <label for="Marque">Expiration Date</label>
+        <Calendar v-model="product.ExpirationDate" />
+      </div>
+      <div class="field">
+        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
+        <Dropdown
+          id="inventoryStatus"
+          v-model="product.inventoryStatus"
+          :options="statuses"
+          optionLabel="label"
+          placeholder="Select a Status"
+        >
+        </Dropdown>
+      </div>
+
+      <div class="field">
+        <label class="mb-3">Category</label>
+        <div class="formgrid grid">
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category1"
+              name="category"
+              value="Visage"
+              v-model="product.ProductCategory"
+            />
+            <label for="category1">Visage</label>
+          </div>
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category2"
+              name="category"
+              value="Cheveux"
+              v-model="product.ProductCategory"
+            />
+            <label for="category2">Cheveux</label>
+          </div>
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category3"
+              name="category"
+              value="Corps"
+              v-model="product.ProductCategory"
+            />
+            <label for="category3">Corps</label>
+          </div>
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category4"
+              name="category"
+              value="Maman"
+              v-model="product.ProductCategory"
+            />
+            <label for="category4">Maman</label>
+          </div>
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category5"
+              name="category"
+              value="Santé"
+              v-model="product.ProductCategory"
+            />
+            <label for="category5">Santé</label>
+          </div>
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category6"
+              name="category"
+              value="Hygiène"
+              v-model="product.ProductCategory"
+            />
+            <label for="category6">Hygiène</label>
+          </div>
+          <div class="field-radiobutton col-6">
+            <RadioButton
+              id="category7"
+              name="category"
+              value="Homme"
+              v-model="product.ProductCategory"
+            />
+            <label for="category7">Homme</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="formgrid grid">
+        <div class="field col">
+          <label for="price">Price</label>
+          <InputNumber
+            id="price"
+            v-model="product.price"
+            mode="currency"
+            currency="USD"
+            locale="en-US"
+          />
+        </div>
+        <div class="field col">
+          <label for="quantity">Quantity</label>
+          <InputNumber id="quantity" v-model="product.Quantity" integeronly />
+        </div>
+      </div>
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Save" icon="pi pi-check" text @click="saveProduct" />
       </template>
     </Dialog>
   </div>
 </template>
-<style lang="css" scoped></style>
-<script lang="ts" setup>
-import { ref, onMounted } from "vue";
+<script lang="ts">
+import { ref } from "vue";
 import { FilterMatchMode } from "primevue/api";
 import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Button from "primevue/button";
-
-import Tag from "primevue/tag";
-import Dialog from "primevue/dialog";
-import InputText from "primevue/inputtext";
-
 import axios from "axios";
-onMounted(async () => {
-  try {
-    const data = await axios.get("http://localhost:3000/products");
-    products.value = data.data;
-    console.log(products.value);
-  } catch (err) {
-    console.log(err);
-  }
-});
+import Column from "primevue/column";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import InputNumber from "primevue/inputnumber";
+import RadioButton from "primevue/radiobutton";
+import Dropdown from "primevue/dropdown";
+import Calendar from "primevue/calendar";
+import Tag from "primevue/tag";
 
-const dt = ref();
-const products = ref();
-const productDialog = ref(false);
-const deleteProductDialog = ref(false);
-const deleteProductsDialog = ref(false);
-const product = ref({});
-const selectedProducts = ref();
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-});
+export default {
+  components: {
+    DataTable,
+    Column,
+    InputText,
+    Button,
+    Dialog,
+    InputNumber,
+    RadioButton,
+    Dropdown,
+    Calendar,
+    Tag,
+  },
+  data() {
+    return {
+      dt: ref(null),
+      products: ref([]),
+      productDialog: ref(false),
+      deleteProductDialog: ref(false),
+      deleteProductsDialog: ref(false),
+      product: ref({
+        ProductName: null,
+        Marque: null,
+        ExpirationDate: null,
+        inventoryStatus: null,
+        ProductCategory: null,
+        price: null,
+        Quantity: null,
+      }),
+      submitted: ref(false),
+      selectedProducts: ref(null),
+      filters: ref({
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      }),
+    };
+  },
+  mounted() {
+    this.fetchData();
+  },
 
-const formatCurrency = (value: {
-  toLocaleString: (
-    arg0: string,
-    arg1: { style: string; currency: string }
-  ) => any;
-}) => {
-  if (value)
-    return value.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-  return;
-};
+  methods: {
+    async fetchData() {
+      try {
+        const data = await axios.get("http://localhost:3000/products");
+        this.products = data.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    formatCurrency(value) {
+      if (value) {
+        return value.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        });
+      }
+      return;
+    },
+    editProduct(prod: any) {
+      this.product = { ...prod };
+      this.productDialog = true;
+    },
+    confirmDeleteProduct(prod: any) {
+      this.product = prod;
+      this.deleteProductDialog = true;
+    },
+    async deleteProduct() {
+      try {
+        await axios.delete(`http://localhost:3000/products/${this.product.id}`);
+        this.deleteProductDialog = false;
+        this.fetchData();
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    },
+    hideDialog() {
+      this.productDialog = false;
+      this.submitted = false;
+    },
+    async saveProduct() {
+      this.submitted = true;
+      try {
+        // Set additional properties for creating a new product
+        this.product.Image = "product-placeholder.svg";
 
-const editProduct = (prod: {}) => {
-  product.value = { ...prod };
-  productDialog.value = true;
-};
-const confirmDeleteProduct = (prod: {}) => {
-  product.value = prod;
-  deleteProductDialog.value = true;
-};
-const deleteProduct = () => {
-  deleteProductDialog.value = false;
-  product.value = {};
-};
+        // Use Axios to create a new product on the server
+        await axios.put(`http://localhost:3000/products`, this.product);
 
-const deleteSelectedProducts = () => {
-  products.value = products.value.filter(
-    (val: any) => !selectedProducts.value.includes(val)
-  );
-  deleteProductsDialog.value = false;
-  selectedProducts.value = null;
-};
+        // Reset dialog and product object
+        this.productDialog = false;
+        this.product = {
+          ProductName: null,
+          Marque: null,
+          ExpirationDate: null,
+          inventoryStatus: null,
+          ProductCategory: null,
+          price: null,
+          Quantity: null,
+        };
+        this.fetchData(); // Refresh the product list
+      } catch (error) {
+        console.error("Error creating product:", error);
+      }
+    },
 
-const getStatusLabel = (status: any) => {
-  switch (status) {
-    case "INSTOCK":
-      return "success";
+    getStatusLabel(status: any) {
+      switch (status) {
+        case "INSTOCK":
+          return "success";
 
-    case "LOWSTOCK":
-      return "warning";
+        case "LOWSTOCK":
+          return "warning";
 
-    case "OUTOFSTOCK":
-      return "danger";
+        case "OUTOFSTOCK":
+          return "danger";
 
-    default:
-      return "warning";
-  }
+        default:
+          return "warning";
+      }
+    },
+  },
 };
 </script>
