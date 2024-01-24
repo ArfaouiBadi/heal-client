@@ -46,9 +46,8 @@ export default {
   color: #f4f4f4;
   font-weight: 900;
   font-variant: small-caps;
-
 }
-h4{
+h4 {
   cursor: pointer;
   font-weight: 500;
 }

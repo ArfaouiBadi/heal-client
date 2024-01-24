@@ -38,10 +38,9 @@
       Product List
       <DashboarProductDataSet />
     </div>
-    <!--
-      <div class="topSellingProducts"><p>Top Selling Products</p></div>
+
+    <div class="topSellingProducts"><p>Top Selling Products</p></div>
     <div class="topSellingProducts"><p>Empty For Now</p></div>
-    -->
   </div>
 
   <Dialog
@@ -89,7 +88,24 @@
       >
       </Dropdown>
     </div>
-
+    <br />
+    <div class="field">
+      <div class="card flex justify-content-center">
+        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
+        <Toast />
+        <Tree
+          v-model:selectionKeys="selectedKey"
+          :value="categories"
+          selectionMode="single"
+          :metaKeySelection="false"
+          @nodeSelect="onNodeSelect"
+          @nodeUnselect="onNodeUnselect"
+          @nodeExpand="onNodeExpand"
+          @nodeCollapse="onNodeCollapse"
+          class="w-full md:w-30rem"
+        ></Tree>
+      </div>
+    </div>
     <div class="field">
       <label class="mb-3">Category</label>
       <div class="formgrid grid">
@@ -192,7 +208,10 @@ import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import Calendar from "primevue/calendar";
+import Toast from "primevue/toast";
+import Tree from "primevue/tree";
 import Element from "./DashboardProductElement.vue";
+import { useToast } from "primevue/usetoast";
 import DashboarProductDataSet from "./DashboarProductDataSet.vue";
 import axios from "axios";
 export default {
@@ -207,12 +226,121 @@ export default {
     Calendar,
     Element,
     DashboarProductDataSet,
+    Toast,
+    Tree,
   },
   setup() {
     const isInputFocused = ref(false);
     const productDialog = ref(false);
     const product = ref({});
-
+    const category = ref(null);
+    const selectedKey = ref(null);
+    const toast = useToast();
+    const categories = ref([
+      {
+        key: "0",
+        label: "Face",
+        data: "Facial Care",
+        icon: "pi pi-fw pi-smile",
+        children: [
+          {
+            key: "0-0",
+            label: "Moisturizing and Nourishing Care",
+            data: "Hydrating and nourishing products for the face",
+            icon: "pi pi-fw pi-tint",
+            children: [
+              {
+                key: "0-0-0",
+                label: "Moisturizers for all skin types",
+                icon: "pi pi-fw pi-file",
+                data: "All Skin Types",
+              },
+              {
+                key: "0-0-1",
+                label: "Moisturizers for normal to combination skin",
+                icon: "pi pi-fw pi-file",
+                data: "Normal to Combination Skin",
+              },
+              // Add other subcategories and products as needed
+            ],
+          },
+          {
+            key: "0-1",
+            label: "Anti-Aging and Anti-Wrinkle Care",
+            data: "Products to combat aging and wrinkles",
+            icon: "pi pi-fw pi-hourglass-end",
+            children: [
+              {
+                key: "0-1-0",
+                label: "First signs of aging",
+                icon: "pi pi-fw pi-file",
+                data: "First Signs of Aging",
+              },
+              {
+                key: "0-1-1",
+                label: "Established wrinkles",
+                icon: "pi pi-fw pi-file",
+                data: "Established Wrinkles",
+              },
+              // Add other subcategories and products as needed
+            ],
+          },
+          // Add other sections like 'Makeup', 'Eyes and Lips', etc., following the same structure
+        ],
+      },
+      {
+        key: "1",
+        label: "Hair",
+        data: "Hair Care",
+        icon: "pi pi-fw pi-hair",
+        children: [
+          {
+            key: "1-0",
+            label: "Shampoo",
+            data: "Hair cleansing products",
+            icon: "pi pi-fw pi-shield",
+            children: [
+              {
+                key: "1-0-0",
+                label: "Gentle and frequent use shampoo",
+                icon: "pi pi-fw pi-file",
+                data: "Gentle and Frequent Use Shampoo",
+              },
+              {
+                key: "1-0-1",
+                label: "Anti-dandruff shampoo",
+                icon: "pi pi-fw pi-file",
+                data: "Anti-Dandruff Shampoo",
+              },
+              // Add other subcategories and products as needed
+            ],
+          },
+          {
+            key: "1-1",
+            label: "After Shampoo and Hair Care",
+            data: "Products for post-shampoo care",
+            icon: "pi pi-fw pi-umbrella",
+            children: [
+              {
+                key: "1-1-0",
+                label: "Conditioner",
+                icon: "pi pi-fw pi-file",
+                data: "Hair Conditioner",
+              },
+              {
+                key: "1-1-1",
+                label: "Masks and balms",
+                icon: "pi pi-fw pi-file",
+                data: "Hair Masks and Balms",
+              },
+              // Add other subcategories and products as needed
+            ],
+          },
+          // Continue with other sections like 'Soins anti-chute', 'Huiles et sérums', etc.
+        ],
+      },
+      // Continue with other top-level categories like 'Body', 'Bébé et maman', 'Compléments alimentaires', 'Homme', 'Hygiène', etc.
+    ]);
     const statuses = [
       { label: "INSTOCK", value: "instock" },
       { label: "LOWSTOCK", value: "lowstock" },
@@ -258,6 +386,43 @@ export default {
         console.error("Error creating product:", error);
       }
     };
+    const onNodeSelect = (node: any) => {
+      console.log(node);
+      console.log(selectedKey);
+      toast.add({
+        severity: "success",
+        summary: "Node Selected",
+        detail: node.label,
+        life: 3000,
+      });
+    };
+
+    const onNodeUnselect = (node: any) => {
+      toast.add({
+        severity: "warn",
+        summary: "Node Unselected",
+        detail: node.label,
+        life: 3000,
+      });
+    };
+
+    const onNodeExpand = (node: any) => {
+      toast.add({
+        severity: "info",
+        summary: "Node Expanded",
+        detail: node.label,
+        life: 3000,
+      });
+    };
+
+    const onNodeCollapse = (node: any) => {
+      toast.add({
+        severity: "error",
+        summary: "Node Collapsed",
+        detail: node.label,
+        life: 3000,
+      });
+    };
 
     return {
       isInputFocused,
@@ -269,6 +434,15 @@ export default {
       hideDialog,
       saveProduct,
       statuses,
+      submitted,
+      categories,
+      category,
+      selectedKey,
+      onNodeSelect,
+      onNodeUnselect,
+      onNodeExpand,
+      onNodeCollapse,
+      toast,
     };
   },
 };
@@ -295,7 +469,7 @@ export default {
 .elements {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+
   padding: 3%;
 }
 .navBarAndFilter {

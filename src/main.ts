@@ -8,11 +8,14 @@ import "primevue/resources/themes/viva-light/theme.css";
 import "primeicons/primeicons.css";
 import BadgeDirective from "primevue/badgedirective";
 import ToastService from "primevue/toastservice";
-const app = createApp(App);
+import { createPinia } from "pinia";
 
+const app = createApp(App);
+const pinia = createPinia();
 app.use(ElementPlus);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
+app.use(pinia);
 app.directive("badge", BadgeDirective);
 app.mount("#app");

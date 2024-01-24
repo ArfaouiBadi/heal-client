@@ -26,7 +26,7 @@
               />
             </div>
             <div class="form-group-double">
-              <div class="password-group">
+              <div class="password-group groups">
                 <label for="password" class="label">Password</label><br />
                 <InputText
                   type="password"
@@ -37,7 +37,7 @@
                   :class="{ 'p-invalid': !data.passwordValid }"
                 />
               </div>
-              <div class="password-group">
+              <div class="password-group groups">
                 <label for="confirmPassword" class="label"
                   >Confirm Password</label
                 ><br />
@@ -52,7 +52,7 @@
               </div>
             </div>
             <div class="form-group-double">
-              <div class="phone-group">
+              <div class="phone-group groups">
                 <label for="phone" class="label">Phone</label><br />
                 <InputText
                   type="text"
@@ -64,7 +64,7 @@
                 />
               </div>
 
-              <div class="address-group">
+              <div class="address-group groups">
                 <label for="address" class="label">Address</label><br />
                 <InputText
                   type="text"
@@ -244,12 +244,15 @@ export default {
 .form-group-double {
   display: flex;
   flex-direction: row;
-
-  justify-content: space-between;
+  gap: 2.5%;
   margin-bottom: 20px;
 }
+.groups {
+  flex: 1;
+}
+
 .form-group-double input {
-  width: 100%;
+  flex: 1;
 }
 
 .imgContainer {
@@ -288,6 +291,7 @@ label {
   font-weight: 300;
   color: black;
   font-size: 0.8rem;
+  user-select: none;
 }
 
 .form-group + .form-group {

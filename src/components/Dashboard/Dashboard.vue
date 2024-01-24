@@ -30,7 +30,7 @@ export default {
 .DashboardWrapper {
   display: flex;
   flex-direction: row;
-  height: fit-content;
+  height: 100vh;
   font-family: "poppins";
   font-weight: 500;
   font-style: normal;
@@ -39,11 +39,13 @@ export default {
   width: 20%;
   flex: 1;
   background-color: #1c2729;
+  height: auto;
 }
 .DashboardContent {
   display: flex;
   flex-direction: row;
   flex: 5;
+  height: 100vh;
 }
 
 .DashboardContentWrapper {

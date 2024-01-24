@@ -26,10 +26,8 @@ export default {
 
   text-align: center;
 }
-.authButton:active {
-  color: white;
-  background-color: #4461f2;
-}
+
+
 .authButton:hover {
   background-position: right center;
 
