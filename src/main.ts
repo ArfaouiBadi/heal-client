@@ -4,11 +4,13 @@ import "element-plus/dist/index.css";
 import App from "./App.vue";
 import router from "./components/routes";
 import PrimeVue from "primevue/config";
-import "primevue/resources/themes/viva-light/theme.css";
-import "primeicons/primeicons.css";
+
 import BadgeDirective from "primevue/badgedirective";
 import ToastService from "primevue/toastservice";
+
 import { createPinia } from "pinia";
+import "primevue/resources/themes/viva-light/theme.css";
+import "primeicons/primeicons.css";
 
 const app = createApp(App);
 const pinia = createPinia();

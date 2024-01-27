@@ -133,6 +133,8 @@
 
 <script lang="ts">
 import { ref } from "vue";
+
+import "firebase/storage";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import Dropdown from "primevue/dropdown";
@@ -229,8 +231,6 @@ export default {
     const saveProduct = async () => {
       submitted.value = true;
       try {
-        
-
         (product.value as { image: string }).image = "product-placeholder.svg";
         const userId = localStorage.getItem("userId");
 
