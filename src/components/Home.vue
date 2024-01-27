@@ -3,8 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useCounterStore } from "../stores/counter.js";
-const counter = useCounterStore();
+import { useStore } from "../stores/store.js";
+const counter = useStore();
 counter.$patch({ count: counter.count + 4 });
 counter.increment();
 </script>
+../stores/tore.js

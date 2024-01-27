@@ -77,7 +77,9 @@
             </div>
             <span
               >Already Have an Account ?
-              <a href="#" class="recoverPassword">Sign in</a></span
+              <router-link to="/Signin" class="recoverPassword"
+                ><ButtonAuth msg="Signup" />Sign in </router-link
+              > </span
             ><br />
             <button type="button" class="signupButton" @click="handleSignUp">
               Sign Up

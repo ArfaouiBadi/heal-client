@@ -2,13 +2,12 @@
 <template>
   <div class="navItem">
     <i :class="props.customClass" />
-    <a :href="props.href" @click.prevent="handleClick">{{ props.text }}</a>
+    <div>{{ props.text }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from "vue";
-import { useRouter } from "vue-router";
 
 const props = defineProps({
   text: {
@@ -24,12 +23,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-const router = useRouter();
-
-const handleClick = () => {
-  router.push(props.href);
-};
 </script>
 
 <style lang="css" scoped>

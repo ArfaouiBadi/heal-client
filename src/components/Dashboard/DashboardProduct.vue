@@ -36,7 +36,7 @@
   <div class="productWrapper">
     <div class="productList">
       Product List
-      <DashboarProductDataSet />
+      <DashboarProductDataSet :categories="categoriesFilterd" />
     </div>
 
     <div class="topSellingProducts"><p>Top Selling Products</p></div>
@@ -45,7 +45,7 @@
 
   <Dialog
     v-model:visible="productDialog"
-    :style="{ width: '40%' }"
+    :style="{ width: '60%' }"
     header="Product Details"
     :modal="true"
     class="p-fluid"
@@ -54,12 +54,12 @@
       <label for="name">Name</label>
       <InputText
         id="name"
-        v-model.trim="product.ProductName"
+        v-model.trim="product.productName"
         required="true"
         autofocus
-        :class="{ 'p-invalid': submitted && !product.name }"
+        :class="{ 'p-invalid': submitted && !product.productName }"
       />
-      <small class="p-error" v-if="submitted && !product.name"
+      <small class="p-error" v-if="submitted && !product.productName"
         >Name is required.</small
       >
     </div>
@@ -67,7 +67,7 @@
       <label for="Marque">Marque</label>
       <InputText
         id="Marque"
-        v-model="product.Marque"
+        v-model="product.marque"
         required="true"
         rows="3"
         cols="20"
@@ -75,7 +75,7 @@
     </div>
     <div class="field">
       <label for="Marque">Expiration Date</label>
-      <Calendar v-model="product.ExpirationDate" />
+      <Calendar v-model="product.expirationDate" />
     </div>
     <div class="field">
       <label for="inventoryStatus" class="mb-3">Inventory Status</label>
@@ -90,89 +90,22 @@
     </div>
     <br />
     <div class="field">
-      <div class="card flex justify-content-center">
-        <label for="inventoryStatus" class="mb-3">Inventory Status</label>
-        <Toast />
-        <Tree
-          v-model:selectionKeys="selectedKey"
-          :value="categories"
-          selectionMode="single"
-          :metaKeySelection="false"
-          @nodeSelect="onNodeSelect"
-          @nodeUnselect="onNodeUnselect"
-          @nodeExpand="onNodeExpand"
-          @nodeCollapse="onNodeCollapse"
-          class="w-full md:w-30rem"
-        ></Tree>
-      </div>
-    </div>
-    <div class="field">
       <label class="mb-3">Category</label>
-      <div class="formgrid grid">
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category1"
-            name="category"
-            value="Visage"
-            v-model="product.ProductCategory"
-          />
-          <label for="category1">Visage</label>
-        </div>
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category2"
-            name="category"
-            value="Cheveux"
-            v-model="product.ProductCategory"
-          />
-          <label for="category2">Cheveux</label>
-        </div>
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category3"
-            name="category"
-            value="Corps"
-            v-model="product.ProductCategory"
-          />
-          <label for="category3">Corps</label>
-        </div>
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category4"
-            name="category"
-            value="Maman"
-            v-model="product.ProductCategory"
-          />
-          <label for="category4">Maman</label>
-        </div>
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category5"
-            name="category"
-            value="Santé"
-            v-model="product.ProductCategory"
-          />
-          <label for="category5">Santé</label>
-        </div>
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category6"
-            name="category"
-            value="Hygiène"
-            v-model="product.ProductCategory"
-          />
-          <label for="category6">Hygiène</label>
-        </div>
-        <div class="field-radiobutton col-6">
-          <RadioButton
-            id="category7"
-            name="category"
-            value="Homme"
-            v-model="product.ProductCategory"
-          />
-          <label for="category7">Homme</label>
-        </div>
-      </div>
+      <Dropdown
+        v-model="product.category"
+        :options="categoriesFilterd"
+        optionLabel="label"
+        optionGroupLabel="label"
+        optionGroupChildren="items"
+        placeholder="Select a Category"
+        class="w-full md:w-14rem font-bold"
+      >
+        <template #optiongroup="slotProps">
+          <div class="flex align-items-center dropdownfont">
+            <div>{{ slotProps.option.label }}</div>
+          </div>
+        </template>
+      </Dropdown>
     </div>
 
     <div class="formgrid grid">
@@ -188,7 +121,7 @@
       </div>
       <div class="field col">
         <label for="quantity">Quantity</label>
-        <InputNumber id="quantity" v-model="product.Quantity" integeronly />
+        <InputNumber id="quantity" v-model="product.quantity" integeronly />
       </div>
     </div>
     <template #footer>
@@ -212,7 +145,9 @@ import Toast from "primevue/toast";
 import Tree from "primevue/tree";
 import Element from "./DashboardProductElement.vue";
 import { useToast } from "primevue/usetoast";
+
 import DashboarProductDataSet from "./DashboarProductDataSet.vue";
+import { Category, Subcategory, CategoryObj } from "../../interface/types.ts";
 import axios from "axios";
 export default {
   components: {
@@ -229,6 +164,32 @@ export default {
     Toast,
     Tree,
   },
+  mounted() {
+    this.fetchDataCategories();
+  },
+  methods: {
+    async fetchDataCategories() {
+      try {
+        const data = await axios.get("http://localhost:3000/category");
+        this.categories = data.data;
+
+        this.categories.forEach((category: Category) => {
+          let categoryObj: CategoryObj = {
+            label: category.name,
+            code: category.id,
+            items: category.subcategories.map((subcategory: Subcategory) => ({
+              label: subcategory.name,
+              value: category.id + " " + subcategory.id,
+            })),
+          };
+          this.categoriesFilterd.push(categoryObj);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+
   setup() {
     const isInputFocused = ref(false);
     const productDialog = ref(false);
@@ -236,111 +197,11 @@ export default {
     const category = ref(null);
     const selectedKey = ref(null);
     const toast = useToast();
-    const categories = ref([
-      {
-        key: "0",
-        label: "Face",
-        data: "Facial Care",
-        icon: "pi pi-fw pi-smile",
-        children: [
-          {
-            key: "0-0",
-            label: "Moisturizing and Nourishing Care",
-            data: "Hydrating and nourishing products for the face",
-            icon: "pi pi-fw pi-tint",
-            children: [
-              {
-                key: "0-0-0",
-                label: "Moisturizers for all skin types",
-                icon: "pi pi-fw pi-file",
-                data: "All Skin Types",
-              },
-              {
-                key: "0-0-1",
-                label: "Moisturizers for normal to combination skin",
-                icon: "pi pi-fw pi-file",
-                data: "Normal to Combination Skin",
-              },
-              // Add other subcategories and products as needed
-            ],
-          },
-          {
-            key: "0-1",
-            label: "Anti-Aging and Anti-Wrinkle Care",
-            data: "Products to combat aging and wrinkles",
-            icon: "pi pi-fw pi-hourglass-end",
-            children: [
-              {
-                key: "0-1-0",
-                label: "First signs of aging",
-                icon: "pi pi-fw pi-file",
-                data: "First Signs of Aging",
-              },
-              {
-                key: "0-1-1",
-                label: "Established wrinkles",
-                icon: "pi pi-fw pi-file",
-                data: "Established Wrinkles",
-              },
-              // Add other subcategories and products as needed
-            ],
-          },
-          // Add other sections like 'Makeup', 'Eyes and Lips', etc., following the same structure
-        ],
-      },
-      {
-        key: "1",
-        label: "Hair",
-        data: "Hair Care",
-        icon: "pi pi-fw pi-hair",
-        children: [
-          {
-            key: "1-0",
-            label: "Shampoo",
-            data: "Hair cleansing products",
-            icon: "pi pi-fw pi-shield",
-            children: [
-              {
-                key: "1-0-0",
-                label: "Gentle and frequent use shampoo",
-                icon: "pi pi-fw pi-file",
-                data: "Gentle and Frequent Use Shampoo",
-              },
-              {
-                key: "1-0-1",
-                label: "Anti-dandruff shampoo",
-                icon: "pi pi-fw pi-file",
-                data: "Anti-Dandruff Shampoo",
-              },
-              // Add other subcategories and products as needed
-            ],
-          },
-          {
-            key: "1-1",
-            label: "After Shampoo and Hair Care",
-            data: "Products for post-shampoo care",
-            icon: "pi pi-fw pi-umbrella",
-            children: [
-              {
-                key: "1-1-0",
-                label: "Conditioner",
-                icon: "pi pi-fw pi-file",
-                data: "Hair Conditioner",
-              },
-              {
-                key: "1-1-1",
-                label: "Masks and balms",
-                icon: "pi pi-fw pi-file",
-                data: "Hair Masks and Balms",
-              },
-              // Add other subcategories and products as needed
-            ],
-          },
-          // Continue with other sections like 'Soins anti-chute', 'Huiles et sérums', etc.
-        ],
-      },
-      // Continue with other top-level categories like 'Body', 'Bébé et maman', 'Compléments alimentaires', 'Homme', 'Hygiène', etc.
-    ]);
+
+    const selectedCity = ref();
+    const categories = ref([]);
+    const categoriesFilterd = ref([] as CategoryObj[]);
+
     const statuses = [
       { label: "INSTOCK", value: "instock" },
       { label: "LOWSTOCK", value: "lowstock" },
@@ -368,17 +229,22 @@ export default {
     const saveProduct = async () => {
       submitted.value = true;
       try {
-        // Set additional properties for creating a new product
+        
 
         (product.value as { image: string }).image = "product-placeholder.svg";
+        const userId = localStorage.getItem("userId");
 
-        console.log(product.value);
         // Use Axios to create a new product on the server
-        await axios.post(
-          "http://localhost:3000/products/addProduct",
-          product.value
-        );
-
+        await axios.post("http://localhost:3000/products/addProduct", {
+          ...product.value,
+          userId: userId,
+        });
+        toast.add({
+          severity: "success",
+          summary: "Node Selected",
+          detail: "product added",
+          life: 3000,
+        });
         // Reset dialog and product object
         productDialog.value = false;
         product.value = {};
@@ -389,39 +255,6 @@ export default {
     const onNodeSelect = (node: any) => {
       console.log(node);
       console.log(selectedKey);
-      toast.add({
-        severity: "success",
-        summary: "Node Selected",
-        detail: node.label,
-        life: 3000,
-      });
-    };
-
-    const onNodeUnselect = (node: any) => {
-      toast.add({
-        severity: "warn",
-        summary: "Node Unselected",
-        detail: node.label,
-        life: 3000,
-      });
-    };
-
-    const onNodeExpand = (node: any) => {
-      toast.add({
-        severity: "info",
-        summary: "Node Expanded",
-        detail: node.label,
-        life: 3000,
-      });
-    };
-
-    const onNodeCollapse = (node: any) => {
-      toast.add({
-        severity: "error",
-        summary: "Node Collapsed",
-        detail: node.label,
-        life: 3000,
-      });
     };
 
     return {
@@ -435,14 +268,13 @@ export default {
       saveProduct,
       statuses,
       submitted,
-      categories,
       category,
       selectedKey,
       onNodeSelect,
-      onNodeUnselect,
-      onNodeExpand,
-      onNodeCollapse,
       toast,
+      selectedCity,
+      categories,
+      categoriesFilterd,
     };
   },
 };
@@ -534,9 +366,12 @@ export default {
 .addProductSquare i {
   padding-right: 7px;
 }
+.dropdownfont {
+}
 @media screen and (max-width: 768px) {
   .elements {
     justify-content: center;
   }
 }
 </style>
+../../stores/tore.js

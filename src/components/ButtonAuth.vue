@@ -1,5 +1,5 @@
 <template>
-  <a class="authButton" :href="msg">{{ msg }}</a>
+  <div class="authButton">{{ msg }}</div>
 </template>
 <script lang="ts">
 export default {
@@ -26,7 +26,6 @@ export default {
 
   text-align: center;
 }
-
 
 .authButton:hover {
   background-position: right center;

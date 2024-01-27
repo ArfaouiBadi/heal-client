@@ -7,8 +7,9 @@
       <div class="navItem"><a href="">Contact</a></div>
     </div>
     <div class="navItemAuth">
-      <ButtonAuth msg="Signup" />
-      <ButtonAuth msg="Signin" />
+      <router-link to="/Signup"><ButtonAuth msg="Signup" /></router-link>
+      <router-link to="/Signin"><ButtonAuth msg="Signin" /></router-link>
+      
     </div>
   </div>
 </template>

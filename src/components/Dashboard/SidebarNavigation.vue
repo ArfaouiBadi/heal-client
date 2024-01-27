@@ -5,12 +5,13 @@
     </div>
     <div class="navItemContainer">
       <i class="pi-calendar" />
-      <SidebarNavItem
-        text="Products"
-        customClass="pi pi-cart-plus"
-        href="dashboard/product"
-      />
-      <SidebarNavItem text="Category" customClass="pi pi-list" href="signin" />
+      <router-link to="dashboard/product" class="recoverPassword"
+        ><SidebarNavItem text="Products" customClass="pi pi-cart-plus"
+      /></router-link>
+      <router-link to="/Signin" class="recoverPassword"
+        ><SidebarNavItem text="Category" customClass="pi pi-list"
+      /></router-link>
+
       <SidebarNavItem
         text="Sub category"
         customClass="pi pi-sort-amount-down-alt"

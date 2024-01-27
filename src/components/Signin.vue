@@ -41,9 +41,8 @@
             </div>
             <div class="Links">
               <a href="#" class="recoverPassword">Recover Password?</a>
-              <a href="signin" class="recoverPassword"
-                >i Don't Have an Account ?</a
-              >
+              <router-link to="/Signup" class="recoverPassword"><ButtonAuth msg="Signup" />i Don't Have an Account ?</router-link>
+              
             </div>
             <br />
 
@@ -80,11 +79,16 @@ import Navbar from "./Navbar.vue";
 import { reactive } from "vue";
 import axios from "axios";
 import InputText from "primevue/inputtext";
+import Message from "primevue/message";
 
 export default {
   components: {
     Navbar,
     InputText,
+    Message,
+  },
+  setup() {
+    return {};
   },
   watch: {
     "data.email": function (newEmail) {
@@ -120,6 +124,7 @@ export default {
         );
         console.log(response);
         localStorage.setItem("token", response.data.access_token);
+        localStorage.setItem("userId", response.data.userId);
         this.$router.push("/dashboard");
       } catch (error) {
         console.log(error);
@@ -133,6 +138,7 @@ export default {
       }
     },
   },
+
   data() {
     return {
       data: reactive({
@@ -346,3 +352,4 @@ input {
   }
 }
 </style>
+../stores/tore.js

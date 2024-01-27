@@ -10,6 +10,7 @@ const router = createRouter({
     {
       path: "/",
       component: Home,
+      meta: { requiresAuth: true },
     },
     {
       path: "/signin",
@@ -22,6 +23,7 @@ const router = createRouter({
     {
       path: "/dashboard",
       component: Dashboard,
+      meta: { requiresAuth: true },
       children: [
         {
           path: "product",
@@ -29,6 +31,20 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/:pathMatch(.*)*",
+      redirect: "",
+    },
   ],
+});
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem("token") !== null;
+
+  // If the route requires authentication and the user is not authenticated, redirect to the signin page
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    next("/signin");
+  } else {
+    next();
+  }
 });
 export default router;
