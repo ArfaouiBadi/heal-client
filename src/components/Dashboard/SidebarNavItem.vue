@@ -18,10 +18,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  href: {
-    type: String,
-    required: true,
-  },
 });
 </script>
 

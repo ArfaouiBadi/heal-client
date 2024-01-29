@@ -22,17 +22,7 @@
       </div>
     </div>
   </div>
-  <div class="elements">
-    <Element
-      text="Products Count"
-      growth="18.9%"
-      class="pi pi-cart-plus"
-      data="5"
-    />
-    <Element text="Products Count" growth="18.9%" class="" data="5" />
-    <Element text="Products Count" growth="18.9%" class="" data="5" />
-    <Element text="Products Count" growth="18.9%" class="" data="5" />
-  </div>
+
   <div class="productWrapper">
     <div class="productList">
       Product List

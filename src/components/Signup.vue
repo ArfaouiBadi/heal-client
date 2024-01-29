@@ -78,8 +78,8 @@
             <span
               >Already Have an Account ?
               <router-link to="/Signin" class="recoverPassword"
-                ><ButtonAuth msg="Signup" />Sign in </router-link
-              > </span
+                ><ButtonAuth msg="Signup" />Sign in
+              </router-link> </span
             ><br />
             <button type="button" class="signupButton" @click="handleSignUp">
               Sign Up
@@ -207,7 +207,7 @@ export default {
             this.data.showSuccessMessage = true;
             setTimeout(() => {
               this.data.showSuccessMessage = false;
-              this.$router.push("/signin  ");
+              this.$router.push("/signin");
             }, 3000);
           } catch (error) {
             console.log(error);

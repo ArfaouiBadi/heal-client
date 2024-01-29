@@ -41,6 +41,9 @@ export default {
 .elementWrapper:hover {
   background-color: #1b2728;
   color: white;
+  i {
+    color: white;
+  }
 }
 
 .elementheader {
@@ -55,5 +58,8 @@ export default {
 .elementWrapper i {
   font-size: 30px;
   color: black;
+}
+.elementWrapper i:hover {
+  color: white;
 }
 </style>
