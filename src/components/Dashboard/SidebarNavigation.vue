@@ -17,6 +17,9 @@
         customClass="pi pi-sort-amount-down-alt"
         href="signup"
       />
+      <router-link to="/Dashboard" class="recoverPassword"
+        ><SidebarNavItem text="Dashboard" customClass="pi pi-chart-bar"
+      /></router-link>
     </div>
   </div>
 </template>

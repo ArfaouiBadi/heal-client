@@ -26,7 +26,7 @@
   <div class="productWrapper">
     <div class="productList">
       Product List
-      <DashboarProductDataSet :categories="categoriesFilterd" />
+      <DashboarProductDataSet />
     </div>
 
     <div class="topSellingProducts"><p>Top Selling Products</p></div>
@@ -54,6 +54,29 @@
       >
     </div>
     <div class="field">
+      <label for="Image">Image URL</label>
+      <InputText
+        id="Image"
+        v-model="product.image"
+        required="true"
+        rows="3"
+        cols="20"
+        placeholder="imgBB Link"
+      />
+    </div>
+
+    <div class="field">
+      <label for="Usage">Usage instructions</label>
+      <InputText
+        id="Usage"
+        v-model="product.usageInstructions"
+        required="false"
+        rows="3"
+        cols="20"
+        placeholder="Apply a small amount to the affected area twice a day."
+      />
+    </div>
+    <div class="field">
       <label for="Marque">Marque</label>
       <InputText
         id="Marque"
@@ -77,6 +100,11 @@
         placeholder="Select a Status"
       >
       </Dropdown>
+    </div>
+    <br />
+    <div class="field">
+      <label for="description">Prescription</label>
+      <InputSwitch v-model="product.prescription" />
     </div>
     <br />
     <div class="field">
@@ -136,6 +164,7 @@ import Calendar from "primevue/calendar";
 import Toast from "primevue/toast";
 import Tree from "primevue/tree";
 import Element from "./DashboardProductElement.vue";
+import InputSwitch from "primevue/inputswitch";
 import { useToast } from "primevue/usetoast";
 
 import DashboarProductDataSet from "./DashboarProductDataSet.vue";
@@ -155,10 +184,13 @@ export default {
     DashboarProductDataSet,
     Toast,
     Tree,
+    InputSwitch,
   },
-  mounted() {
+
+  beforeMount() {
     this.fetchDataCategories();
   },
+
   methods: {
     async fetchDataCategories() {
       try {
@@ -221,10 +253,10 @@ export default {
     const saveProduct = async () => {
       submitted.value = true;
       try {
-        (product.value as { image: string }).image = "product-placeholder.svg";
         const userId = localStorage.getItem("userId");
 
         // Use Axios to create a new product on the server
+
         await axios.post("http://localhost:3000/products/addProduct", {
           ...product.value,
           userId: userId,
@@ -302,6 +334,8 @@ export default {
   padding: 1.5% 3.5%;
   font-size: 25px;
   font-weight: 700;
+  font-family: "poppins";
+  flex-wrap: wrap;
 }
 .header {
   flex: 2;
@@ -320,6 +354,11 @@ export default {
 }
 .filterContainer {
   flex: 1;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 .squareContainer {
   display: flex;
@@ -356,8 +395,7 @@ export default {
 .addProductSquare i {
   padding-right: 7px;
 }
-.dropdownfont {
-}
+
 @media screen and (max-width: 768px) {
   .elements {
     justify-content: center;

@@ -21,7 +21,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
+  
   width: 99%;
   background-color: white;
   border-radius: 30px;

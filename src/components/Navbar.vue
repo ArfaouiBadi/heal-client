@@ -2,14 +2,15 @@
   <div class="navBar">
     <button class="toggleButton" @click="toggleNavbar">&#9776;</button>
     <div class="navItems" :class="{ collapsed: isNavbarCollapsed }">
-      <div class="navItem"><a href="">Home</a></div>
-      <div class="navItem"><a href="">About</a></div>
-      <div class="navItem"><a href="">Contact</a></div>
+      <div class="navItem hover-underline-animation"><a href="">Home</a></div>
+      <div class="navItem hover-underline-animation"><a href="">About</a></div>
+      <div class="navItem hover-underline-animation">
+        <a href="">Contact</a>
+      </div>
     </div>
     <div class="navItemAuth">
       <router-link to="/Signup"><ButtonAuth msg="Signup" /></router-link>
       <router-link to="/Signin"><ButtonAuth msg="Signin" /></router-link>
-      
     </div>
   </div>
 </template>
@@ -83,7 +84,7 @@ export default {
 }
 
 .navItem {
-  padding-left: 10%;
+  margin-right: 10%;
   color: black;
   font-size: 15px;
   font-family: "Poppins";
@@ -111,5 +112,28 @@ export default {
   .navItem {
     padding: 10px;
   }
+}
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+  color: black;
+}
+
+.hover-underline-animation::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 </style>

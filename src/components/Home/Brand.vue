@@ -1,13 +1,19 @@
 <template lang="html">
   <div class="brandWrapper">
     <div class="Circle">
-      <img src="../../assets/vaseline.png" />
+      <img :src="brand!.image" />
     </div>
-    <p>Marque</p>
+    <p>{{ brand!.name }}</p>
   </div>
 </template>
 <script lang="ts" scoped>
-export default {};
+import { Brand } from "../../interface/types";
+
+export default {
+  props: {
+    brand: Object as () => Brand,
+  },
+};
 </script>
 <style lang="css" scoped>
 .brandWrapper {
@@ -27,7 +33,7 @@ export default {};
   align-items: center;
 }
 .Circle img {
-  width: 50px;
+  width: 90%;
 }
 p {
   font-size: 15px;

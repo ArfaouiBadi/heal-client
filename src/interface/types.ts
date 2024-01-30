@@ -14,3 +14,10 @@ export interface CategoryObj {
   code: string;
   items: { label: string; value: string }[];
 }
+export interface Product {
+  marque: string;
+}
+export interface Brand {
+  name: string;
+  image: string;
+}

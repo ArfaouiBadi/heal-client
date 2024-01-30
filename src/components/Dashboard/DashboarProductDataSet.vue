@@ -146,6 +146,29 @@
         >
       </div>
       <div class="field">
+        <label for="Image">Image URL</label>
+        <InputText
+          id="Image"
+          v-model="product.image"
+          required="true"
+          rows="3"
+          cols="20"
+          placeholder="imgBB Link"
+        />
+      </div>
+
+      <div class="field">
+        <label for="Usage">Usage instructions</label>
+        <InputText
+          id="Usage"
+          v-model="product.usageInstructions"
+          required="false"
+          rows="3"
+          cols="20"
+          placeholder="Apply a small amount to the affected area twice a day."
+        />
+      </div>
+      <div class="field">
         <label for="Marque">Marque</label>
         <InputText
           id="Marque"
@@ -172,9 +195,14 @@
       </div>
       <br />
       <div class="field">
+        <label for="description">Prescription</label>
+        <InputSwitch v-model="product.prescription" />
+      </div>
+      <br />
+      <div class="field">
         <label class="mb-3">Category</label>
         <Dropdown
-          v-model="product.category"
+          v-model="product.categoryObj"
           :options="categoriesFilterd"
           optionLabel="label"
           optionGroupLabel="label"
@@ -216,7 +244,7 @@
 <script lang="ts">
 import { ref } from "vue";
 import { FilterMatchMode } from "primevue/api";
-
+import InputSwitch from "primevue/inputswitch";
 import DataTable from "primevue/datatable";
 import axios from "axios";
 import Column from "primevue/column";
@@ -228,6 +256,7 @@ import RadioButton from "primevue/radiobutton";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
 import Tag from "primevue/tag";
+import { Category, CategoryObj, Subcategory } from "../../interface/types";
 
 export default {
   components: {
@@ -241,6 +270,7 @@ export default {
     Dropdown,
     Calendar,
     Tag,
+    InputSwitch,
   },
   data() {
     return {
@@ -249,22 +279,35 @@ export default {
       productDialog: ref(false),
       deleteProductDialog: ref(false),
       deleteProductsDialog: ref(false),
-      statuses: [],
+      statuses: [
+        { label: "INSTOCK", value: "instock" },
+        { label: "LOWSTOCK", value: "lowstock" },
+        { label: "OUTOFSTOCK", value: "outofstock" },
+      ],
       product: ref({
         id: null,
         productName: null,
         marque: null,
         expirationDate: null,
-        inventoryStatus: null,
+        inventoryStatus: { label: null, value: null },
         category: null,
         subcategory: null,
         price: null,
         quantity: null,
-        Image: "",
+        image: "",
+        usageInstructions: null,
+        prescription: false,
+        categoryId: null,
+        subcategoryId: null,
+        status: null,
+        categoryObj: { label: null, value: null },
       }),
+      categoriesFilterd: [] as CategoryObj[],
+
       categories: [],
       submitted: ref(false),
       selectedProducts: ref(null),
+
       filters: ref({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       }),
@@ -273,13 +316,9 @@ export default {
   },
   mounted() {
     this.fetchDataProducts();
+    this.fetchDataCategories();
   },
-  props: {
-    categoriesFilterd: {
-      type: Array,
-      default: () => [],
-    },
-  },
+
   methods: {
     async fetchDataProducts() {
       try {
@@ -294,6 +333,26 @@ export default {
         }
       } catch (error) {
         console.error("Error fetching products:", error);
+      }
+    },
+    async fetchDataCategories() {
+      try {
+        const data = await axios.get("http://localhost:3000/category");
+        this.categories = data.data;
+
+        this.categories.forEach((category: Category) => {
+          let categoryObj: CategoryObj = {
+            label: category.name,
+            code: category.id,
+            items: category.subcategories.map((subcategory: Subcategory) => ({
+              label: subcategory.name,
+              value: category.id + " " + subcategory.id,
+            })),
+          };
+          this.categoriesFilterd.push(categoryObj);
+        });
+      } catch (err) {
+        console.log(err);
       }
     },
 
@@ -314,6 +373,7 @@ export default {
 
     editProduct(prod: any) {
       this.product = { ...prod };
+      console.log(this.product);
       this.productDialog = true;
     },
     confirmDeleteProduct(prod: any) {
@@ -336,11 +396,21 @@ export default {
     async saveProduct() {
       this.submitted = true;
       try {
-        // Set additional properties for creating a new product
-        this.product.Image = "product-placeholder.svg";
+        const userId = localStorage.getItem("userId");
+        this.product.status = this.product.inventoryStatus?.value;
 
-        // Use Axios to create a new product on the server
-        await axios.put(`http://localhost:3000/products`, this.product);
+        // Check if categoryObj is not null before accessing its properties
+        if (this.product.categoryObj && this.product.categoryObj.value) {
+          this.product.categoryId =
+            this.product.categoryObj.value.split(" ")[0];
+          this.product.subcategoryId =
+            this.product.categoryObj.value.split(" ")[1];
+        }
+
+        await axios.put(`http://localhost:3000/products`, {
+          ...this.product,
+          userId: userId,
+        });
 
         // Reset dialog and product object
         this.productDialog = false;
@@ -349,13 +419,20 @@ export default {
           productName: null,
           marque: null,
           expirationDate: null,
-          inventoryStatus: null,
+          inventoryStatus: { label: null, value: null },
           category: null,
           subcategory: null,
           price: null,
           quantity: null,
-          Image: "",
+          image: "",
+          usageInstructions: null,
+          prescription: false,
+          categoryId: null,
+          subcategoryId: null,
+          status: null,
+          categoryObj: { label: null, value: null },
         };
+
         this.fetchDataProducts(); // Refresh the product list
       } catch (error) {
         console.error("Error creating product:", error);
@@ -380,3 +457,10 @@ export default {
   },
 };
 </script>
+<style lang="css">
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+</style>

@@ -2,9 +2,10 @@
   <div class="homeWrapper">
     <HomeNavBar />
     <HomeThumbnail />
-    <HomeCategories />
-    <home-brands />
-    <HomeBestDealsProduct :products="products" />
+    <HomeDescription />
+
+    <home-brands/>
+    <HomeBestDealsProduct :products="products" :categories="categories" />
   </div>
 </template>
 
@@ -13,7 +14,8 @@ import HomeNavBar from "./HomeNavBar.vue";
 import HomeThumbnail from "./HomeThumbnail.vue";
 import HomeCategories from "./HomeCategories.vue";
 import HomeBestDealsProduct from "./HomeBestDealsProduct.vue";
-import HomeBrands from "./HomeBrands.vue"; // Corrected component name
+import HomeBrands from "./HomeBrands.vue";
+import HomeDescription from "./HomeDescription.vue";
 import axios from "axios";
 export default {
   components: {
@@ -21,15 +23,18 @@ export default {
     HomeThumbnail,
     HomeCategories,
     HomeBestDealsProduct,
-    HomeBrands, // Corrected component name
+    HomeBrands,
+    HomeDescription,
   },
   data() {
     return {
       products: [],
+      categories: [],
     };
   },
   mounted() {
     this.fetchDataProducts();
+    this.fetchDataCategories();
   },
   methods: {
     async fetchDataProducts() {
@@ -38,11 +43,30 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.products = response.data;
+          console.log(this.products);
         } else {
           console.error(`Failed to fetch products. Status: ${response.status}`);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
+      }
+    },
+    async fetchDataCategories() {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/Category/Names`
+        );
+        // Check if the response status is OK (status code 200)
+        if (response.status === 200) {
+          this.categories = response.data;
+          console.log(this.categories);
+        } else {
+          console.error(
+            `Failed to fetch categories. Status: ${response.status}`
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
       }
     },
   },

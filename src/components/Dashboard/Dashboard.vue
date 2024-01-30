@@ -39,13 +39,11 @@ export default {
   width: 20%;
   flex: 1;
   background-color: #1c2729;
-  height: auto;
 }
 .DashboardContent {
   display: flex;
   flex-direction: row;
   flex: 5;
-  height: 100vh;
 }
 
 .DashboardContentWrapper {

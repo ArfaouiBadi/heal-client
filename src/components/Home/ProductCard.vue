@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="cardWrapper">
-    <div class="imgContainer"><img src="../../assets/vaseline.png" /></div>
+    <div class="imgContainer"><img :src="product!.image" /></div>
     <div class="infoWrapper">
       <div class="categoryContainer">
         <div class="category">{{ product!.category.name }}</div>
