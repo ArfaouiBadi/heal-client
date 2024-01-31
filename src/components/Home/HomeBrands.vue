@@ -30,7 +30,7 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.brands = response.data;
-          console.log(this.brands);
+          
         } else {
           console.error(`Failed to fetch brands. Status: ${response.status}`);
         }

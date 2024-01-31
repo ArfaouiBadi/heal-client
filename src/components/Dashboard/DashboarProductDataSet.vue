@@ -373,7 +373,6 @@ export default {
 
     editProduct(prod: any) {
       this.product = { ...prod };
-      console.log(this.product);
       this.productDialog = true;
     },
     confirmDeleteProduct(prod: any) {

@@ -43,7 +43,7 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.products = response.data;
-          console.log(this.products);
+
         } else {
           console.error(`Failed to fetch products. Status: ${response.status}`);
         }
@@ -59,7 +59,7 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.categories = response.data;
-          console.log(this.categories);
+
         } else {
           console.error(
             `Failed to fetch categories. Status: ${response.status}`

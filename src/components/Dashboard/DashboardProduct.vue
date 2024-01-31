@@ -274,10 +274,6 @@ export default {
         console.error("Error creating product:", error);
       }
     };
-    const onNodeSelect = (node: any) => {
-      console.log(node);
-      console.log(selectedKey);
-    };
 
     return {
       isInputFocused,
@@ -292,7 +288,6 @@ export default {
       submitted,
       category,
       selectedKey,
-      onNodeSelect,
       toast,
       selectedCity,
       categories,

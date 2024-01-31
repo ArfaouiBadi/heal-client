@@ -45,7 +45,7 @@ export default {
   computed: {
     filteredProducts() {
       // If no category is selected, return all products
-      console.log(this.selectedCategory);
+
       if (!this.selectedCategory || this.selectedCategory.name == "All") {
         return this.products;
       }

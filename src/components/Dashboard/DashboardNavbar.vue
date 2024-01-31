@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style lang="css">
+<style lang="css" scoped>
 .searchWrapper {
   padding-left: 1%;
 }

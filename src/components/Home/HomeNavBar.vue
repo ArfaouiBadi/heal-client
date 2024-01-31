@@ -2,8 +2,17 @@
   <div class="navbarWrapper">
     <div class="navbarLeftItems">
       <div class="navbarLogo">HEAL</div>
-      <div class="search"></div>
     </div>
+    <nav class="navbarSearch">
+      <span class="p-input-icon-left searchWrapper">
+        <i class="pi pi-search" />
+        <InputText
+          v-model="value1"
+          placeholder="Medecine and healthcare products "
+          class="search"
+        />
+      </span>
+    </nav>
     <div class="navbarRightItems">
       <div class="cart navbarRightItemsContainer">
         <div class="circleContainer">
@@ -22,7 +31,18 @@
   </div>
 </template>
 <script lang="ts">
-export default {};
+import InputText from "primevue/inputtext";
+
+export default {
+  components: {
+    InputText,
+  },
+  data() {
+    return {
+      value1: "",
+    };
+  },
+};
 </script>
 <style lang="css" scoped>
 .navbarWrapper {
@@ -34,10 +54,37 @@ export default {};
   justify-content: space-between;
   align-items: center;
   font-size: 16px;
-  padding: 18px;
+  padding: 18px 50px;
   margin: 15px;
   border-radius: 20px;
 }
+.navbarLeftItems {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 50%;
+  width: 20%;
+}
+
+.searchWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: none;
+  padding: 0 10px;
+}
+.searchWrapper i {
+  padding-left: 10px;
+}
+.search {
+  width: 150%;
+  border-radius: 20px;
+  border: none;
+}
+.search::placeholder {
+  font-size: 10px;
+}
+
 .navbarRightItems {
   display: flex;
   flex-direction: row;
@@ -54,19 +101,17 @@ export default {};
   margin-right: 5%;
 }
 .navbarRightItemsContainer {
-  
-  padding: 3px 10px;
   border-radius: 30px;
-  border: 1px solid #f4f4f4;
+  border: 1px #f4f4f4 solid;
   background-color: #f4f4f4;
   cursor: pointer;
+  transition: all 0.5s ease-in-out;
 }
-.navbarRightItemsContainer:hover{
+.navbarRightItemsContainer:hover {
   border-radius: 30px;
   transition: all 0.3s ease-in-out;
-  background-color: #f4f4f1;
-  border: 1px solid #16330044;
-  
+  background-color: white;
+  border: 1px white solid;
 }
 .content {
   padding-right: 5px;
@@ -83,7 +128,6 @@ export default {};
 }
 i {
   font-size: 18px;
-  
 }
 .circleContainer {
   display: flex;
@@ -91,10 +135,13 @@ i {
   justify-content: center;
   width: 40px;
   height: 40px;
+  background-color: #f4f4f4;
   border-radius: 50%;
-   /* Adjust the background color as needed */
+  /* Adjust the background color as needed */
   margin-right: 5px;
+  transition: all 0.4s ease-in-out;
 }
-
-
+.circleContainer:hover {
+  background-color: white;
+}
 </style>

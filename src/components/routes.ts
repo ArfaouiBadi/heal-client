@@ -4,6 +4,8 @@ import Signin from "./Signin.vue";
 import Signup from "./Signup.vue";
 import Dashboard from "./Dashboard/Dashboard.vue";
 import DashboardProduct from "./Dashboard/DashboardProduct.vue";
+import DashboardHome from "./Dashboard/DashboardHome.vue";
+import test from "./test.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -11,6 +13,10 @@ const router = createRouter({
       path: "/",
       component: Home,
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/home",
+      component: test,
     },
     {
       path: "/signin",
@@ -28,6 +34,10 @@ const router = createRouter({
         {
           path: "product",
           component: DashboardProduct,
+        },
+        {
+          path: "home",
+          component: DashboardHome,
         },
       ],
     },
