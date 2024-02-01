@@ -31,7 +31,9 @@ const fetchDataCategories = async () => {
 
 const fetchDataProducts = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/products");
+    const user = localStorage.getItem("userId");
+
+    const response = await axios.get(`http://localhost:3000/products/${user}`);
     return response.status === 200 ? response.data : [];
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -39,12 +41,13 @@ const fetchDataProducts = async () => {
   }
 };
 
-const productPerCategory = async () => {
+const productPerCategory = async (): Promise<number[]> => {
   try {
     const products = await fetchDataProducts();
     const labels = await fetchDataCategories();
-    const dataProductPerCategoryCount = Array(labels.length).fill(0);
-
+    const dataProductPerCategoryCount: Array<number> = Array(
+      labels.length
+    ).fill(0);
     for (let i = 0; i < labels.length; i++) {
       for (let j = 0; j < products.length; j++) {
         if (products[j].category.name === labels[i]) {
@@ -139,16 +142,19 @@ const setChartOptions = () => {
 <style lang="css" scoped>
 .chartContainer {
   background-color: white;
-  width: 70%;
-  height: 70%;
-  padding: 5%;
+  width: 94%;
+  padding: 10%;
+  height: 90%;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .chartWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 80%;
 }
 h4 {
   font-size: 20px;

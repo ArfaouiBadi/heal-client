@@ -9,9 +9,9 @@ export default {
 <style lang="css" scoped>
 .authButton {
   border: none;
-  color: #4461f2;
+  color: #163300;
   background-color: white;
-  border: 1px solid #4461f2;
+  border: 1px solid #163300;
   border-radius: 20px;
   background-size: 100% auto;
   font-family: "Poppins";

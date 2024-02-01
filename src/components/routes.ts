@@ -5,27 +5,29 @@ import Signup from "./Signup.vue";
 import Dashboard from "./Dashboard/Dashboard.vue";
 import DashboardProduct from "./Dashboard/DashboardProduct.vue";
 import DashboardHome from "./Dashboard/DashboardHome.vue";
-import test from "./test.vue";
+import Auth from "./Auth.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: "/",
       component: Home,
-      meta: { requiresAuth: true },
     },
     {
-      path: "/home",
-      component: test,
+      path: "/auth",
+      component: Auth,
+      children: [
+        {
+          path: "signin",
+          component: Signin,
+        },
+        {
+          path: "signup",
+          component: Signup,
+        },
+      ],
     },
-    {
-      path: "/signin",
-      component: Signin,
-    },
-    {
-      path: "/signup",
-      component: Signup,
-    },
+
     {
       path: "/dashboard",
       component: Dashboard,

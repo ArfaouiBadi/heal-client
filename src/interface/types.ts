@@ -21,3 +21,22 @@ export interface Brand {
   name: string;
   image: string;
 }
+export interface ProductDataSet {
+  id: string;
+  productName: string;
+  price: number;
+  image: string;
+  category: Category;
+  subcategory: Subcategory;
+  marque: string;
+  quantity: number;
+  reviews: number;
+  CategoryObj: CategoryObj;
+  inventoryStatus: { label: string; value: string };
+  expirationDate: string;
+  usageInstructions: string;
+  prescription: boolean;
+  categoryId: string;
+  subcategoryId: string;
+  status: string;
+}

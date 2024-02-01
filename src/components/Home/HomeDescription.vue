@@ -62,7 +62,7 @@ h3 {
   background-color: #ffeb68;
   border-radius: 40px;
   width: 48%;
-  padding: 2%;
+  padding: 4%;
   height: 400px;
 }
 .descRight {
@@ -94,5 +94,21 @@ span {
   cursor: pointer;
   font-size: 15px;
   font-weight: 400;
+}
+
+@media only screen and (max-width: 930px) {
+  .descWrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .descLeft{
+    width: 70%;
+    margin-bottom: 50px;
+  }
+  .descRight{
+    width: 70%;
+  }
 }
 </style>

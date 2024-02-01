@@ -9,8 +9,12 @@
       </div>
     </div>
     <div class="navItemAuth">
-      <router-link to="/Signup"><ButtonAuth msg="Signup" /></router-link>
-      <router-link to="/Signin"><ButtonAuth msg="Signin" /></router-link>
+      <router-link to="/auth/Signup" class="routerLink"
+        ><ButtonAuth msg="Signup"
+      /></router-link>
+      <router-link to="/auth/Signin" class="routerLink"
+        ><ButtonAuth msg="Signin"
+      /></router-link>
     </div>
   </div>
 </template>
@@ -40,7 +44,9 @@ export default {
 .navItems.collapsed {
   display: none;
 }
-
+.routerLink {
+  text-decoration: none;
+}
 /* Style for the toggle button */
 .toggleButton {
   font-size: 20px;

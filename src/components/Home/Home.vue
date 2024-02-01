@@ -3,8 +3,7 @@
     <HomeNavBar />
     <HomeThumbnail />
     <HomeDescription />
-
-    <home-brands/>
+    <home-brands />
     <HomeBestDealsProduct :products="products" :categories="categories" />
   </div>
 </template>
@@ -43,7 +42,6 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.products = response.data;
-
         } else {
           console.error(`Failed to fetch products. Status: ${response.status}`);
         }
@@ -59,7 +57,6 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.categories = response.data;
-
         } else {
           console.error(
             `Failed to fetch categories. Status: ${response.status}`

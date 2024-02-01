@@ -301,6 +301,7 @@ export default {
         subcategoryId: null,
         status: null,
         categoryObj: { label: null, value: null },
+        reviews: null,
       }),
       categoriesFilterd: [] as CategoryObj[],
 
@@ -421,6 +422,7 @@ export default {
           inventoryStatus: { label: null, value: null },
           category: null,
           subcategory: null,
+          reviews: null,
           price: null,
           quantity: null,
           image: "",

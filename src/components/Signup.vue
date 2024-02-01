@@ -1,108 +1,95 @@
 <template>
-  <div class="authComponent">
-    <Navbar />
-    <div class="fexing">
-      <div class="authContainer">
-        <div class="imgContainer">
-          <img src="../assets/register.png" alt="signup Image" />
+  <div class="text">
+    <h4><i>Lets Create you a new Account !!</i></h4>
+    <h1>Sign up</h1>
+  </div>
+  <div class="formContainer">
+    <form>
+      <div class="form-group">
+        <label for="email" class="label">Email Address</label><br />
+        <InputText
+          type="text"
+          id="email"
+          placeholder="Enter Email Address"
+          v-model="data.email"
+          class="inputForm"
+          :class="{ 'p-invalid': !data.emailValid }"
+        />
+      </div>
+      <div class="form-group-double">
+        <div class="password-group groups">
+          <label for="password" class="label">Password</label><br />
+          <InputText
+            type="password"
+            id="password"
+            placeholder="Enter Password"
+            v-model="data.password"
+            class="inputForm"
+            :class="{ 'p-invalid': !data.passwordValid }"
+          />
+        </div>
+        <div class="password-group groups">
+          <label for="confirmPassword" class="label">Confirm Password</label
+          ><br />
+          <InputText
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+            v-model="data.confirmPassword"
+            class="inputForm"
+            :class="{ 'p-invalid': !data.confirmPasswordValid }"
+          />
         </div>
       </div>
-      <div class="mainContainer">
-        <div class="text">
-          <h4><i>Lets Create you a new Account !!</i></h4>
-          <h1>Sign up</h1>
+      <div class="form-group-double">
+        <div class="phone-group groups">
+          <label for="phone" class="label">Phone</label><br />
+          <InputText
+            type="text"
+            id="phone"
+            placeholder="00-000-000"
+            v-model="data.phone"
+            class="inputForm"
+            :class="{ 'p-invalid': !data.phoneValid }"
+          />
         </div>
-        <div class="formContainer">
-          <form>
-            <div class="form-group">
-              <label for="email" class="label">Email Address</label><br />
-              <InputText
-                type="text"
-                id="email"
-                placeholder="Enter Email Address"
-                v-model="data.email"
-                class="inputForm"
-                :class="{ 'p-invalid': !data.emailValid }"
-              />
-            </div>
-            <div class="form-group-double">
-              <div class="password-group groups">
-                <label for="password" class="label">Password</label><br />
-                <InputText
-                  type="password"
-                  id="password"
-                  placeholder="Enter Password"
-                  v-model="data.password"
-                  class="inputForm"
-                  :class="{ 'p-invalid': !data.passwordValid }"
-                />
-              </div>
-              <div class="password-group groups">
-                <label for="confirmPassword" class="label"
-                  >Confirm Password</label
-                ><br />
-                <InputText
-                  type="password"
-                  id="confirmPassword"
-                  placeholder="Confirm Password"
-                  v-model="data.confirmPassword"
-                  class="inputForm"
-                  :class="{ 'p-invalid': !data.confirmPasswordValid }"
-                />
-              </div>
-            </div>
-            <div class="form-group-double">
-              <div class="phone-group groups">
-                <label for="phone" class="label">Phone</label><br />
-                <InputText
-                  type="text"
-                  id="phone"
-                  placeholder="00-000-000"
-                  v-model="data.phone"
-                  class="inputForm"
-                  :class="{ 'p-invalid': !data.phoneValid }"
-                />
-              </div>
 
-              <div class="address-group groups">
-                <label for="address" class="label">Address</label><br />
-                <InputText
-                  type="text"
-                  id="address"
-                  placeholder="Enter Address"
-                  v-model="data.address"
-                  class="inputForm"
-                />
-              </div>
-            </div>
-            <span
-              >Already Have an Account ?
-              <router-link to="/Signin" class="recoverPassword"
-                ><ButtonAuth msg="Signup" />Sign in
-              </router-link> </span
-            ><br />
-            <button type="button" class="signupButton" @click="handleSignUp">
-              Sign Up
-            </button>
-            <div class="messageContainer">
-              <Message
-                v-show="data.showInvalidMessage"
-                class="popupMessage"
-                severity="error"
-              >
-                Please fill in all required fields correctly.
-              </Message>
-              <Message
-                v-show="data.showSuccessMessage"
-                class="popupMessage"
-                severity="success"
-                >User Created</Message
-              >
-            </div>
-          </form>
+        <div class="address-group groups">
+          <label for="address" class="label">Address</label><br />
+          <InputText
+            type="text"
+            id="address"
+            placeholder="Enter Address"
+            v-model="data.address"
+            class="inputForm"
+          />
         </div>
       </div>
-    </div>
+      <span
+        >Already Have an Account ?
+        <router-link to="/Signin" class="recoverPassword"
+          ><ButtonAuth msg="Signup" />Sign in
+        </router-link> </span
+      ><br />
+      <button type="button" class="signupButton" @click="handleSignUp">
+        Sign Up
+      </button>
+      <div class="messageContainer">
+        <Message
+          v-show="data.showInvalidMessage"
+          class="popupMessage"
+          severity="error"
+        >
+          Please fill in all required fields correctly.
+        </Message>
+        <Message
+          v-show="data.showSuccessMessage"
+          class="popupMessage"
+          severity="success"
+          >User Created</Message
+        >
+      </div>
+    </form>
   </div>
 </template>
 
@@ -235,11 +222,7 @@ export default {
 </script>
 
 <style lang="css">
-.authComponent {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+
 .form-group {
   margin-bottom: 10px;
 }
@@ -257,31 +240,7 @@ export default {
   flex: 1;
 }
 
-.imgContainer {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-}
-.imgContainer img {
-  padding-top: 40px;
-  width: 70%;
-}
 
-.authContainer {
-  height: 85%;
-  width: 50%;
-  display: flex;
-  flex-direction: row;
-}
-.fexing {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  width: 100%;
-}
 .formContainer {
   width: 100%;
   display: flex;
@@ -355,12 +314,12 @@ form {
   text-align: center;
 }
 .recoverPassword:hover {
-  color: #4461f2;
+  color: #9fe870;
 }
 .signupButton {
   border: none;
   color: white;
-  background-color: #4461f2;
+  background-color: #14a800;
   border-radius: 20px;
   font-family: "Poppins";
   font-size: 23px;
@@ -379,9 +338,7 @@ form {
   animation: pulse512 1.5s infinite;
 }
 
-.mainContainer {
-  width: 50%;
-}
+
 .text {
   padding: 3rem 0px 0px 40px;
 }
@@ -405,15 +362,15 @@ h4 {
 }
 @keyframes pulse512 {
   0% {
-    box-shadow: 0 0 0 0 #7e7e7e64;
+    box-shadow: 0 0 0 0 #14a8002b;
   }
 
   70% {
-    box-shadow: 0 0 0 10px rgb(218 103 68 / 0%);
+    box-shadow: 0 0 0 10px rgba(93, 218, 68, 0);
   }
 
   100% {
-    box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
+    box-shadow: 0 0 0 0 rgba(68, 218, 108, 0);
   }
 }
 

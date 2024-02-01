@@ -14,22 +14,50 @@
       </span>
     </nav>
     <div class="navbarRightItems">
-      <div class="cart navbarRightItemsContainer">
-        <div class="circleContainer">
-          <i class="pi pi-shopping-cart" />
+      <router-link
+        to="/dashboard"
+        class="navbarRightItemsContainer"
+        v-if="userToken"
+      >
+        <div class="login">
+          <div class="circleContainer">
+            <i class="pi pi-chart-bar" />
+          </div>
+          <div class="content">Dashboard</div>
         </div>
-        <div class="content">Cart</div>
-      </div>
-
-      <div class="login navbarRightItemsContainer">
-        <div class="circleContainer">
-          <i class="pi pi-user" />
+      </router-link>
+      <router-link to="/cart" class="navbarRightItemsContainer">
+        <div class="cart">
+          <div class="circleContainer">
+            <i class="pi pi-shopping-cart" />
+          </div>
+          <div class="content">Cart</div>
         </div>
-        <div class="content">Login</div>
-      </div>
+      </router-link>
+      <router-link
+        to="/auth/signin"
+        class="navbarRightItemsContainer"
+        v-if="!userToken"
+      >
+        <div class="login">
+          <div class="circleContainer">
+            <i class="pi pi-user" />
+          </div>
+          <div class="content">Login</div>
+        </div>
+      </router-link>
+      <router-link to="/" class="navbarRightItemsContainer" v-else>
+        <div class="login">
+          <div class="circleContainer">
+            <i class="pi pi-user" />
+          </div>
+          <div class="content" @click="handleLogout">Logout</div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import InputText from "primevue/inputtext";
 
@@ -40,10 +68,32 @@ export default {
   data() {
     return {
       value1: "",
+      userToken: localStorage.getItem("token"),
     };
+  },
+  methods: {
+    handleLogout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      this.userToken = null; // Update the user property to trigger the v-if condition
+      this.$router.push("/");
+    },
+  },
+  watch: {
+    user(newVal) {
+      this.userToken = newVal;
+    },
+  },
+  created() {
+    this.userToken = localStorage.getItem("token");
   },
 };
 </script>
+
+<style lang="css" scoped>
+/* ... (existing styles) */
+</style>
+
 <style lang="css" scoped>
 .navbarWrapper {
   background-color: #f4f4f4;
@@ -94,6 +144,7 @@ export default {
   flex-direction: row;
   align-items: center;
 }
+
 .cart {
   display: flex;
   flex-direction: row;
@@ -106,6 +157,8 @@ export default {
   background-color: #f4f4f4;
   cursor: pointer;
   transition: all 0.5s ease-in-out;
+  color: #163300;
+  text-decoration: none;
 }
 .navbarRightItemsContainer:hover {
   border-radius: 30px;
@@ -133,11 +186,11 @@ i {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  width: 45px;
   height: 40px;
   background-color: #f4f4f4;
   border-radius: 50%;
-  /* Adjust the background color as needed */
+
   margin-right: 5px;
   transition: all 0.4s ease-in-out;
 }
