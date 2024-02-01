@@ -38,7 +38,6 @@ export default {
   margin: 10px;
   display: flex;
   flex-direction: column;
-
   color: #163300;
   overflow: hidden;
 }
@@ -106,6 +105,8 @@ i {
   cursor: pointer;
   background-color: #163300;
   color: white;
+  box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08),
+    0px 1px 30px 5px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
 }
 .ratingstar {
   color: #f4d03f;

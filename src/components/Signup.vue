@@ -68,7 +68,7 @@
       <span
         >Already Have an Account ?
         <router-link to="/Signin" class="recoverPassword"
-          ><ButtonAuth msg="Signup" />Sign in
+          >Sign in
         </router-link> </span
       ><br />
       <button type="button" class="signupButton" @click="handleSignUp">
@@ -99,6 +99,7 @@ import axios from "axios";
 import { reactive } from "vue";
 import InputText from "primevue/inputtext";
 import Message from "primevue/message";
+
 export default {
   data() {
     return {
@@ -155,8 +156,6 @@ export default {
       return emailRegex.test(email);
     },
     validatePassword(password: string): boolean {
-      // Implement your password validation logic here
-      // Example: Password must be at least 8 characters long
       return password.length >= 8;
     },
     validatePhone(phone: string): boolean {
@@ -194,7 +193,7 @@ export default {
             this.data.showSuccessMessage = true;
             setTimeout(() => {
               this.data.showSuccessMessage = false;
-              this.$router.push("/signin");
+              this.$router.push("/auth/signin");
             }, 3000);
           } catch (error) {
             console.log(error);
@@ -222,7 +221,6 @@ export default {
 </script>
 
 <style lang="css">
-
 .form-group {
   margin-bottom: 10px;
 }
@@ -239,7 +237,6 @@ export default {
 .form-group-double input {
   flex: 1;
 }
-
 
 .formContainer {
   width: 100%;
@@ -337,7 +334,6 @@ form {
   -webkit-animation: pulse 2s infinite;
   animation: pulse512 1.5s infinite;
 }
-
 
 .text {
   padding: 3rem 0px 0px 40px;

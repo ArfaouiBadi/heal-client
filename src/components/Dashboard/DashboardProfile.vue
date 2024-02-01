@@ -33,15 +33,22 @@
             class="inputForm inputFormDashboard"
           />
         </div>
-        <div class="form-group">
-          <label for="email" class="label">Password</label><br />
-          <InputText
-            type="text"
-            id="email"
-            :placeholder="user.password"
-            v-model="user.password"
-            class="inputForm inputFormDashboard"
-          />
+
+        <div class="dashboardProfileButtons">
+          <button
+            type="button"
+            class="dashboardProfileButton"
+            @click="handleUpdateUser"
+          >
+            Update
+          </button>
+          <button
+            type="button"
+            class="dashboardProfileButton"
+            @click="handleLogoutUser"
+          >
+            Logout
+          </button>
         </div>
       </form>
     </div>
@@ -61,7 +68,6 @@ export default {
         email: "",
         phone: "",
         address: "",
-        password: "",
       },
     };
   },
@@ -80,13 +86,28 @@ export default {
         return [];
       }
     },
+    handleLogoutUser() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      this.$router.push("/");
+    },
+    async handleUpdateUser() {
+      try {
+        const userId = localStorage.getItem("userId");
+
+        await axios.put(`http://localhost:3000/user/${userId}`, this.user);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        this.$router.push("/");
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        return [];
+      }
+    },
   },
   mounted() {
     this.fetchData().then((data) => {
-      this.user.email = data.email;
-      this.user.phone = data.phone;
-      this.user.address = data.address;
-      this.user.password = "********";
+      this.user = data;
     });
   },
 };
@@ -116,7 +137,29 @@ h4 {
   font-size: 25px;
   font-weight: 700;
 }
-.inputFormDashboard {
-  
+.dashboardProfileButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+.dashboardProfileButton {
+  border: none;
+  color: white;
+  background-color: #14a800c7;
+  border-radius: 20px;
+  font-family: "Poppins";
+  font-size: 23px;
+  width: 30%;
+  margin: auto;
+  font-weight: 200;
+  padding: 0.6em 1.5em;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+.dashboardProfileButton:hover {
+  background-color: #14a800;
 }
 </style>

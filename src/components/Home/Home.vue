@@ -2,14 +2,17 @@
   <div class="homeWrapper">
     <HomeNavBar />
     <router-view></router-view>
+    <HomePricingPlan />
   </div>
 </template>
 
 <script lang="ts" scoped>
 import HomeNavBar from "./HomeNavBar.vue";
+import HomePricingPlan from "./HomePricingPlan.vue";
 export default {
   components: {
     HomeNavBar,
+    HomePricingPlan,
   },
 };
 </script>

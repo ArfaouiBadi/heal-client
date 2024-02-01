@@ -32,8 +32,8 @@
       </div>
       <div class="Links">
         <a href="#" class="recoverPassword">Recover Password?</a>
-        <router-link to="/Signup" class="recoverPassword"
-          ><ButtonAuth msg="Signup" />i Don't Have an Account ?</router-link
+        <router-link to="/auth/signup" class="recoverPassword"
+          >i Don't Have an Account ?</router-link
         >
       </div>
       <br />
@@ -69,14 +69,12 @@ import { reactive } from "vue";
 import axios from "axios";
 import InputText from "primevue/inputtext";
 import Message from "primevue/message";
-import ButtonAuth from "./ButtonAuth.vue";
 
 export default {
   components: {
     Navbar,
     InputText,
     Message,
-    ButtonAuth,
   },
   setup() {
     return {};
