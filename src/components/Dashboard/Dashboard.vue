@@ -44,6 +44,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex: 5;
+  color:#1c2729;
 }
 
 .DashboardContentWrapper {

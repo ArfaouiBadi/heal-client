@@ -26,6 +26,14 @@
           <div class="content">Dashboard</div>
         </div>
       </router-link>
+      <router-link to="/" class="navbarRightItemsContainer">
+        <div class="cart">
+          <div class="circleContainer">
+            <i class="pi pi-home" />
+          </div>
+          <div class="content">Home</div>
+        </div>
+      </router-link>
       <router-link to="/cart" class="navbarRightItemsContainer">
         <div class="cart">
           <div class="circleContainer">
@@ -34,6 +42,7 @@
           <div class="content">Cart</div>
         </div>
       </router-link>
+      
       <router-link
         to="/auth/signin"
         class="navbarRightItemsContainer"

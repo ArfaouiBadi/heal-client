@@ -6,46 +6,59 @@
     <div class="navItemContainer">
       <div class="productRoutes">
         <router-link
+          to="/"
+          class="recoverPassword"
+          exact
+          active-class="active-link"
+        >
+          <SidebarNavItem text="Home" customClass="pi pi-home" />
+        </router-link>
+        <router-link
           to="/dashboard/product"
           class="recoverPassword"
-          :class="{ 'active-link': $route.path === '/dashboard/product' }"
+          exact
+          active-class="active-link"
         >
           <SidebarNavItem text="Products" customClass="pi pi-cart-plus" />
         </router-link>
         <router-link
           to="/dashboard/home"
           class="recoverPassword"
-          :class="{ 'active-link': $route.path == '/dashboard' }"
+          exact
+          active-class="active-link"
         >
           <SidebarNavItem text="Dashboard" customClass="pi pi-chart-bar" />
         </router-link>
-        <router-link to="/" class="recoverPassword">
-          <SidebarNavItem
-            text="Home"
-            customClass="pi pi-home"
-            :class="{ 'active-link': $route.path == '/' }"
-          />
+
+        <!--
+          <router-link
+          to="/dashboard/category"
+          class="recoverPassword"
+          active-class="active-link"
+        >
+          <SidebarNavItem text="Category" customClass="pi pi-list" />
         </router-link>
-        <router-link to="/dashboard/category" class="recoverPassword">
-          <SidebarNavItem
-            text="Category"
-            customClass="pi pi-list"
-            :class="{ 'active-link': $route.path == '/dashboard/category' }"
-          />
-        </router-link>
-        <router-link to="/dashboard/subcategory" class="recoverPassword">
+        <router-link
+          to="/dashboard/subcategory"
+          class="recoverPassword"
+          active-class="active-link"
+        >
           <SidebarNavItem
             text="Sub category"
             customClass="pi pi-sort-amount-down-alt"
           />
         </router-link>
+        -->
       </div>
       <div class="profileSettings">
-        <SidebarNavItem
-          text="Profile"
-          customClass="pi pi-user"
-          :class="{ 'active-link': $route.path == '/dashboard/profile' }"
-        />
+        <router-link
+          to="/dashboard/profile"
+          class="recoverPassword"
+          active-class="active-link"
+        >
+          <SidebarNavItem text="Profile" customClass="pi pi-user" />
+        </router-link>
+
         <SidebarNavItem text="Settings" customClass="pi pi-cog" />
       </div>
     </div>
@@ -102,7 +115,7 @@ h4 {
 }
 
 .active-link {
-  background-color: #f4f4f4; /* Add your active link styles */
-  color: #fff;
+  background-color: #14a800;
+  cursor: pointer;
 }
 </style>

@@ -30,7 +30,6 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.brands = response.data;
-          
         } else {
           console.error(`Failed to fetch brands. Status: ${response.status}`);
         }
@@ -49,12 +48,15 @@ export default {
   cursor: pointer;
 }
 .Wrapper {
-  width: 100%;
+  width: 99%;
   height: 100%;
   display: flex;
   flex-direction: column;
   color: #163300;
   padding: 50px;
+  margin-top: -50px;
+  border-radius: 30px;
+  background-color: white;
 }
 .brandsWrapper {
   width: 100%;

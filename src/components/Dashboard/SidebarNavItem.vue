@@ -32,15 +32,15 @@ const props = defineProps({
   display: flex;
   align-items: center;
   font-size: 16px;
-  transition: background-color 0.4s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
 }
 .active-link {
-  background-color: #f4f4f4; /* Add your active link styles */
-  color: #fff;
+  background-color: #14a800;
+  cursor: pointer;
 }
 
 .navItem:hover {
-  background-color: #4461f2;
+  background-color: #14a800;
   cursor: pointer;
 }
 

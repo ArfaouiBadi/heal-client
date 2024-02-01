@@ -378,7 +378,7 @@ export default {
   width: 70%;
   height: 40px;
   border-radius: 10px;
-  background-color: #4461f2; /* Adjust the background color as needed */
+  background-color: #14a800; /* Adjust the background color as needed */
   cursor: pointer;
 }
 .addProductSquare {

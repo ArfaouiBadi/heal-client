@@ -1,7 +1,7 @@
 <template>
   <div class="chartWrapper">
+    <h4>Products per category</h4>
     <div class="chartContainer">
-      <h4>Products per category</h4>
       <Chart type="bar" :data="chartData" :options="chartOptions" />
     </div>
   </div>
@@ -142,7 +142,7 @@ const setChartOptions = () => {
 <style lang="css" scoped>
 .chartContainer {
   background-color: white;
-  width: 94%;
+  width: 99%;
   padding: 10%;
   height: 90%;
   border-radius: 20px;
@@ -153,12 +153,13 @@ const setChartOptions = () => {
 .chartWrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 80%;
+  flex-direction: column;
+  padding: 3%;
 }
 h4 {
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 5%;
+  margin-bottom: 4%;
+  font-size: 25px;
+  font-weight: 700;
+  font-family: "poppins";
 }
 </style>

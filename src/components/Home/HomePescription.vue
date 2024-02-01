@@ -54,7 +54,7 @@ h3 {
   border-radius: 30px;
   padding: 50px;
   margin: 15px;
-  border-radius: 30px;
+
   margin-top: -50px;
   gap: 2%;
 }
@@ -101,13 +101,12 @@ span {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
   }
-  .descLeft{
+  .descLeft {
     width: 70%;
     margin-bottom: 50px;
   }
-  .descRight{
+  .descRight {
     width: 70%;
   }
 }

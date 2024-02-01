@@ -6,24 +6,41 @@ import Dashboard from "./Dashboard/Dashboard.vue";
 import DashboardProduct from "./Dashboard/DashboardProduct.vue";
 import DashboardHome from "./Dashboard/DashboardHome.vue";
 import Auth from "./Auth.vue";
+import HomeCart from "./Home/HomeCart/HomeCart.vue";
+import HomeLanding from "./Home/HomeLanding/HomeLanding.vue";
+import DashboardProfile from "./Dashboard/DashboardProfile.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: "/",
       component: Home,
+      children: [
+        {
+          path: "",
+          component: HomeLanding,
+        },
+        {
+          path: "cart",
+          component: HomeCart,
+          meta: { requiresAuth: true },
+        },
+      ],
     },
     {
       path: "/auth",
       component: Auth,
+
       children: [
         {
           path: "signin",
           component: Signin,
+          props: true,
         },
         {
           path: "signup",
           component: Signup,
+          props: true,
         },
       ],
     },
@@ -31,15 +48,23 @@ const router = createRouter({
     {
       path: "/dashboard",
       component: Dashboard,
+      props: true,
       meta: { requiresAuth: true },
       children: [
         {
           path: "product",
           component: DashboardProduct,
+          props: true,
         },
         {
           path: "home",
           component: DashboardHome,
+          props: true,
+        },
+        {
+          path: "profile",
+          component: DashboardProfile,
+          props: true,
         },
       ],
     },
@@ -54,7 +79,7 @@ router.beforeEach((to, from, next) => {
 
   // If the route requires authentication and the user is not authenticated, redirect to the signin page
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next("/signin");
+    next("auth/signin");
   } else {
     next();
   }

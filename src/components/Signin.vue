@@ -69,12 +69,14 @@ import { reactive } from "vue";
 import axios from "axios";
 import InputText from "primevue/inputtext";
 import Message from "primevue/message";
+import ButtonAuth from "./ButtonAuth.vue";
 
 export default {
   components: {
     Navbar,
     InputText,
     Message,
+    ButtonAuth,
   },
   setup() {
     return {};
