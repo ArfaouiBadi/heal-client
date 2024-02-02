@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="priceContainer">
-        <div class="addToCart">
+        <div class="addToCart" @click="handleAddToCart">
           <i class="pi pi-plus" />
           <span>Add to cart</span>
         </div>
@@ -24,9 +24,24 @@
   </div>
 </template>
 <script lang="ts" scoped>
+import { useCartStore } from "../../store/cart";
+import { ProductDataSet } from "../../interface/types";
 export default {
+  data() {
+    return {
+      cartStore: useCartStore(),
+    };
+  },
   props: {
-    product: Object,
+    product: Object as () => ProductDataSet,
+  },
+  methods: {
+    handleAddToCart() {
+      this.cartStore.addToCart(this.product!, 1);
+    },
+  },
+  mounted() {
+    this.cartStore.loadCart();
   },
 };
 </script>

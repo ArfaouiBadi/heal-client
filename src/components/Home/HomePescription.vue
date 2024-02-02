@@ -19,17 +19,24 @@
       <div class="uploadButtons"></div>
     </div>
     <div class="descRight">
-      <div class="descHeader">
-        <div class="descHeaderText">
-          <h1>
-            Dont have a <br />
-            Prescription?
-          </h1>
-          <h3>Upload only .jpg or .pdf files Size Limit is 15MB</h3>
+      <div class="descHeaderWrapper">
+        <div class="descHeader">
+          <div class="descHeaderText">
+            <h1>
+              Dont have a <br />
+              Prescription?
+            </h1>
+            <h3>Upload only .jpg or .pdf files Size Limit is 15MB</h3>
+          </div>
+          <div class="descDesc"></div>
+          <div class="descDontButton"></div>
         </div>
-        <div class="descDesc"></div>
       </div>
-      <div class="descDontButton"></div>
+      <div class="imageContainer">
+        <img
+          src="https://i.ibb.co/1XPXQHv/image-2024-02-01-231339461-removebg-preview.png"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -58,6 +65,9 @@ h3 {
   margin-top: -50px;
   gap: 2%;
 }
+.descHeaderWrapper {
+  padding: 5%;
+}
 .descLeft {
   background-color: #ffeb68;
   border-radius: 40px;
@@ -69,8 +79,12 @@ h3 {
   background-color: #fec091;
   border-radius: 40px;
   width: 48%;
-  padding: 2%;
   height: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5%;
+  overflow: hidden;
 }
 .uploadPrescription {
   display: flex;
@@ -94,6 +108,14 @@ span {
   cursor: pointer;
   font-size: 15px;
   font-weight: 400;
+}
+.imageContainer {
+  display: flex;
+}
+.imageContainer img {
+  object-fit: contain;
+
+  padding-right: 5%;
 }
 
 @media only screen and (max-width: 930px) {

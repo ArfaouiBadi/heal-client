@@ -39,4 +39,9 @@ export interface ProductDataSet {
   categoryId: string;
   subcategoryId: string;
   status: string;
+  qty?: number;
+}
+export interface Cart {
+  cartId: string;
+  products: Array<ProductDataSet>;
 }

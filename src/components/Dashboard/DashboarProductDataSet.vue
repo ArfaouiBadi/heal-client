@@ -27,7 +27,6 @@
           </div>
         </template>
 
-        <Column field="" header="ID" sortable style="width: 1rem"></Column>
         <Column
           field="productName"
           header="Product Name"
@@ -38,6 +37,16 @@
         <Column field="price" header="Price" sortable style="min-width: 1px">
           <template #body="slotProps">
             {{ formatCurrency(slotProps.data.price) }}
+          </template>
+        </Column>
+        <Column header="Image">
+          <template #body="slotProps">
+            <img
+              :src="slotProps.data.image"
+              :alt="slotProps.data.image"
+              class="border-round"
+              style="width: 64px"
+            />
           </template>
         </Column>
         <Column
@@ -329,6 +338,7 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.products = response.data;
+
         } else {
           console.error(`Failed to fetch products. Status: ${response.status}`);
         }

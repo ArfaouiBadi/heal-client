@@ -37,12 +37,15 @@
       <router-link to="/cart" class="navbarRightItemsContainer">
         <div class="cart">
           <div class="circleContainer">
-            <i class="pi pi-shopping-cart" />
+            <i
+              class="pi pi-shopping-cart"
+              v-badge="cartStore.$state.cart.products.length"
+            />
           </div>
-          <div class="content">Cart</div>
+          <div class="content" >Cart</div>
         </div>
       </router-link>
-      
+
       <router-link
         to="/auth/signin"
         class="navbarRightItemsContainer"
@@ -69,6 +72,7 @@
 
 <script lang="ts">
 import InputText from "primevue/inputtext";
+import { useCartStore } from "../../store/cart";
 
 export default {
   components: {
@@ -78,6 +82,7 @@ export default {
     return {
       value1: "",
       userToken: localStorage.getItem("token"),
+      cartStore: useCartStore(),
     };
   },
   methods: {

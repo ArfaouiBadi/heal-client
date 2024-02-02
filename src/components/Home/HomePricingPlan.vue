@@ -75,9 +75,9 @@ export default {};
 .background::after {
   content: "";
   background: white;
-  background: -moz-linear-gradient(top, #60a9ff 0%, #4394f4 100%);
-  background: -webkit-linear-gradient(top, #60a9ff 0%, #4394f4 100%);
-  background: linear-gradient(to bottom, #60a9ff 0%, #4394f4 100%);
+  background: -moz-linear-gradient(top, #e1f1ff 0%, #4394f4 100%);
+  background: -webkit-linear-gradient(top, #e1f1ff 0%, #4394f4 100%);
+  background: linear-gradient(to bottom, #e1f1ff 0%, #c1e2ff 100%);
   height: 500px;
   left: 0;
   position: absolute;
