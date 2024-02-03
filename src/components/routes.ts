@@ -9,7 +9,12 @@ import Auth from "./Auth.vue";
 import HomeCart from "./Home/HomeCart/HomeCart.vue";
 import HomeLanding from "./Home/HomeLanding/HomeLanding.vue";
 import DashboardProfile from "./Dashboard/DashboardProfile.vue";
-import success from "./Home/HomeCart/success.vue";
+
+import afterPayment from "./Home/afterPayment/afterPayment.vue";
+import ProductSuccessVue from "./Home/afterPayment/ProductSuccess.vue";
+import PlanSuccessVue from "./Home/afterPayment/PlanSuccess.vue";
+import ProductFailedVue from "./Home/afterPayment/ProductFailed.vue";
+import PlanFailedVue from "./Home/afterPayment/PlanFailed.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -70,13 +75,28 @@ const router = createRouter({
       ],
     },
     {
-      path: "/product/success",
-      component: ProductSuccess,
+      path: "afterpayment",
+      component: afterPayment,
+      children: [
+        {
+          path: "product/success",
+          component: ProductSuccessVue,
+        },
+        {
+          path: "plan/success",
+          component: PlanSuccessVue,
+        },
+        {
+          path: "product/failed",
+          component: ProductFailedVue,
+        },
+        {
+          path: "plan/failed",
+          component: PlanFailedVue,
+        },
+      ],
     },
-    {
-      path: "/plan/success",
-      component: PlanSuccess,
-    },
+
     {
       path: "/:pathMatch(.*)*",
       redirect: "",
