@@ -45,7 +45,12 @@ export interface Cart {
   cartId: string;
   products: Array<ProductDataSet>;
 }
-
+export interface Plan {
+  planId: string;
+  productName: string;
+  price: number;
+  qty: number;
+}
 export interface User {
   id: string;
   email: string;

@@ -8,7 +8,7 @@
             alt=""
             class="pricing-img"
           />
-          <h2 class="pricing-header">Essential Care</h2>
+          <h2 class="pricing-header">Basic</h2>
           <ul class="pricing-features">
             <li class="pricing-features-item">
               Access to a curated selection of essential medications (up to 10
@@ -16,7 +16,12 @@
             </li>
           </ul>
           <span class="pricing-price">9.99 DT/month</span>
-          <a href="#/" class="pricing-button">Buy Plan</a>
+          <a
+            href="#/"
+            class="pricing-button"
+            @click="handleBuyPlan('Basic', 9.99)"
+            >Buy Plan</a
+          >
         </div>
 
         <div class="pricing-plan">
@@ -25,7 +30,7 @@
             alt=""
             class="pricing-img"
           />
-          <h2 class="pricing-header">Wellness Plus</h2>
+          <h2 class="pricing-header">Premium</h2>
           <ul class="pricing-features">
             <li class="pricing-features-item">
               Full access to an extensive catalog of pharmaceutical products (up
@@ -39,7 +44,12 @@
             </li>
           </ul>
           <span class="pricing-price">49.99 DT/month</span>
-          <a href="#/" class="pricing-button is-featured">Buy plan</a>
+          <a
+            href="#/"
+            class="pricing-button is-featured"
+            @click="handleBuyPlan('Premium', 49.99)"
+            >Buy plan</a
+          >
         </div>
 
         <div class="pricing-plan">
@@ -48,7 +58,7 @@
             alt=""
             class="pricing-img"
           />
-          <h2 class="pricing-header">Pharma Pro</h2>
+          <h2 class="pricing-header">Gold</h2>
           <ul class="pricing-features">
             <li class="pricing-features-item">
               Expanded access to a diverse range of wellness products (up to 50
@@ -56,14 +66,65 @@
             </li>
           </ul>
           <span class="pricing-price">29.99 DT/month</span>
-          <a href="#/" class="pricing-button">Buy plan</a>
+          <a
+            href="#/"
+            class="pricing-button"
+            @click="handleBuyPlan('Gold', 29.99)"
+            >Buy plan</a
+          >
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-export default {};
+import axios from "axios";
+import { useCartStore } from "../../store/cart";
+import { usePlanStore } from "../../store/plan";
+export default {
+  data() {
+    return {
+      cartStore: useCartStore(),
+      planStore: usePlanStore(),
+      cartPlan: {},
+    };
+  },
+  mounted() {
+    this.planStore.loadPlan();
+    console.log(this.planStore);
+    this.cartPlan = this.planStore.$state.plan;
+    console.log(this.cartPlan);
+  },
+  methods: {
+    handleBuyPlan(productName: string, price: number) {
+      const user = JSON.parse(localStorage.getItem("user")!);
+      if (!user) {
+        this.$router.push("auth/signin");
+        return;
+      }
+      this.planStore.addToPlan({ productName, price, qty: 1 });
+      this.processPayment();
+    },
+    async processPayment() {
+      try {
+        const requestBodyPlan = {
+          planStore: this.planStore,
+        };
+        const response = await axios.post(
+          "http://localhost:3000/payment/check",
+          [requestBodyPlan.planStore]
+        );
+
+        console.log(response.data.success);
+        window.location.href = response.data.url;
+        // Handle success or redirect user to success/cancel pages
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+    },
+  },
+};
 </script>
 <style lang="css">
 .background {

@@ -1,6 +1,6 @@
 // stores/cart.js
 import { defineStore } from "pinia";
-import { Cart, ProductDataSet } from "../interface/types";
+import { Cart, Plan, ProductDataSet } from "../interface/types";
 import { v4 as uuid4 } from "uuid";
 
 interface State {
@@ -25,7 +25,10 @@ export const useCartStore = defineStore("cart", {
       const cartStore = localStorage.getItem("cart");
 
       if (!cartStore) {
-        this.cart = { cartId: uuid4(), products: [{ ...product, qty: 1 }] };
+        this.cart = {
+          cartId: uuid4(),
+          products: [{ ...product, qty: 1 }],
+        };
       } else {
         const cart = JSON.parse(cartStore);
         const existingProductIndex = cart.products.findIndex(

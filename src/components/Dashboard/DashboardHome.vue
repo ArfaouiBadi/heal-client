@@ -21,7 +21,7 @@ const fetchDataCategories = async () => {
   try {
     const data = await axios.get("http://localhost:3000/category");
     const categories = data.data;
-    labelArray.value = categories.map((category) => category.name);
+    labelArray.value = categories.map((category: any) => category.name);
     return labelArray.value;
   } catch (err) {
     console.log(err);

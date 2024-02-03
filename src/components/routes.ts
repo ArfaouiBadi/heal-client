@@ -9,6 +9,7 @@ import Auth from "./Auth.vue";
 import HomeCart from "./Home/HomeCart/HomeCart.vue";
 import HomeLanding from "./Home/HomeLanding/HomeLanding.vue";
 import DashboardProfile from "./Dashboard/DashboardProfile.vue";
+import success from "./Home/HomeCart/success.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -67,6 +68,14 @@ const router = createRouter({
           props: true,
         },
       ],
+    },
+    {
+      path: "/product/success",
+      component: ProductSuccess,
+    },
+    {
+      path: "/plan/success",
+      component: PlanSuccess,
     },
     {
       path: "/:pathMatch(.*)*",

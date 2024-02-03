@@ -78,7 +78,7 @@ export default {
     async processPayment() {
       try {
         const requestBody = {
-          cartProducts: this.cartProducts.map((item) => ({
+          cartProducts: this.cartProducts.map((item: any) => ({
             productName: item.productName,
             qty: item.qty,
             price: item.price,
@@ -100,8 +100,7 @@ export default {
     totalCartPrice() {
       return this.cartProducts.reduce(
         (acc: number, product) =>
-          acc +
-          (product as ProductDataSet).price * (product as ProductDataSet).qty,
+          acc + (product as ProductDataSet).price * (product as any).qty,
         0
       );
     },
