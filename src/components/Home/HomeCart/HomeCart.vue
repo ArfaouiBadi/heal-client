@@ -44,7 +44,9 @@
         </tr>
       </table>
       <div class="ContinueOrder">
-        <button type="button" class="btnOrder">Continue Order</button>
+        <button type="button" class="btnOrder" @click="processPayment">
+          Continue Order
+        </button>
       </div>
     </div>
   </div>
@@ -55,6 +57,7 @@ import HomeBrands from "../HomeBrands.vue";
 import CartProductsCard from "./CartProductsCard.vue";
 import { useCartStore } from "../../../store/cart";
 import { ProductDataSet } from "../../../interface/types";
+import axios from "axios";
 export default {
   components: {
     HomeThumbnail,
@@ -70,6 +73,28 @@ export default {
   mounted() {
     this.cartStore.loadCart();
     this.cartProducts = this.cartStore.$state.cart.products;
+  },
+  methods: {
+    async processPayment() {
+      try {
+        const requestBody = {
+          cartProducts: this.cartProducts.map((item) => ({
+            productName: item.productName,
+            qty: item.qty,
+            price: item.price,
+          })),
+        };
+        const response = await axios.post(
+          "http://localhost:3000/payment/check",
+          requestBody.cartProducts
+        );
+        window.location.href = response.data.url;
+        // Handle success or redirect user to success/cancel pages
+      } catch (error) {
+        console.error(error);
+        // Handle error
+      }
+    },
   },
   computed: {
     totalCartPrice() {
