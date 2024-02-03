@@ -15,7 +15,7 @@
               products).
             </li>
           </ul>
-          <span class="pricing-price">$9.99/month</span>
+          <span class="pricing-price">9.99 DT/month</span>
           <a href="#/" class="pricing-button">Buy Plan</a>
         </div>
 
@@ -38,7 +38,7 @@
               Monthly health tips and updates.
             </li>
           </ul>
-          <span class="pricing-price">$49.99/month</span>
+          <span class="pricing-price">49.99 DT/month</span>
           <a href="#/" class="pricing-button is-featured">Buy plan</a>
         </div>
 
@@ -55,7 +55,7 @@
               products).
             </li>
           </ul>
-          <span class="pricing-price">$29.99/month</span>
+          <span class="pricing-price">29.99 DT/month</span>
           <a href="#/" class="pricing-button">Buy plan</a>
         </div>
       </div>

@@ -31,7 +31,7 @@ export default {
   display: flex;
   flex-direction: row;
   height: 100vh;
-  font-family: "poppins";
+
   font-weight: 500;
   font-style: normal;
 }
@@ -44,7 +44,7 @@ export default {
   display: flex;
   flex-direction: row;
   flex: 5;
-  color:#1c2729;
+  color: #1c2729;
 }
 
 .DashboardContentWrapper {

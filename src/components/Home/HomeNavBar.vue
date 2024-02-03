@@ -1,7 +1,7 @@
 <template>
   <div class="navbarWrapper">
     <div class="navbarLeftItems">
-      <div class="navbarLogo">HEAL</div>
+      <div class="navbarLogo">Healverse</div>
     </div>
     <nav class="navbarSearch">
       <span class="p-input-icon-left searchWrapper">
@@ -19,7 +19,7 @@
         class="navbarRightItemsContainer"
         v-if="userToken"
       >
-        <div class="login">
+        <div class="login" v-if="checkAutorizationToDashboard()">
           <div class="circleContainer">
             <i class="pi pi-chart-bar" />
           </div>
@@ -42,7 +42,7 @@
               v-badge="cartStore.$state.cart.products.length"
             />
           </div>
-          <div class="content" >Cart</div>
+          <div class="content">Cart</div>
         </div>
       </router-link>
 
@@ -73,6 +73,7 @@
 <script lang="ts">
 import InputText from "primevue/inputtext";
 import { useCartStore } from "../../store/cart";
+import { useUserStore } from "../../store/user";
 
 export default {
   components: {
@@ -83,23 +84,42 @@ export default {
       value1: "",
       userToken: localStorage.getItem("token"),
       cartStore: useCartStore(),
+      userStore: useUserStore(),
+      autorizedToDashboard: false,
     };
   },
   methods: {
     handleLogout() {
       localStorage.removeItem("token");
       localStorage.removeItem("userId");
+      localStorage.removeItem("user");
+      localStorage.removeItem("cart");
       this.userToken = null; // Update the user property to trigger the v-if condition
       this.$router.push("/");
+    },
+    checkAutorizationToDashboard() {
+      if (
+        this.userStore.user.role === "ADMIN" ||
+        this.userStore.user.plan !== "FREE"
+      ) {
+        this.autorizedToDashboard = true;
+      } else {
+        this.autorizedToDashboard = false;
+      }
+      return this.autorizedToDashboard;
     },
   },
   watch: {
     user(newVal) {
       this.userToken = newVal;
     },
+    
   },
   created() {
     this.userToken = localStorage.getItem("token");
+  },
+  mounted() {
+    this.userStore.loadUser();
   },
 };
 </script>
@@ -188,7 +208,9 @@ export default {
   font-size: 30px;
   font-weight: 600;
   font-style: normal;
-  font-family: "poppins";
+  font-family: "Lobster", sans-serif;
+
+  font-style: normal;
   color: #163300;
   user-select: none;
   cursor: pointer;

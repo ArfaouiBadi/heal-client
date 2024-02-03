@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="navigationContainer">
     <div class="logoContainer" @click.prevent="handleClick">
-      <h4>HEAL</h4>
+      <h4>Healverse</h4>
     </div>
     <div class="navItemContainer">
       <div class="productRoutes">
@@ -98,10 +98,13 @@ export default {
   align-items: center;
   color: #f4f4f4;
   font-weight: 900;
-  font-variant: small-caps;
   margin: 20% 0;
+  font-family: "Lobster", sans-serif;
+  font-style: normal;
 }
-
+.logoContainer h4{
+  font-family: "Lobster", sans-serif;
+}
 h4 {
   cursor: pointer;
   font-weight: 500;

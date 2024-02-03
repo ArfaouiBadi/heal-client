@@ -26,19 +26,6 @@
             </span>
           </div>
         </template>
-
-        <Column
-          field="productName"
-          header="Product Name"
-          sortable
-          style="min-width: 2rem"
-        ></Column>
-
-        <Column field="price" header="Price" sortable style="min-width: 1px">
-          <template #body="slotProps">
-            {{ formatCurrency(slotProps.data.price) }}
-          </template>
-        </Column>
         <Column header="Image">
           <template #body="slotProps">
             <img
@@ -49,6 +36,20 @@
             />
           </template>
         </Column>
+        <Column
+          field="productName"
+          header="Product Name"
+          sortable
+          style="min-width: 2rem"
+        ></Column>
+
+        <Column
+          field="marque"
+          header="Brand"
+          sortable
+          style="min-width: 2rem"
+        ></Column>
+
         <Column
           field="category.name"
           header="Category"
@@ -61,7 +62,11 @@
           sortable
           style="min-width: 1px"
         ></Column>
-
+        <Column field="price" header="Price" sortable style="min-width: 1px">
+          <template #body="slotProps">
+            {{ formatCurrency(slotProps.data.price) }}
+          </template>
+        </Column>
         <Column field="status" header="Status" sortable style="min-width: 1px">
           <template #body="slotProps">
             <Tag
@@ -338,7 +343,6 @@ export default {
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.products = response.data;
-
         } else {
           console.error(`Failed to fetch products. Status: ${response.status}`);
         }

@@ -2,7 +2,7 @@
   <div class="navBar">
     <button class="toggleButton" @click="toggleNavbar">&#9776;</button>
     <div class="navItems" :class="{ collapsed: isNavbarCollapsed }">
-      <div class="navItem hover-underline-animation"><a href="">Home</a></div>
+      <div class="navItem hover-underline-animation"><a href="/">Home</a></div>
       <div class="navItem hover-underline-animation"><a href="">About</a></div>
       <div class="navItem hover-underline-animation">
         <a href="">Contact</a>

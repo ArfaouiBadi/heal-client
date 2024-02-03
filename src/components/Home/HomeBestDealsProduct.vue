@@ -21,13 +21,20 @@
       </div>
     </div>
     <div class="mainContent">
-      <ProductCard v-for="product in filteredProducts" :product="product!" />
+      <div class="filters"></div>
+      <div class="productContainer">
+        <ProductCard
+          v-for="product in filteredProducts"
+          :product="(product as ProductDataSet)"
+        />
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts" scoped>
 import ProductCard from "./ProductCard.vue";
 import Category from "./Category.vue";
+import { ProductDataSet } from "../../interface/types";
 export default {
   components: {
     ProductCard,
@@ -52,7 +59,7 @@ export default {
 
       // Filter products based on the selected category
       return this.products!.filter(
-        (product) => product!.category.name == this.selectedCategory.name
+        (product ) => (product as ProductDataSet).category.name == this.selectedCategory.name
       );
     },
   },
@@ -90,12 +97,11 @@ h5 {
   justify-content: space-between;
   height: 100%;
 }
-.mainContent {
+.productContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-
   justify-content: center;
   padding: 50px;
 }

@@ -30,6 +30,7 @@ export default {
 h1 {
   font-size: 5rem; /* Adjusted padding to create space between text and image */
   color: #163300;
+  font-family: "Lobster", sans-serif;
 }
 
 img {

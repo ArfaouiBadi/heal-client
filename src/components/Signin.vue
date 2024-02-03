@@ -69,6 +69,7 @@ import { reactive } from "vue";
 import axios from "axios";
 import InputText from "primevue/inputtext";
 import Message from "primevue/message";
+import { useUserStore } from "../store/user";
 
 export default {
   components: {
@@ -111,9 +112,9 @@ export default {
           "http://localhost:3000/auth/signin",
           this.data
         );
-        console.log(response);
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("userId", response.data.userId);
+        this.userStore.setUser(response.data.user);
         this.$router.push("/");
       } catch (error) {
         console.log(error);
@@ -137,7 +138,11 @@ export default {
         passwordValid: true,
         showInvalidMessage: false,
       }),
+      userStore: useUserStore(),
     };
+  },
+  mounted() {
+    this.userStore.loadUser();
   },
 };
 </script>
@@ -193,7 +198,6 @@ input {
   color: rgba(0, 0, 0, 0.455);
   font-size: 15px;
 }
-
 @media only screen and (max-width: 768px) {
   .authContainer {
     display: none; /* Hide the authContainer on small screens */

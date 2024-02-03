@@ -7,7 +7,10 @@
         <h5>Shopping Cart</h5>
       </div>
       <div class="cartProductsCardWrapper">
-        <CartProductsCard v-for="product in cartProducts" :product="product" />
+        <CartProductsCard
+          v-for="product in cartProducts"
+          :product="(product as ProductDataSet)"
+        />
       </div>
     </div>
     <div class="orderSummaryWrapper">
@@ -25,7 +28,7 @@
         </tr>
         <tr>
           <td>Product Discount</td>
-          <td> 0 $</td>
+          <td>0 $</td>
         </tr>
         <tr>
           <td>Shipping</td>
@@ -37,7 +40,7 @@
         </tr>
         <tr>
           <td>Total</td>
-          <td>{{ (totalCartPrice+7).toFixed(2) }} $</td>
+          <td>{{ (totalCartPrice + 7).toFixed(2) }} $</td>
         </tr>
       </table>
       <div class="ContinueOrder">
@@ -51,6 +54,7 @@ import HomeThumbnail from "../HomeThumbnail.vue";
 import HomeBrands from "../HomeBrands.vue";
 import CartProductsCard from "./CartProductsCard.vue";
 import { useCartStore } from "../../../store/cart";
+import { ProductDataSet } from "../../../interface/types";
 export default {
   components: {
     HomeThumbnail,
@@ -70,7 +74,9 @@ export default {
   computed: {
     totalCartPrice() {
       return this.cartProducts.reduce(
-        (acc: number, product) => acc + product.price * product.qty,
+        (acc: number, product) =>
+          acc +
+          (product as ProductDataSet).price * (product as ProductDataSet).qty,
         0
       );
     },
@@ -128,6 +134,7 @@ h5 {
   align-items: center;
   font-size: 18px;
   height: fit-content;
+  margin-bottom: 50px;
 }
 td {
   padding: 10px;

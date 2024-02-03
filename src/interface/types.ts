@@ -45,3 +45,12 @@ export interface Cart {
   cartId: string;
   products: Array<ProductDataSet>;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  address: string;
+  phone: string;
+  role: string;
+  plan: string;
+}
