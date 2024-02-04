@@ -1,4 +1,5 @@
 <template lang="html">
+  <Toast />
   <div class="CartProductsCardWrapper">
     <div class="cartProductDetails">
       <div class="imageContainer">
@@ -43,13 +44,18 @@
 import { ProductDataSet } from "../../../interface/types";
 import { useCartStore } from "../../../store/cart";
 
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 export default {
   data() {
     return {
       cartStore: useCartStore(),
+      toast: useToast(),
     };
   },
-
+  components: {
+    Toast,
+  },
   props: {
     product: Object as () => ProductDataSet,
   },
@@ -70,13 +76,18 @@ export default {
       if (this.product) {
         this.cartStore.removeFromCart(this.product.id);
       }
+      this.toast.add({
+        severity: "success",
+        summary: "Removed from cart",
+        detail: `${this.product!.productName} removed from cart`,
+        life: 3000,
+      });
     },
   },
 
   watch: {
     product: {
       handler() {
-        console.log("product changed");
         this.cartStore.loadCart();
       },
       deep: true,

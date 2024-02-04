@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="cardWrapper">
+    <Toast :baseZIndex="2000" :style="{ width: '300px' }" />
     <div class="imgContainer"><img :src="product!.image" /></div>
     <div class="infoWrapper">
       <div class="categoryContainer">
@@ -26,10 +27,16 @@
 <script lang="ts" scoped>
 import { useCartStore } from "../../store/cart";
 import { ProductDataSet } from "../../interface/types";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 export default {
+  components: {
+    Toast,
+  },
   data() {
     return {
       cartStore: useCartStore(),
+      toast: useToast(),
     };
   },
   props: {
@@ -38,6 +45,12 @@ export default {
   methods: {
     handleAddToCart() {
       this.cartStore.addToCart(this.product!, 1);
+      this.toast.add({
+        severity: "success",
+        summary: "Added to cart",
+        detail: `${this.product!.productName} added to cart`,
+        life: 3000,
+      });
     },
   },
   mounted() {
@@ -133,8 +146,6 @@ i {
 @media only screen and (max-width: 850px) {
   span {
     font-size: 10px;
-  }
-  .cardWrapper {
   }
 }
 </style>

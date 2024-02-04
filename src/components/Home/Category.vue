@@ -22,7 +22,8 @@ export default {
   border-radius: 30px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
-  padding: 0 10px;
+  padding: 0 20px;
+  font-size: 16px;
 }
 .categoryWrapper:hover {
   background-color: #163300;
