@@ -37,7 +37,9 @@ export default {
         .then((res) => {
           localStorage.removeItem("cart");
           this.loading = false;
-          this.startCountdown(); // Start the countdown after successful purchase
+          this.startCountdown();
+          
+           
         })
         .catch((error) => {
           console.log(error);

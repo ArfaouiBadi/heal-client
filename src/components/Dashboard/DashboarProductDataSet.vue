@@ -142,7 +142,7 @@
 
     <Dialog
       v-model:visible="productDialog"
-      :style="{ width: '60%' }"
+      :style="{ width: '40%' }"
       header="Product Details"
       :modal="true"
       class="p-fluid"

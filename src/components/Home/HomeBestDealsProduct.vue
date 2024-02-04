@@ -34,18 +34,7 @@
             />
           </span>
         </div>
-        <div>
-          <label for="priceFilter">Filter by Price:</label><br />
-          <span class="p-input-icon-left">
-            <i class="pi pi-search" />
-            <InputText
-              v-model="priceFilter"
-              placeholder="Medecine and healthcare products "
-              class="inputFilter"
-              @input="applyFilters"
-            />
-          </span>
-        </div>
+
         <div>
           <label for="priceFilter"
             >Order By:
