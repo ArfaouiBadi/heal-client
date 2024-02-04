@@ -81,6 +81,9 @@ export const useCartStore = defineStore("cart", {
       if (existingProductIndex !== -1) {
         cart.products[existingProductIndex].qty = qty;
       }
+      if (qty === 0) {
+        cart.products.splice(existingProductIndex, 1);
+      }
 
       this.cart = cart;
       localStorage.setItem("cart", JSON.stringify(this.cart));

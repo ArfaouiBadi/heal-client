@@ -98,9 +98,10 @@ export default {
       this.$router.push("/");
     },
     checkAutorizationToDashboard() {
+      console.log(this.userStore.user);
       if (
         this.userStore.user.role === "ADMIN" ||
-        this.userStore.user.plan !== "FREE"
+        this.userStore.user.plan.name !== "Free"
       ) {
         this.autorizedToDashboard = true;
       } else {
@@ -113,7 +114,6 @@ export default {
     user(newVal) {
       this.userToken = newVal;
     },
-    
   },
   created() {
     this.userToken = localStorage.getItem("token");

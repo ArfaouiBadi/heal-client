@@ -1,5 +1,6 @@
 <template lang="">
   <div class="navBarAndFilter">
+    <Toast />
     <div class="header">My Product</div>
     <span class="p-input-icon-left search">
       <i v-show="!isInputFocused" class="pi pi-search searchIcon" />
@@ -133,8 +134,8 @@
           id="price"
           v-model="product.price"
           mode="currency"
-          currency="USD"
-          locale="en-US"
+          currency="TND"
+          locale="tn-TN"
         />
       </div>
       <div class="field col">
@@ -263,14 +264,21 @@ export default {
         });
         toast.add({
           severity: "success",
-          summary: "Node Selected",
-          detail: "product added",
+          summary: "Success",
+          detail: "Product Added Successfully",
           life: 3000,
         });
         // Reset dialog and product object
         productDialog.value = false;
         product.value = {};
       } catch (error) {
+        console.log("Error creating product:");
+        toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Error creating product contact admin for help",
+          life: 3000,
+        });
         console.error("Error creating product:", error);
       }
     };

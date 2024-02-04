@@ -24,23 +24,23 @@
         </tr>
         <tr>
           <td>Cart total</td>
-          <td>{{ totalCartPrice.toFixed(2) }} $</td>
+          <td>{{ totalCartPrice.toFixed(2) }} TND</td>
         </tr>
         <tr>
           <td>Product Discount</td>
-          <td>0 $</td>
+          <td>0 TND</td>
         </tr>
         <tr>
           <td>Shipping</td>
-          <td>7.00 $</td>
+          <td>7.00 TND</td>
         </tr>
         <tr>
           <td>Coupon Discount</td>
-          <td>0 $</td>
+          <td>0 TND</td>
         </tr>
         <tr>
           <td>Total</td>
-          <td>{{ (totalCartPrice + 7).toFixed(2) }} $</td>
+          <td>{{ (totalCartPrice + 7).toFixed(2) }} TND</td>
         </tr>
       </table>
       <div class="ContinueOrder">
@@ -85,7 +85,7 @@ export default {
           })),
         };
         const response = await axios.post(
-          "http://localhost:3000/payment/check",
+          "http://localhost:3000/payment/check/product",
           requestBody.cartProducts
         );
         window.location.href = response.data.url;
@@ -103,13 +103,6 @@ export default {
           acc + (product as ProductDataSet).price * (product as any).qty,
         0
       );
-    },
-  },
-  watch: {
-    cartProducts: {
-      handler() {
-        this.cartStore.loadCart();
-      },
     },
   },
 };

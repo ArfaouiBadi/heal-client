@@ -57,5 +57,5 @@ export interface User {
   address: string;
   phone: string;
   role: string;
-  plan: string;
+  plan: { name: string };
 }

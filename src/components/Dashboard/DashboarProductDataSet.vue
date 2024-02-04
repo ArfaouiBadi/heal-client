@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Toast />
     <div class="card">
       <DataTable
         ref="dt"
@@ -239,8 +240,8 @@
             id="price"
             v-model="product.price"
             mode="currency"
-            currency="USD"
-            locale="en-US"
+            currency="TND"
+            locale="tn-TN"
           />
         </div>
         <div class="field col">
@@ -269,6 +270,10 @@ import InputNumber from "primevue/inputnumber";
 import RadioButton from "primevue/radiobutton";
 import Dropdown from "primevue/dropdown";
 import Calendar from "primevue/calendar";
+import Toast from "primevue/toast";
+
+import { useToast } from "primevue/usetoast";
+
 import Tag from "primevue/tag";
 import { Category, CategoryObj, Subcategory } from "../../interface/types";
 
@@ -285,10 +290,12 @@ export default {
     Calendar,
     Tag,
     InputSwitch,
+    Toast,
   },
   data() {
     return {
       dt: ref(null),
+      toast: useToast(),
       products: ref([]),
       productDialog: ref(false),
       deleteProductDialog: ref(false),
@@ -378,9 +385,9 @@ export default {
       ) => any;
     }) {
       if (value) {
-        return value.toLocaleString("en-US", {
+        return value.toLocaleString("tn-TN", {
           style: "currency",
-          currency: "USD",
+          currency: "TND",
         });
       }
       return;
@@ -399,7 +406,19 @@ export default {
         await axios.delete(`http://localhost:3000/products/${this.product.id}`);
         this.deleteProductDialog = false;
         this.fetchDataProducts();
+        this.toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Product Deleted",
+          life: 3000,
+        });
       } catch (error) {
+        this.toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Error deleting product",
+          life: 3000,
+        });
         console.error("Error deleting product:", error);
       }
     },
@@ -447,9 +466,20 @@ export default {
           status: null,
           categoryObj: { label: null, value: null },
         };
-
+        this.toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Product Updated",
+          life: 3000,
+        });
         this.fetchDataProducts(); // Refresh the product list
       } catch (error) {
+        this.toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Error updating product",
+          life: 3000,
+        });
         console.error("Error creating product:", error);
       }
     },

@@ -18,7 +18,7 @@
           <i class="pi pi-plus" />
           <span>Add to cart</span>
         </div>
-        {{ product!.price }} $
+        {{ product!.price }} TND
       </div>
     </div>
   </div>

@@ -111,7 +111,7 @@ export default {
           planStore: this.planStore,
         };
         const response = await axios.post(
-          "http://localhost:3000/payment/check",
+          "http://localhost:3000/payment/check/plan",
           [requestBodyPlan.planStore]
         );
 

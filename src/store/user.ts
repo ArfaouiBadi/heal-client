@@ -9,7 +9,7 @@ export const useUserStore = defineStore("user", {
       address: "",
       phone: "",
       role: "",
-      plan: "",
+      plan: { name: "" },
     } as User,
   }),
   actions: {
@@ -22,7 +22,7 @@ export const useUserStore = defineStore("user", {
           address: "",
           phone: "",
           role: "",
-          plan: "",
+          plan: { name: "" },
         };
       } else {
         this.user = JSON.parse(loadedUser);

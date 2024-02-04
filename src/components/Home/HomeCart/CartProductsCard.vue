@@ -72,13 +72,17 @@ export default {
       }
     },
   },
+
   watch: {
     product: {
       handler() {
+        console.log("product changed");
         this.cartStore.loadCart();
       },
+      deep: true,
     },
   },
+
   mounted() {
     this.cartStore.loadCart();
   },
