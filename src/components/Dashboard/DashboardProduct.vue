@@ -56,14 +56,10 @@
     </div>
     <div class="field">
       <label for="Image">Image URL</label>
-      <InputText
-        id="Image"
-        v-model="product.image"
-        required="true"
-        rows="3"
-        cols="20"
-        placeholder="imgBB Link"
-      />
+      <label class="uploadFileBtn">
+        <input type="file" ref="fileInputRef" />
+        <i class="pi pi-upload" /> Upload a file
+      </label>
     </div>
 
     <div class="field">
@@ -218,11 +214,27 @@ export default {
   setup() {
     const isInputFocused = ref(false);
     const productDialog = ref(false);
-    const product = ref({});
+    const product = ref({
+      productName: "",
+      usageInstructions: "",
+      marque: "",
+      expirationDate: null,
+      inventoryStatus: {
+        label: "",
+        value: "",
+      },
+      prescription: false,
+      category: {
+        label: "",
+        value: "",
+      },
+      price: 0,
+      quantity: 0,
+    });
     const category = ref(null);
     const selectedKey = ref(null);
     const toast = useToast();
-
+    const fileInputRef = ref(null);
     const selectedCity = ref();
     const categories = ref([]);
     const categoriesFilterd = ref([] as CategoryObj[]);
@@ -243,7 +255,23 @@ export default {
     };
 
     const openNew = () => {
-      product.value = {};
+      product.value = {
+        productName: "",
+        usageInstructions: "",
+        marque: "",
+        expirationDate: null,
+        inventoryStatus: {
+          label: "",
+          value: "",
+        },
+        prescription: false,
+        category: {
+          label: "",
+          value: "",
+        },
+        price: 0,
+        quantity: 0,
+      };
       productDialog.value = true;
     };
     const hideDialog = () => {
@@ -256,30 +284,64 @@ export default {
       try {
         const userId = localStorage.getItem("userId");
 
-        // Use Axios to create a new product on the server
+        const fileInput = fileInputRef.value as HTMLInputElement | null;
+        const file = fileInput?.files?.[0];
+        console.log(file);
+        console.log("Selected file:", file);
+        if (!file) {
+          toast.add({
+            severity: "error",
+            summary: "Error",
+            detail: "No file selected",
+            life: 3000,
+          });
+          return;
+        }
 
-        await axios.post("http://localhost:3000/products/addProduct", {
-          ...product.value,
-          userId: userId,
-        });
+        await axios.post(
+          "http://localhost:3000/products/addProduct",
+          { file, ...product.value, userId },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
         toast.add({
           severity: "success",
           summary: "Success",
           detail: "Product Added Successfully",
           life: 3000,
         });
+
         // Reset dialog and product object
         productDialog.value = false;
-        product.value = {};
+        product.value = {
+          productName: "",
+          usageInstructions: "",
+          marque: "",
+          expirationDate: null,
+          inventoryStatus: {
+            label: "",
+            value: "",
+          },
+          prescription: false,
+          category: {
+            label: "",
+            value: "",
+          },
+          price: 0,
+          quantity: 0,
+        };
       } catch (error) {
-        console.log("Error creating product:");
+        console.error("Error creating product:", error);
         toast.add({
           severity: "error",
           summary: "Error",
-          detail: "Error creating product contact admin for help",
+          detail: "Error creating product. Contact admin for help.",
           life: 3000,
         });
-        console.error("Error creating product:", error);
       }
     };
 
@@ -300,11 +362,30 @@ export default {
       selectedCity,
       categories,
       categoriesFilterd,
+      fileInputRef,
     };
   },
 };
 </script>
 <style lang="css" scoped>
+.uploadFileBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  gap: 10px;
+  border-radius: 10px;
+  background-color: #14a800; /* Adjust the background color as needed */
+  cursor: pointer;
+  color: white;
+  font-size: 15px;
+  font-weight: 300;
+
+  transition: all 0.4s ease-in-out;
+}
+.uploadFileBtn:hover {
+  background-color: #1aca03;
+}
 .productWrapper {
   grid-gap: 30px;
   padding: 3%;
@@ -388,17 +469,22 @@ export default {
   border-radius: 10px;
   background-color: #14a800; /* Adjust the background color as needed */
   cursor: pointer;
-}
-.addProductSquare {
   color: white;
   font-size: 15px;
   font-weight: 300;
   padding: 0 10px;
+  transition: all 0.3s ease-in-out;
+}
+
+.addProductSquare:hover {
+  background-color: #1aca03;
 }
 .addProductSquare i {
   padding-right: 7px;
 }
-
+input[type="file"] {
+  display: none;
+}
 @media screen and (max-width: 768px) {
   .elements {
     justify-content: center;

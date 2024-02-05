@@ -137,7 +137,6 @@ h5 {
   flex: 10;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   border-radius: 20px;
 }
 .orderSummaryWrapper {
@@ -149,7 +148,7 @@ h5 {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  font-size: 18px;
+  font-size: 15px;
   height: fit-content;
   margin-bottom: 50px;
 }

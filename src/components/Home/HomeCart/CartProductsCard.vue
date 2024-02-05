@@ -68,8 +68,10 @@ export default {
     },
     handlePlusQty() {
       if (this.product) {
-        this.product.qty = this.product.qty! + 1;
-        this.cartStore.handleQtyChange(this.product.id, this.product.qty);
+        if (this.product.qty! < this.product.quantity!) {
+          this.product.qty = this.product.qty! + 1;
+          this.cartStore.handleQtyChange(this.product.id, this.product.qty);
+        }
       }
     },
     handleRemoveProduct() {

@@ -27,7 +27,7 @@ export const useCartStore = defineStore("cart", {
       if (!cartStore) {
         this.cart = {
           cartId: uuid4(),
-          products: [{ ...product, qty: 1 }],
+          products: [{ ...product, qty: 0 }],
         };
       } else {
         const cart = JSON.parse(cartStore);
@@ -37,7 +37,12 @@ export const useCartStore = defineStore("cart", {
 
         if (existingProductIndex !== -1) {
           // Product already exists in the cart
-          cart.products[existingProductIndex].qty += 1;
+          if (
+            cart.products[existingProductIndex].quantity >=
+            cart.products[existingProductIndex].qty + 1
+          ) {
+            cart.products[existingProductIndex].qty += 1;
+          }
         } else {
           // Product doesn't exist in the cart, add it
           cart.products.push({ ...product, qty });

@@ -14,7 +14,7 @@ import PlanSuccessVue from "./Home/afterPayment/PlanSuccess.vue";
 import ProductFailedVue from "./Home/afterPayment/ProductFailed.vue";
 import PlanFailedVue from "./Home/afterPayment/PlanFailed.vue";
 import afterPaymentVue from "./Home/afterPayment/AfterPayment.vue";
-
+import Test from "../Test.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -96,7 +96,10 @@ const router = createRouter({
         },
       ],
     },
-
+    {
+      path: "/test",
+      component: Test,
+    },
     {
       path: "/:pathMatch(.*)*",
       redirect: "",

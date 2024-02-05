@@ -3,6 +3,8 @@
     <Toast />
     <div class="card">
       <DataTable
+        lazy
+        :totalRecords="products.length"
         ref="dt"
         :value="products"
         v-model:selection="selectedProducts"
@@ -97,50 +99,6 @@
       </DataTable>
     </div>
     <Dialog
-      v-model:visible="deleteProductDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span v-if="product">Are you sure you want to delete ?</span>
-      </div>
-      <template #footer>
-        <Button
-          label="No"
-          icon="pi pi-times"
-          text
-          @click="deleteProductDialog = false"
-        />
-        <Button label="Yes" icon="pi pi-check" text @click="deleteProduct" />
-      </template>
-    </Dialog>
-
-    <Dialog
-      v-model:visible="deleteProductsDialog"
-      :style="{ width: '450px' }"
-      header="Confirm"
-      :modal="true"
-    >
-      <div class="confirmation-content">
-        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
-        <span v-if="product"
-          >Are you sure you want to delete the selected products?</span
-        >
-      </div>
-      <template #footer>
-        <Button
-          label="No"
-          icon="pi pi-times"
-          text
-          @click="deleteProductsDialog = false"
-        />
-        <Button label="Yes" icon="pi pi-check" text @click="" />
-      </template>
-    </Dialog>
-
-    <Dialog
       v-model:visible="productDialog"
       :style="{ width: '40%' }"
       header="Product Details"
@@ -162,14 +120,10 @@
       </div>
       <div class="field">
         <label for="Image">Image URL</label>
-        <InputText
-          id="Image"
-          v-model="product.image"
-          required="true"
-          rows="3"
-          cols="20"
-          placeholder="imgBB Link"
-        />
+        <label class="uploadFileBtn">
+          <input type="file" ref="fileInputRef" />
+          <i class="pi pi-upload" /> Upload a file
+        </label>
       </div>
 
       <div class="field">
@@ -217,7 +171,7 @@
       <div class="field">
         <label class="mb-3">Category</label>
         <Dropdown
-          v-model="product.categoryObj"
+          v-model="product.category"
           :options="categoriesFilterd"
           optionLabel="label"
           optionGroupLabel="label"
@@ -300,6 +254,7 @@ export default {
       productDialog: ref(false),
       deleteProductDialog: ref(false),
       deleteProductsDialog: ref(false),
+      selectedProducts: ref(null),
       statuses: [
         { label: "INSTOCK", value: "instock" },
         { label: "LOWSTOCK", value: "lowstock" },
@@ -328,7 +283,6 @@ export default {
 
       categories: [],
       submitted: ref(false),
-      selectedProducts: ref(null),
 
       filters: ref({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -431,8 +385,19 @@ export default {
       try {
         const userId = localStorage.getItem("userId");
         this.product.status = this.product.inventoryStatus?.value;
+        const fileInput = this.$refs.fileInputRef as HTMLInputElement;
 
-        // Check if categoryObj is not null before accessing its properties
+        const file = fileInput?.files?.[0];
+        if (!file) {
+          toast.add({
+            severity: "error",
+            summary: "Error",
+            detail: "No file selected",
+            life: 3000,
+          });
+          return;
+        }
+
         if (this.product.categoryObj && this.product.categoryObj.value) {
           this.product.categoryId =
             this.product.categoryObj.value.split(" ")[0];
@@ -440,10 +405,15 @@ export default {
             this.product.categoryObj.value.split(" ")[1];
         }
 
-        await axios.put(`http://localhost:3000/products`, {
-          ...this.product,
-          userId: userId,
-        });
+        await axios.put(
+          `http://localhost:3000/products`,
+          { file, ...this.product, userId: userId },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         // Reset dialog and product object
         this.productDialog = false;
@@ -507,5 +477,26 @@ export default {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
+}
+.uploadFileBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  gap: 10px;
+  border-radius: 10px;
+  background-color: #14a800; /* Adjust the background color as needed */
+  cursor: pointer;
+  color: white;
+  font-size: 15px;
+  font-weight: 300;
+
+  transition: all 0.4s ease-in-out;
+}
+.uploadFileBtn:hover {
+  background-color: #1aca03;
+}
+input[type="file"] {
+  display: none;
 }
 </style>

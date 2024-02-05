@@ -7,7 +7,7 @@
         <h4 class="afterPaymenttext">Purchase Successful !</h4>
         <span class="afterPaymentspan">
           Your order has been successfully placed. You will be redirected to the
-          home page in <b>{{ this.countdown }}</b> seconds.
+          home page in <b>{{ countdown  }}</b> seconds.
         </span>
       </div>
     </div>
@@ -23,9 +23,8 @@ export default {
     };
   },
   
-  methods: {},
   mounted() {
-    const plan = JSON.parse(localStorage.getItem("plan"));
+    const plan = JSON.parse(localStorage.getItem("plan") || "");
     const userId = localStorage.getItem("userId");
     console;
     try {
@@ -34,7 +33,7 @@ export default {
           planName: plan.productName,
           userId: userId,
         })
-        .then((res) => {
+        .then(() => {
           localStorage.removeItem("plan");
           this.loading = false;
           this.startCountdown();
