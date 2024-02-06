@@ -26,7 +26,7 @@ const getProductsByProductUserID = async () => {
     const labelArray: any[] = [];
     const dataArray: number[] = [];
 
-    const LabelArrayData = response.data.map((product: any) => {
+    response.data.map((product: any) => {
       const productName = product.product.productName;
 
       labelCount[productName] = (labelCount[productName] || 0) + 1;

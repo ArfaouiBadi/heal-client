@@ -271,10 +271,10 @@ export default {
         image: "",
         usageInstructions: null,
         prescription: false,
-        categoryId: null,
-        subcategoryId: null,
+        categoryId: "",
+        subcategoryId: "",
         status: null,
-        categoryObj: { label: null, value: null },
+        categoryObj: { label: null, value: "" },
         reviews: null,
       }),
       categoriesFilterd: [] as CategoryObj[],
@@ -387,7 +387,7 @@ export default {
 
         const file = fileInput?.files?.[0];
         if (!file) {
-          toast.add({
+          this.toast.add({
             severity: "error",
             summary: "Error",
             detail: "No file selected",
@@ -429,10 +429,10 @@ export default {
           image: "",
           usageInstructions: null,
           prescription: false,
-          categoryId: null,
-          subcategoryId: null,
+          categoryId: "",
+          subcategoryId: "",
           status: null,
-          categoryObj: { label: null, value: null },
+          categoryObj: { label: null, value: "" },
         };
         this.toast.add({
           severity: "success",

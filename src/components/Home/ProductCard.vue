@@ -29,6 +29,7 @@ import { useCartStore } from "../../store/cart";
 import { ProductDataSet } from "../../interface/types";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
+
 export default {
   components: {
     Toast,
@@ -125,6 +126,7 @@ export default {
   padding: 5px 10px;
   border-radius: 20px;
   transition: 0.2s all ease-in-out;
+  user-select: none;
 }
 i {
   padding-right: 5px;

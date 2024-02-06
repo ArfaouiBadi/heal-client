@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@oku-ui/motion": "^0.3.4",
     "axios": "^1.6.5",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.1",
