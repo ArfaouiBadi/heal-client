@@ -5,58 +5,31 @@
     </div>
     <div class="navItemContainer">
       <div class="productRoutes">
-        <router-link
-          to="/"
-          class="recoverPassword"
-          exact
-          active-class="active-link"
-        >
+        <router-link to="/" class="recoverPassword" exact>
           <SidebarNavItem text="Home" customClass="pi pi-home" />
         </router-link>
-        <router-link
-          to="/dashboard/product"
-          class="recoverPassword"
-          exact
-          active-class="active-link"
-        >
-          <SidebarNavItem text="Products" customClass="pi pi-cart-plus" />
-        </router-link>
-        <router-link
-          to="/dashboard/home"
-          class="recoverPassword"
-          exact
-          active-class="active-link"
-        >
-          <SidebarNavItem text="Dashboard" customClass="pi pi-chart-bar" />
-        </router-link>
-
-        <!--
-          <router-link
-          to="/dashboard/category"
-          class="recoverPassword"
-          active-class="active-link"
-        >
-          <SidebarNavItem text="Category" customClass="pi pi-list" />
-        </router-link>
-        <router-link
-          to="/dashboard/subcategory"
-          class="recoverPassword"
-          active-class="active-link"
-        >
+        <router-link to="/dashboard/product" class="recoverPassword" exact>
           <SidebarNavItem
-            text="Sub category"
-            customClass="pi pi-sort-amount-down-alt"
+            text="Products"
+            customClass="pi pi-cart-plus"
+            :isActive="$route.path === '/'"
           />
         </router-link>
-        -->
+        <router-link to="/dashboard/home" class="recoverPassword" exact>
+          <SidebarNavItem
+            text="Dashboard"
+            customClass="pi pi-chart-bar"
+            :isActive="$route.path === '/dashboard/product'"
+          />
+        </router-link>
       </div>
       <div class="profileSettings">
-        <router-link
-          to="/dashboard/profile"
-          class="recoverPassword"
-          active-class="active-link"
-        >
-          <SidebarNavItem text="Profile" customClass="pi pi-user" />
+        <router-link to="/dashboard/profile" class="recoverPassword">
+          <SidebarNavItem
+            text="Profile"
+            customClass="pi pi-user"
+            :isActive="$route.path == 'http://localhost:5173/dashboard/home'"
+          />
         </router-link>
 
         <SidebarNavItem text="Settings" customClass="pi pi-cog" />
@@ -90,7 +63,14 @@ export default {
   height: 100%;
   flex-wrap: wrap;
 }
-
+.active {
+  background-color: #14a800;
+  cursor: pointer;
+}
+.router-link-actives {
+  background-color: #14a800;
+  cursor: pointer;
+}
 .logoContainer {
   flex: 1;
   display: flex;
@@ -102,7 +82,7 @@ export default {
   font-family: "Lobster", sans-serif;
   font-style: normal;
 }
-.logoContainer h4{
+.logoContainer h4 {
   font-family: "Lobster", sans-serif;
 }
 h4 {

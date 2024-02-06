@@ -18,10 +18,23 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  isActive: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 </script>
 
 <style lang="css" scoped>
+.active {
+  background-color: #14a800;
+  cursor: pointer;
+}
+.router-link-actives {
+  background-color: #14a800;
+  cursor: pointer;
+}
 .navItem {
   border-radius: 13px;
   width: 80%;

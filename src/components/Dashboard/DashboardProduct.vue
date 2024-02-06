@@ -30,7 +30,10 @@
       <DashboarProductDataSet />
     </div>
 
-    <div class="topSellingProducts"><p>Top Selling Products</p></div>
+    <div class="topSellingProducts">
+      <p>Top Selling Products</p>
+      <DashboardTopSellingProducts />
+    </div>
     <div class="topSellingProducts"><p>Empty For Now</p></div>
   </div>
 
@@ -166,6 +169,7 @@ import { useToast } from "primevue/usetoast";
 
 import DashboarProductDataSet from "./DashboarProductDataSet.vue";
 import { Category, Subcategory, CategoryObj } from "../../interface/types.ts";
+import DashboardTopSellingProducts from "./DashboardTopSellingProducts.vue";
 import axios from "axios";
 export default {
   components: {
@@ -182,6 +186,7 @@ export default {
     Toast,
     Tree,
     InputSwitch,
+    DashboardTopSellingProducts,
   },
 
   beforeMount() {
@@ -387,14 +392,16 @@ export default {
   background-color: #1aca03;
 }
 .productWrapper {
-  grid-gap: 30px;
+  display: flex;
+  flex-direction: column;
   padding: 3%;
   font-weight: 600;
+  gap: 30px;
   font-size: large;
 }
 .productList {
-  grid-row: 1/3;
   background-color: white;
+
   border-radius: 15px;
   padding: 3%;
 }

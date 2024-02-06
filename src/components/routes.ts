@@ -105,6 +105,7 @@ const router = createRouter({
       redirect: "",
     },
   ],
+  linkActiveClass: "active",
 });
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem("token") !== null;

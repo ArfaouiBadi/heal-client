@@ -15,7 +15,7 @@ import axios from "axios";
 const chartData = ref();
 const chartOptions = ref();
 let labelArray = ref([]);
-let dataP = ref([]);
+let dataP = ref([] as number[]);
 
 const fetchDataCategories = async () => {
   try {
@@ -64,7 +64,7 @@ const productPerCategory = async (): Promise<number[]> => {
 };
 
 onMounted(async () => {
-  dataP = await productPerCategory();
+  dataP.value = await productPerCategory();
   chartData.value = setChartData();
   chartOptions.value = setChartOptions();
 });

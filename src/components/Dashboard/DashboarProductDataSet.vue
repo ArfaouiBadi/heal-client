@@ -3,8 +3,6 @@
     <Toast />
     <div class="card">
       <DataTable
-        lazy
-        :totalRecords="products.length"
         ref="dt"
         :value="products"
         v-model:selection="selectedProducts"
@@ -18,7 +16,7 @@
       >
         <template #header>
           <div
-            class="flex flex-wrap gap-2 align-items-center justify-content-between"
+            class="flex flex-wrap gap-2 align-items-center justify-content-between dataSetWrapper"
           >
             <span class="p-input-icon-left">
               <i class="pi pi-search" />
@@ -473,6 +471,10 @@ export default {
 };
 </script>
 <style lang="css">
+.card {
+  border: none;
+}
+
 .field {
   display: flex;
   flex-direction: column;
