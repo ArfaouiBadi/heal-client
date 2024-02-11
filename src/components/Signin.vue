@@ -14,6 +14,7 @@
           class="inputForm"
           :class="{ 'p-invalid': !data.emailValid }"
           placeholder="Enter Email"
+          autocomplete="username"
         />
       </div>
 
@@ -27,6 +28,7 @@
           class="inputForm"
           :class="{ 'p-invalid': !data.passwordValid }"
           placeholder="Enter Password"
+          autocomplete="current-password"
           type="password"
         />
       </div>
@@ -41,19 +43,6 @@
       <button type="button" class="signupButton" @click="handleSignin">
         Sign In
       </button>
-      <div class="continu">
-        <img src="../assets/Path 1.svg" alt="Path 1" />
-        or continue with
-        <img src="../assets/Path 1.svg" alt="Path 1" />
-      </div>
-      <div class="continueWithLogo">
-        <a href="#" @click.prevent="handleFacebookClick"
-          ><img src="../assets/Facebook.png" alt="Facebook"
-        /></a>
-        <a href="#" @click.prevent="handleGoogleClick"
-          ><img src="../assets/google.png" alt="Google"
-        /></a>
-      </div>
     </form>
     <div class="messageContainer">
       <Message v-show="data.showInvalidMessage" class="popupMessage">

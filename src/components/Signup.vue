@@ -10,6 +10,7 @@
         <InputText
           type="text"
           id="email"
+          autocomplete="username"
           placeholder="Enter Email Address"
           v-model="data.email"
           class="inputForm"
@@ -22,6 +23,7 @@
           <InputText
             type="password"
             id="password"
+            autocomplete="current-password"
             placeholder="Enter Password"
             v-model="data.password"
             class="inputForm"
@@ -34,6 +36,7 @@
           <InputText
             type="password"
             id="confirmPassword"
+            autocomplete="current-password"
             placeholder="Confirm Password"
             v-model="data.confirmPassword"
             class="inputForm"
@@ -67,7 +70,7 @@
       </div>
       <span
         >Already Have an Account ?
-        <router-link to="/Signin" class="recoverPassword"
+        <router-link to="/auth/signin" class="recoverPassword"
           >Sign in
         </router-link> </span
       ><br />

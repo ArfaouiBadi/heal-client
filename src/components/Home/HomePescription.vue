@@ -11,7 +11,11 @@
         </div>
         <div class="uploadPrescriptionImage">
           <label class="btnPresc">
-            <input type="file" />
+            <input
+              type="file"
+              ref="fileInputPrescription"
+              @change="handleFileUpload"
+            />
             Order Via Prescription
           </label>
           <span
@@ -49,7 +53,48 @@
   </div>
 </template>
 <script lang="ts">
-export default {};
+import axios from "axios";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import { useCartStore } from "../../store/cart";
+export default {
+  components: {
+    Toast,
+  },
+  data() {
+    return {
+      fileInputPrescription: null as HTMLInputElement | null,
+      cartStore: useCartStore(),
+      toast: useToast(),
+    };
+  },
+  methods: {
+    async handleFileUpload(event: Event) {
+      const inputElement = event.target as HTMLInputElement;
+      const file = inputElement.files?.[0];
+
+      if (file) {
+        console.log("Uploaded file:", file);
+        const fileFormData = new FormData();
+        fileFormData.append("file", file);
+        const response = await axios.post(
+          "http://localhost:3000/ocr/upload",
+          fileFormData
+        );
+        const products = await axios.get("http://localhost:3000/products");
+        const dataFromImage = response.data.toLowerCase();
+        this.cartStore.cartReset();
+        products.data.map((product: any) => {
+          if (dataFromImage.includes(product.productName.toLowerCase())) {
+            console;
+            this.cartStore.addToCart(product, 1);
+          }
+        });
+        console.log("Response:", response);
+      }
+    },
+  },
+};
 </script>
 <style lang="css" scoped>
 h1 {
