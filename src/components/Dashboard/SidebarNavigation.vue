@@ -22,6 +22,31 @@
             :isActive="$route.path === '/dashboard/product'"
           />
         </router-link>
+
+        <router-link
+          to="/dashboard/commands"
+          class="recoverPassword"
+          exact
+          v-if="role === 'USER'"
+        >
+          <SidebarNavItem
+            text="Commands"
+            customClass="pi pi-shopping-cart"
+            :isActive="$route.path === '/dashboard/commands'"
+          />
+        </router-link>
+        <router-link
+          to="/dashboard/users"
+          class="recoverPassword"
+          exact
+          v-if="role === 'SUPERADMIN'"
+        >
+          <SidebarNavItem
+            text="Users"
+            customClass="pi pi-users"
+            :isActive="$route.path === '/dashboard/users'"
+          />
+        </router-link>
       </div>
       <div class="profileSettings">
         <router-link to="/dashboard/profile" class="recoverPassword">
@@ -39,19 +64,32 @@
 </template>
 
 <script lang="ts">
+import axios from "axios";
 import SidebarNavItem from "./SidebarNavItem.vue";
 
 export default {
   components: {
     SidebarNavItem,
   },
+  data() {
+    return {
+      userId: "" as string | null,
+      role: "" as string | null,
+    };
+  },
   methods: {
     handleClick() {
       this.$router.push("/dashboard");
     },
+    async fetchUserById(userId: string) {
+      const response = await axios.get(`http://localhost:3000/User/${userId}`);
+      this.role = response.data.role;
+      console.log(this.role);
+    },
   },
-  setup() {
-    return {};
+  mounted() {
+    this.userId = localStorage.getItem("userId");
+    this.fetchUserById(this.userId as string);
   },
 };
 </script>
@@ -91,7 +129,8 @@ h4 {
 }
 
 .navItemContainer {
-  flex: 10;
+  margin-top: -20px;
+  flex: 15;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

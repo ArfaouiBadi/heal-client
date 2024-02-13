@@ -38,6 +38,7 @@ export default {
 .sideBarNavigationContainer {
   width: 20%;
   flex: 1;
+
   background-color: #1c2729;
 }
 .DashboardContent {

@@ -37,13 +37,13 @@
           </div>
           <div class="descDesc"></div>
           <div class="descDontButton">
-            <label class="btnPresc descDontButtonbtn">
-              <input type="file" />
+            <label class="btnPresc descDontButtonbtn" @click="toggleChatbox">
               Start Consultation
             </label>
           </div>
         </div>
       </div>
+
       <div class="imageContainer">
         <img
           src="https://i.ibb.co/1XPXQHv/image-2024-02-01-231339461-removebg-preview.png"
@@ -51,36 +51,43 @@
       </div>
     </div>
   </div>
+  <Chatbox v-if="showChatbox" @closeChatbox="showChatbox = false" />
 </template>
 <script lang="ts">
 import axios from "axios";
 import Toast from "primevue/toast";
+import Chatbox from "./HomeLanding/Chatbox.vue";
 import { useToast } from "primevue/usetoast";
 import { useCartStore } from "../../store/cart";
 export default {
   components: {
     Toast,
+    Chatbox,
   },
   data() {
     return {
       fileInputPrescription: null as HTMLInputElement | null,
       cartStore: useCartStore(),
       toast: useToast(),
+      showChatbox: false,
     };
   },
   methods: {
+    toggleChatbox() {
+      this.showChatbox = !this.showChatbox;
+    },
     async handleFileUpload(event: Event) {
       const inputElement = event.target as HTMLInputElement;
       const file = inputElement.files?.[0];
 
       if (file) {
-        console.log("Uploaded file:", file);
         const fileFormData = new FormData();
         fileFormData.append("file", file);
         const response = await axios.post(
           "http://localhost:3000/ocr/upload",
           fileFormData
         );
+        console.log(response.data)
         const products = await axios.get("http://localhost:3000/products");
         const dataFromImage = response.data.toLowerCase();
         this.cartStore.cartReset();
@@ -90,7 +97,6 @@ export default {
             this.cartStore.addToCart(product, 1);
           }
         });
-        console.log("Response:", response);
       }
     },
   },
