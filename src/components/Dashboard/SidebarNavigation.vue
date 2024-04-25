@@ -17,7 +17,7 @@
         </router-link>
         <router-link to="/dashboard/home" class="recoverPassword" exact>
           <SidebarNavItem
-            text="Dashboard"
+            text="Statistics"
             customClass="pi pi-chart-bar"
             :isActive="$route.path === '/dashboard/product'"
           />
@@ -27,7 +27,7 @@
           to="/dashboard/commands"
           class="recoverPassword"
           exact
-          v-if="role === 'USER'"
+          v-if="role === 'ADMIN' || role === 'SUPERADMIN'"
         >
           <SidebarNavItem
             text="Commands"
@@ -39,7 +39,7 @@
           to="/dashboard/users"
           class="recoverPassword"
           exact
-          v-if="role === 'SUPERADMIN'"
+          v-if="role === 'ADMIN' || role === 'SUPERADMIN'"
         >
           <SidebarNavItem
             text="Users"
@@ -82,7 +82,11 @@ export default {
       this.$router.push("/dashboard");
     },
     async fetchUserById(userId: string) {
-      const response = await axios.get(`http://localhost:3000/User/${userId}`);
+      const response = await axios.get(`http://localhost:3000/User/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       this.role = response.data.role;
       console.log(this.role);
     },

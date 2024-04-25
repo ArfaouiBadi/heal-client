@@ -4,7 +4,7 @@
     <h1>Sign up</h1>
   </div>
   <div class="formContainer">
-    <form>
+    <form @submit.prevent="handleSignUp">
       <div class="form-group">
         <label for="email" class="label">Email Address</label><br />
         <InputText
@@ -16,6 +16,7 @@
           class="inputForm"
           :class="{ 'p-invalid': !data.emailValid }"
         />
+        <span class="invalideField" v-if="!data.emailValid">Invalid Email</span>
       </div>
       <div class="form-group-double">
         <div class="password-group groups">
@@ -29,6 +30,9 @@
             class="inputForm"
             :class="{ 'p-invalid': !data.passwordValid }"
           />
+          <span class="invalideField" v-if="!data.passwordValid"
+            >Your password dont match <br />the minimum requirements</span
+          >
         </div>
         <div class="password-group groups">
           <label for="confirmPassword" class="label">Confirm Password</label
@@ -42,6 +46,9 @@
             class="inputForm"
             :class="{ 'p-invalid': !data.confirmPasswordValid }"
           />
+          <span class="invalideField" v-if="!data.confirmPasswordValid"
+            >Your password dosn't match</span
+          >
         </div>
       </div>
       <div class="form-group-double">
@@ -55,6 +62,9 @@
             class="inputForm"
             :class="{ 'p-invalid': !data.phoneValid }"
           />
+          <span class="invalideField" v-if="!data.phoneValid"
+            >Invalide Phone Number</span
+          >
         </div>
 
         <div class="address-group groups">
@@ -74,9 +84,7 @@
           >Sign in
         </router-link> </span
       ><br />
-      <button type="button" class="signupButton" @click="handleSignUp">
-        Sign Up
-      </button>
+      <button type="submit" class="signupButton">Sign Up</button>
       <div class="messageContainer">
         <Message
           v-show="data.showInvalidMessage"
@@ -84,6 +92,13 @@
           severity="error"
         >
           Please fill in all required fields correctly.
+        </Message>
+        <Message
+          v-show="data.showCredentialsTakesMessage"
+          class="popupMessage"
+          severity="error"
+        >
+          Credentials Taken
         </Message>
         <Message
           v-show="data.showSuccessMessage"
@@ -118,6 +133,7 @@ export default {
         phoneValid: true,
         showInvalidMessage: false,
         showSuccessMessage: false,
+        showCredentialsTakesMessage: false,
       }),
     };
   },
@@ -198,10 +214,14 @@ export default {
               this.data.showSuccessMessage = false;
               this.$router.push("/auth/signin");
             }, 3000);
-          } catch (error) {
+          } catch (error: any) {
             console.log(error);
             // Show the message if sign-in fails
-            this.data.showInvalidMessage = true;
+            if (error.response.data.message === "Credentials taken")
+              this.data.showCredentialsTakesMessage = true;
+            else {
+              this.data.showInvalidMessage = true;
+            }
 
             // Reset the flag to false after 3 seconds
             setTimeout(() => {
@@ -230,6 +250,7 @@ export default {
 .form-group-double {
   display: flex;
   flex-direction: row;
+
   gap: 2.5%;
   margin-bottom: 20px;
 }
@@ -239,6 +260,7 @@ export default {
 
 .form-group-double input {
   flex: 1;
+  width: 100%;
 }
 
 .formContainer {
@@ -330,17 +352,18 @@ form {
   cursor: pointer;
   text-decoration: none;
   text-align: center;
+  transition: all 0.5s ease;
 }
 .signupButton:hover {
   background-position: right center;
+  background-color: #1bd403;
   background-size: 200% auto;
   -webkit-animation: pulse 2s infinite;
+
   animation: pulse512 1.5s infinite;
 }
 
-.text {
-  padding: 3rem 0px 0px 40px;
-}
+
 h1 {
   font-size: 50px;
   font-weight: 700;
@@ -377,14 +400,22 @@ h4 {
   .authContainer {
     display: none;
   }
-
+  i {
+    font-size: 10px;
+  }
+  h1 {
+    font-size: 30px;
+  }
+  .text {
+    padding-top: 50px;
+  }
   .mainContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20%;
+    margin-top: 50px;
   }
 
   label {
@@ -396,8 +427,13 @@ h4 {
   h1 {
     text-align: center;
   }
+  .recoverPassword {
+    text-align: center;
+    font-size: 12px;
+  }
   .form-group-double {
     flex-direction: column;
+    width: 100%;
   }
 }
 </style>

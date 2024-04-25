@@ -1,5 +1,8 @@
 <template lang="html">
-  <HomeThumbnail text="Pharmacy" image="https://i.ibb.co/2j4TZ1B/doctor1.png" />
+  <HomeThumbnail
+    text="Parapharmacy"
+    image="https://i.ibb.co/2j4TZ1B/doctor1.png"
+  />
   <HomePescription />
   <home-brands />
   <HomeBestDealsProduct :products="products" :categories="categories" />
@@ -30,7 +33,11 @@ export default {
   methods: {
     async fetchDataProducts() {
       try {
-        const response = await axios.get(`http://localhost:3000/products`);
+        const response = await axios.get(`http://localhost:3000/products`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.products = response.data;
@@ -44,7 +51,12 @@ export default {
     async fetchDataCategories() {
       try {
         const response = await axios.get(
-          `http://localhost:3000/Category/Names`
+          `http://localhost:3000/Category/Names`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {

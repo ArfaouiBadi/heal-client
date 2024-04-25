@@ -33,7 +33,6 @@
               Dont have a <br />
               Prescription?
             </h1>
-            <h3>Upload only .jpg or .pdf files Size Limit is 15MB</h3>
           </div>
           <div class="descDesc"></div>
           <div class="descDontButton">
@@ -87,8 +86,12 @@ export default {
           "http://localhost:3000/ocr/upload",
           fileFormData
         );
-        console.log(response.data)
-        const products = await axios.get("http://localhost:3000/products");
+        console.log(response.data);
+        const products = await axios.get("http://localhost:3000/products", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const dataFromImage = response.data.toLowerCase();
         this.cartStore.cartReset();
         products.data.map((product: any) => {
@@ -110,6 +113,7 @@ h1 {
 h3 {
   font-size: 15px;
   margin-bottom: 30px;
+  align-items: center;
 }
 .descWrapper {
   display: flex;
@@ -189,6 +193,7 @@ span {
   padding: 20px 30px;
   border-radius: 40px;
   font-weight: 500;
+  cursor: pointer;
 }
 .descDontButtonbtn {
   color: #fec091;
@@ -217,5 +222,48 @@ span {
 }
 input[type="file"] {
   display: none;
+}
+@media only screen and (max-width: 450px) {
+  .descWrapper {
+    padding: 20px;
+  }
+  .descLeft {
+    width: 100%;
+    height: fit-content;
+    overflow: hidden;
+  }
+  .descRight {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .descRight img {
+    display: none;
+  }
+
+  .uploadPrescriptionText {
+    display: none;
+  }
+  .uploadPrescriptionImage {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .btnPresc {
+    padding: 15px 25px;
+    font-size: 12px;
+  }
+  .uploadPrescription {
+    padding: 20px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 12px;
+  }
 }
 </style>

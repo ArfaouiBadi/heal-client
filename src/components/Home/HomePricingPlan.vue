@@ -3,19 +3,15 @@
     <div class="container">
       <div class="panel pricing-table">
         <div class="pricing-plan">
-          <img
-            src="https://s22.postimg.cc/8mv5gn7w1/paper-plane.png"
-            alt=""
-            class="pricing-img"
-          />
+          <img src="../../assets/BASIC.png" alt="" class="pricing-img" />
           <h2 class="pricing-header">Basic</h2>
           <ul class="pricing-features">
             <li class="pricing-features-item">
-              Access to a curated selection of essential medications (up to 10
-              products).
+              Access to a curated selection of essential pharmaceutical products
+              (up to 10 products).
             </li>
           </ul>
-          <span class="pricing-price">9.99 DT/month</span>
+          <span class="pricing-price">9.99 DT</span>
           <a
             href="#/"
             class="pricing-button"
@@ -25,25 +21,15 @@
         </div>
 
         <div class="pricing-plan">
-          <img
-            src="https://s28.postimg.cc/ju5bnc3x9/plane.png"
-            alt=""
-            class="pricing-img"
-          />
+          <img src="../../assets/PREM.png" alt="" class="pricing-img" />
           <h2 class="pricing-header">Premium</h2>
           <ul class="pricing-features">
             <li class="pricing-features-item">
               Full access to an extensive catalog of pharmaceutical products (up
               to 100 products).
             </li>
-            <li class="pricing-features-item">
-              Email support for any product-related inquiries.
-            </li>
-            <li class="pricing-features-item">
-              Monthly health tips and updates.
-            </li>
           </ul>
-          <span class="pricing-price">49.99 DT/month</span>
+          <span class="pricing-price">49.99 DT</span>
           <a
             href="#/"
             class="pricing-button is-featured"
@@ -53,19 +39,15 @@
         </div>
 
         <div class="pricing-plan">
-          <img
-            src="https://s21.postimg.cc/tpm0cge4n/space-ship.png"
-            alt=""
-            class="pricing-img"
-          />
+          <img src="../../assets/GOLD.png" alt="" class="pricing-img" />
           <h2 class="pricing-header">Gold</h2>
           <ul class="pricing-features">
             <li class="pricing-features-item">
-              Expanded access to a diverse range of wellness products (up to 50
-              products).
+              Expanded access to a diverse range of wellness pharmaceutical
+              products (up to 50 products).
             </li>
           </ul>
-          <span class="pricing-price">29.99 DT/month</span>
+          <span class="pricing-price">29.99 DT</span>
           <a
             href="#/"
             class="pricing-button"
@@ -91,9 +73,8 @@ export default {
   },
   mounted() {
     this.planStore.loadPlan();
-    console.log(this.planStore);
+
     this.cartPlan = this.planStore.$state.plan;
-    console.log(this.cartPlan);
   },
   methods: {
     handleBuyPlan(productName: string, price: number) {
@@ -103,6 +84,7 @@ export default {
         return;
       }
       this.planStore.addToPlan({ productName, price, qty: 1 });
+      console.log(this.planStore.$state.plan);
       this.processPayment();
     },
     async processPayment() {
@@ -112,10 +94,16 @@ export default {
         };
         const response = await axios.post(
           "http://localhost:3000/payment/check/plan",
-          [requestBodyPlan.planStore]
+          [requestBodyPlan.planStore],
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
 
         console.log(response.data.success);
+
         window.location.href = response.data.url;
         // Handle success or redirect user to success/cancel pages
       } catch (error) {
@@ -192,6 +180,11 @@ export default {
 .pricing-plan {
   border-bottom: 1px solid #e1f1ff;
   padding: 25px;
+  flex-basis: 100%;
+  transition: all 150ms ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .pricing-plan:last-child {
@@ -208,6 +201,24 @@ export default {
 
   .pricing-plan:last-child {
     border-right: none;
+  }
+}
+@media screen and (max-width: 500px) {
+  .container {
+    max-width: 100%;
+  }
+  .pricing-features-item {
+    display: none;
+  }
+  .pricing-button {
+    padding: 15px 25px;
+    font-size: 12px;
+  }
+  .pricing-price {
+    font-size: 10px;
+  }
+  .pricing-header {
+    font-size: 10px;
   }
 }
 
@@ -231,7 +242,7 @@ export default {
 
 .pricing-features-item {
   border-top: 1px solid #e1f1ff;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
   padding: 15px 0;
 }
@@ -253,6 +264,7 @@ export default {
   color: #348efe;
   display: inline-block;
   margin: 25px 0;
+
   padding: 15px 35px;
   text-decoration: none;
   transition: all 150ms ease-in-out;

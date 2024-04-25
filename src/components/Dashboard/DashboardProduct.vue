@@ -34,7 +34,6 @@
       <p>Top Selling Products</p>
       <DashboardTopSellingProducts />
     </div>
-    <div class="topSellingProducts"><p>Empty For Now</p></div>
   </div>
 
   <Dialog
@@ -196,7 +195,11 @@ export default {
   methods: {
     async fetchDataCategories() {
       try {
-        const data = await axios.get("http://localhost:3000/category");
+        const data = await axios.get("http://localhost:3000/category", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         this.categories = data.data;
 
         this.categories.forEach((category: Category) => {
@@ -293,16 +296,7 @@ export default {
         const file = fileInput?.files?.[0];
         console.log(file);
         console.log("Selected file:", file);
-        if (!file) {
-          toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "No file selected",
-            life: 3000,
-          });
-          return;
-        }
-
+        console.log(product.value);
         await axios.post(
           "http://localhost:3000/products/addProduct",
           { file, ...product.value, userId },

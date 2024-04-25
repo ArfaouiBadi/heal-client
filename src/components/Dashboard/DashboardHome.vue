@@ -19,7 +19,11 @@ let dataP = ref([] as number[]);
 
 const fetchDataCategories = async () => {
   try {
-    const data = await axios.get("http://localhost:3000/category");
+    const data = await axios.get("http://localhost:3000/category", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     const categories = data.data;
     labelArray.value = categories.map((category: any) => category.name);
     return labelArray.value;
@@ -33,7 +37,11 @@ const fetchDataProducts = async () => {
   try {
     const user = localStorage.getItem("userId");
 
-    const response = await axios.get(`http://localhost:3000/products/${user}`);
+    const response = await axios.get(`http://localhost:3000/products/${user}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return response.status === 200 ? response.data : [];
   } catch (error) {
     console.error("Error fetching products:", error);

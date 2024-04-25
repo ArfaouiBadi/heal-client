@@ -183,7 +183,12 @@ export default {
     async getCommands() {
       try {
         const response = await axios.get(
-          "http://localhost:3000/commandproduct/all"
+          "http://localhost:3000/commandproduct/all",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         this.commands = response.data;
       } catch (error) {
@@ -233,7 +238,12 @@ export default {
     async deleteProduct(data: any) {
       try {
         await axios.delete(
-          `http://localhost:3000/commandproduct/delete/${data.id}`
+          `http://localhost:3000/commandproduct/delete/${data.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         this.deleteProductDialog = false;
         this.getCommands();
@@ -257,7 +267,12 @@ export default {
       if (this.userEmail) {
         try {
           await axios.delete(
-            `http://localhost:3000/commandproduct/deleteAll/${this.userEmail}`
+            `http://localhost:3000/commandproduct/deleteAll/${this.userEmail}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
           );
           this.deleteProductDialog = false;
           this.getCommands();

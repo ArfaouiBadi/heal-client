@@ -1,21 +1,21 @@
 <template>
   <div class="commandWrapper">
     <div class="commandList">
-      Commands List
+      Users List
       <div>
         <Toast />
         <div class="card">
           <DataTable
             ref="dt"
-            :value="commands"
-            v-model:selection="selectedCommands"
+            :value="users"
+            v-model:selection="selectedUsers"
             dataKey="id"
             :paginator="true"
             :rows="10"
             :filters="filters"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             :rowsPerPageOptions="[5, 10, 25]"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} commands"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Users"
           >
             <template #header>
               <div
@@ -32,59 +32,46 @@
             </template>
 
             <Column
-              field="user.email"
-              header="Email Buyer"
+              field="email"
+              header="Email"
               sortable
               style="min-width: 2rem"
             ></Column>
             <Column
-              field="product.productName"
-              header="Product"
+              field="phone"
+              header="Phone"
               sortable
               style="min-width: 2rem"
             ></Column>
             <Column
-              field="product.user.email"
-              header="Product owner"
+              field="address"
+              header="Address"
               sortable
               style="min-width: 2rem"
             ></Column>
-            <Column header="Image">
-              <template #body="{ data }">
-                <img
-                  :src="data.product.image"
-                  class="border-round"
-                  style="width: 64px"
-                />
-              </template>
-            </Column>
             <Column
-              field="quantity"
-              header="Quantity"
+              field="role"
+              header="Role"
+              sortable
+              style="min-width: 2rem"
+            ></Column>
+            <Column
+              field="plan.name"
+              header="Plan"
               sortable
               style="min-width: 1px"
             ></Column>
             <Column
-              field="product.price"
-              header="Price"
+              field="plan.updatedAt"
+              header="Plan Updated At"
               sortable
               style="min-width: 1px"
             >
               <template #body="{ data }">
-                {{ formatCurrency(data.product.price) }}
+                {{ formatDate(data.updatedAt) }}
               </template>
             </Column>
 
-            <Column
-              field="price"
-              header="Price"
-              sortable
-              style="min-width: 1px"
-            >
-              <template #body="{ data }">
-                {{ formatCurrency(data.quantity * data.product.price) }}
-              </template>
-            </Column>
             <Column
               field="createdAt"
               header="Created At"
@@ -95,51 +82,57 @@
                 {{ formatDate(data.createdAt) }}
               </template>
             </Column>
-            <Column :exportable="false" style="min-width: 8rem">
+            <Column :exportable="false" style="min-width: 10rem">
               <template #body="slotProps">
                 <Button
-                  icon="pi pi-trash"
+                  icon="pi pi-pencil"
                   outlined
                   rounded
-                  severity="danger"
-                  @click="deleteProduct(slotProps.data)"
+                  class="mr-2 p-button-success"
+                  @click="editUserRole(slotProps.data)"
                 />
+                
               </template>
             </Column>
           </DataTable>
         </div>
       </div>
-      <div class="userAllAmountWrapper">
-        <div class="userAllAmountContainer">
-          <p class="userAllAmountText">User All Amount</p>
-          <InputText
-            id="userAllAmountInput"
-            v-model="userEmail"
-            class="inputForm"
-            placeholder="Enter User Email"
-          />
-          <div class="btnCommmandsDataSet">
-            <button
-              type="button"
-              label="Calculate"
-              class="calculateButton"
-              @click="calculateUserAllAmount"
-            >
-              Calculate
-            </button>
-            <button
-              type="button"
-              label="Calculate"
-              class="calculateButton"
-              @click="deleteAllProductsById"
-            >
-              Delete Commands
-            </button>
-          </div>
-          <p>Total User Amount: {{ userAllAmount.toFixed(3) }} TND</p>
-        </div>
-      </div>
     </div>
+    <Dialog
+      v-model:visible="userDialog"
+      :style="{ width: '40%' }"
+      header="User Role"
+      :modal="true"
+      class="p-fluid"
+    >
+      <div class="field" v-if="role !== 'SUPERADMIN'">
+        <label for="inventoryStatus" class="mb-3">Plan</label>
+        <Dropdown
+          id="roles"
+          v-model="user.plan"
+          :options="statusPlan"
+          optionLabel="label"
+          placeholder="Select a Plan"
+        >
+        </Dropdown>
+      </div>
+      <div class="field" v-if="role === 'SUPERADMIN'">
+        <label for="inventoryStatus" class="mb-3">Role</label>
+        <Dropdown
+          id="roles"
+          v-model="user.role"
+          :options="statusesRolesSuperAdmin"
+          optionLabel="label"
+          placeholder="Select a Role"
+        >
+        </Dropdown>
+      </div>
+      <br />
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Save" icon="pi pi-check" text @click="saveUser" />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -152,6 +145,8 @@ import Column from "primevue/column";
 import InputText from "primevue/inputtext";
 import Toast from "primevue/toast";
 import Button from "primevue/button";
+import Dialog from "primevue/dialog";
+import Dropdown from "primevue/dropdown";
 import { useToast } from "primevue/usetoast";
 
 export default {
@@ -161,31 +156,84 @@ export default {
     InputText,
     Toast,
     Button,
+    Dialog,
+    Dropdown,
   },
   data() {
     return {
-      userEmail: "",
-      userAllAmount: 0,
-      selectedCommands: ref(null),
-      commands: [],
+      selectedUsers: ref([]),
+      users: [],
       toast: useToast(),
       filters: ref({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       }),
-      deleteProductDialog: false,
+      userDialog: false,
+      user: {} as any,
+      statusesRolesSuperAdmin: [
+        { label: "ADMIN", value: "ADMIN" },
+        { label: "SUPERADMIN", value: "SUPERADMIN" },
+        { label: "USER", value: "USER" },
+      ],
+      statusPlan: [
+        { label: "Free", value: "65bec7b8740ece4ad2d9efe8" },
+        { label: "Basic", value: "65bec7c1740ece4ad2d9efe9" },
+        { label: "Gold", value: "65bec7d3740ece4ad2d9efea" },
+        { label: "Premium", value: "65bec843740ece4ad2d9efed" },
+      ],
+      role: "" as string | null,
     };
   },
   mounted() {
-    this.getCommands();
+    this.getUsers();
+    this.fetchUserById(localStorage.getItem("userId") as string);
   },
 
   methods: {
-    async getCommands() {
+    async fetchUserById(userId: string) {
+      const response = await axios.get(`http://localhost:3000/User/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      this.role = response.data.role;
+      console.log(this.role);
+    },
+
+    async saveUser() {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/commandproduct/all"
-        );
-        this.commands = response.data;
+        await axios.put(`http://localhost:3000/User/${this.user.id}`, {
+          role: this.user.role,
+          plan: this.user.plan.value || this.user.plan,
+        });
+        this.getUsers();
+        this.toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "User Updated",
+          life: 3000,
+        });
+        this.hideDialog();
+      } catch (error) {
+        this.toast.add({
+          severity: "error",
+          summary: "Error",
+          detail: "Error updating user",
+          life: 3000,
+        });
+        console.error("Error updating user:", error);
+      }
+    },
+    hideDialog() {
+      this.userDialog = false;
+    },
+    async getUsers() {
+      try {
+        const response = await axios.get("http://localhost:3000/user", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        this.users = response.data;
       } catch (error) {
         console.log(error);
       }
@@ -215,67 +263,49 @@ export default {
       }
       return "Invalid Date";
     },
-    calculateUserAllAmount() {
-      if (this.userEmail) {
-        const userCommands = this.commands.filter(
-          (command: { [x: string]: any; user: { email: string } }) =>
-            command.product.user.email === this.userEmail
-        );
-        this.userAllAmount = userCommands.reduce(
-          (
-            acc: number,
-            command: { quantity: number; product: { price: number } }
-          ) => acc + command.quantity * command.product.price,
-          0
-        );
-      }
+
+    editUserRole(user: any) {
+      this.user = user;
+      console.log(this.user);
+      this.userDialog = true;
     },
-    async deleteProduct(data: any) {
+    async deleteUser(data: any) {
       try {
-        await axios.delete(
-          `http://localhost:3000/commandproduct/delete/${data.id}`
-        );
-        this.deleteProductDialog = false;
-        this.getCommands();
+        await axios.delete(`http://localhost:3000/User/delete/${data.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        this.getUsers();
         this.toast.add({
           severity: "success",
           summary: "Success",
-          detail: "Command Deleted",
+          detail: "User Deleted",
           life: 3000,
         });
       } catch (error) {
         this.toast.add({
           severity: "error",
           summary: "Error",
-          detail: "Error deleting command",
+          detail: "Error deleting user",
           life: 3000,
         });
         console.error("Error deleting product:", error);
       }
     },
-    async deleteAllProductsById() {
-      if (this.userEmail) {
-        try {
-          await axios.delete(
-            `http://localhost:3000/commandproduct/deleteAll/${this.userEmail}`
-          );
-          this.deleteProductDialog = false;
-          this.getCommands();
-          this.toast.add({
-            severity: "success",
-            summary: "Success",
-            detail: "Commands Deleted",
-            life: 3000,
-          });
-        } catch (error) {
-          this.toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "Error deleting commands",
-            life: 3000,
-          });
-          console.error("Error deleting commands:", error);
-        }
+    getRoleLabel(status: string) {
+      switch (status.toLocaleUpperCase()) {
+        case "ADMIN":
+          return "success";
+
+        case "USER":
+          return "warning";
+
+        case "SUPERADMIN":
+          return "danger";
+
+        default:
+          return "warning";
       }
     },
   },
@@ -331,7 +361,10 @@ export default {
 .calculateButton:hover {
   background-color: #14a800;
 }
-
+.p-button-success {
+  border-radius: 50%;
+  margin-right: 10px;
+}
 .btnCommmandsDataSet {
   display: flex;
   flex-direction: row;

@@ -55,13 +55,13 @@
           <div class="circleContainer">
             <i class="pi pi-user" />
           </div>
-          <div class="content">Login</div>
+          <div class="content">Connexion</div>
         </div>
       </router-link>
       <router-link to="/" class="navbarRightItemsContainer" v-else>
         <div class="login">
           <div class="circleContainer">
-            <i class="pi pi-user" />
+            <i class="pi pi-user" @click="handleLogout" />
           </div>
           <div class="content" @click="handleLogout">Logout</div>
         </div>
@@ -226,11 +226,29 @@ i {
   height: 40px;
   background-color: #f4f4f4;
   border-radius: 50%;
-
   margin-right: 5px;
   transition: all 0.4s ease-in-out;
 }
 .circleContainer:hover {
   background-color: white;
+}
+@media only screen and (max-width: 720px) {
+  .content {
+    display: none;
+  }
+  .navbarLogo {
+    font-size: 20px;
+  }
+  .navbarSearch {
+    display: none;
+  }
+  .circleContainer {
+    margin-right: 0px;
+  }
+}
+@media only screen and (max-width: 230px) {
+  .navbarLogo {
+    display: none;
+  }
 }
 </style>

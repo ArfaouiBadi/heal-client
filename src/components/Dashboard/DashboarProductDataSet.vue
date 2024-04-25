@@ -90,7 +90,7 @@
               outlined
               rounded
               severity="danger"
-              @click="confirmDeleteProduct(slotProps.data)"
+              @click="deleteProduct(slotProps.data)"
             />
           </template>
         </Column>
@@ -297,7 +297,12 @@ export default {
     async fetchDataProducts() {
       try {
         const response = await axios.get(
-          `http://localhost:3000/products/${this.user}`
+          `http://localhost:3000/products/${this.user}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
@@ -311,7 +316,11 @@ export default {
     },
     async fetchDataCategories() {
       try {
-        const data = await axios.get("http://localhost:3000/category");
+        const data = await axios.get("http://localhost:3000/category", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         this.categories = data.data;
 
         this.categories.forEach((category: Category) => {
@@ -353,9 +362,13 @@ export default {
       this.product = prod;
       this.deleteProductDialog = true;
     },
-    async deleteProduct() {
+    async deleteProduct(product: any) {
       try {
-        await axios.delete(`http://localhost:3000/products/${this.product.id}`);
+        await axios.delete(`http://localhost:3000/products/${product.id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         this.deleteProductDialog = false;
         this.fetchDataProducts();
         this.toast.add({
@@ -386,16 +399,8 @@ export default {
         const fileInput = this.$refs.fileInputRef as HTMLInputElement;
 
         const file = fileInput?.files?.[0];
-        if (!file) {
-          this.toast.add({
-            severity: "error",
-            summary: "Error",
-            detail: "No file selected",
-            life: 3000,
-          });
-          return;
-        }
 
+        console.log(this.product);
         if (this.product.categoryObj && this.product.categoryObj.value) {
           this.product.categoryId =
             this.product.categoryObj.value.split(" ")[0];
@@ -409,6 +414,7 @@ export default {
           {
             headers: {
               "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );

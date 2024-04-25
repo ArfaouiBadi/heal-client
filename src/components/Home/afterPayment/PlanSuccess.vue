@@ -15,11 +15,16 @@
 </template>
 <script lang="ts">
 import axios from "axios";
+import { useUserStore } from "../../../store/user";
+import { usePlanStore } from "../../../store/plan";
 export default {
   data() {
     return {
       loading: true, // Initial loading state
       countdown: 5, // Initial countdown value
+      user : {},
+      userStore: useUserStore(),
+      plan : usePlanStore(),
     };
   },
   
@@ -32,8 +37,19 @@ export default {
         .post("http://localhost:3000/commandplan", {
           planName: plan.productName,
           userId: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
         .then(() => {
+          
+          console.log("plan added");
+          this.plan.loadPlan()
+          
+          this.userStore.loadUser()
+          this.userStore.changePlan(this.plan.plan.productName|| "");
           localStorage.removeItem("plan");
           this.loading = false;
           this.startCountdown();
@@ -52,6 +68,7 @@ export default {
         } else {
           clearInterval(countdownInterval);
           // Redirect to the home page after countdown reaches 0
+
           window.location.href = "http://localhost:5173/";
         }
       }, 1000); // Update countdown every second

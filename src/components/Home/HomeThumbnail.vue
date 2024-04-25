@@ -31,10 +31,21 @@ h1 {
   font-size: 5rem; /* Adjusted padding to create space between text and image */
   color: #163300;
   font-family: "Lobster", sans-serif;
+  user-select: none;
 }
 
 img {
   width: 30%;
   height: auto; /* Adjusted to maintain the aspect ratio of the image */
+}
+@media only screen and (max-width: 720px) {
+  h1 {
+    font-size: 3rem;
+  }
+}
+@media only screen and (max-width: 420px) {
+  h1 {
+    font-size: 2rem;
+  }
 }
 </style>

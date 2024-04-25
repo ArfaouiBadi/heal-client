@@ -7,10 +7,15 @@
         <h5>Shopping Cart</h5>
       </div>
       <div class="cartProductsCardWrapper">
-        <CartProductsCard
-          v-for="product in cartProducts"
-          :product="(product as ProductDataSet)"
-        />
+        <div class="emptyCartText" v-if="cartProducts.length === 0">
+          Your cart is empty ...
+        </div>
+        <div v-else>
+          <CartProductsCard
+            v-for="product in cartProducts"
+            :product="(product as ProductDataSet)"
+          />
+        </div>
       </div>
     </div>
     <div class="orderSummaryWrapper">
@@ -76,24 +81,39 @@ export default {
   },
   methods: {
     async processPayment() {
-      try {
-        const requestBody = {
-          cartProducts: this.cartProducts.map((item: any) => ({
-            productName: item.productName,
-            qty: item.qty,
-            price: item.price,
-          })),
-        };
-        const response = await axios.post(
-          "http://localhost:3000/payment/check/product",
-          requestBody.cartProducts
-        );
-        window.location.href = response.data.url;
-        // Handle success or redirect user to success/cancel pages
-      } catch (error) {
-        console.error(error);
-        // Handle error
+      if (this.cartProducts.length > 0) {
+        try {
+          const requestBody = {
+            cartProducts: this.cartProducts.map((item: any) => ({
+              productName: item.productName,
+              qty: item.qty,
+              price: item.price,
+            })),
+          };
+          const response = await axios.post(
+            "http://localhost:3000/payment/check/product",
+            requestBody.cartProducts,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+          window.location.href = response.data.url;
+          // Handle success or redirect user to success/cancel pages
+        } catch (error) {
+          console.error(error);
+          // Handle error
+        }
       }
+    },
+  },
+  watch: {
+    cartProducts: {
+      handler() {
+        this.cartProducts = this.cartStore.$state.cart.products;
+      },
+      deep: true,
     },
   },
   computed: {
@@ -108,6 +128,12 @@ export default {
 };
 </script>
 <style lang="css" scoped>
+.emptyCartText {
+  font-size: 25px;
+  font-weight: 300;
+  align-items: center;
+  text-align: center;
+}
 .btnOrder {
   background-color: #00a991;
   color: white;

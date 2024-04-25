@@ -39,5 +39,20 @@ export const useUserStore = defineStore("user", {
     getPLan() {
       return this.user.plan;
     },
+    signOut() {
+      this.user = {
+        id: "",
+        email: "",
+        address: "",
+        phone: "",
+        role: "",
+        plan: { name: "" },
+      };
+      localStorage.removeItem("user");
+    },
+    changePlan(plan: string) {
+      this.user.plan.name = plan;
+      localStorage.setItem("user", JSON.stringify(this.user));
+    },
   },
 });

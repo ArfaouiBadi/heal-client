@@ -4,7 +4,7 @@
     <h1>Sign in</h1>
   </div>
   <div class="formContainer">
-    <form>
+    <form @submit.prevent="handleSignin">
       <div class="form-group">
         <label for="email" class="label">Email Address</label><br />
         <InputText
@@ -16,6 +16,9 @@
           placeholder="Enter Email"
           autocomplete="username"
         />
+        <span class="invalideField" v-if="!data.emailValid"
+          >Invalide Email</span
+        >
       </div>
 
       <div class="form-group">
@@ -31,6 +34,9 @@
           autocomplete="current-password"
           type="password"
         />
+        <span class="invalideField" v-if="!data.passwordValid"
+          >Invalide Password</span
+        >
       </div>
       <div class="Links">
         <a href="#" class="recoverPassword">Recover Password?</a>
@@ -40,9 +46,7 @@
       </div>
       <br />
 
-      <button type="button" class="signupButton" @click="handleSignin">
-        Sign In
-      </button>
+      <button type="submit" class="signupButton">Sign In</button>
     </form>
     <div class="messageContainer">
       <Message v-show="data.showInvalidMessage" class="popupMessage">
@@ -149,7 +153,17 @@ label {
   color: black;
   font-size: 23px;
 }
-
+.invalideField {
+  font-family: "Poppins";
+  font-weight: 200;
+  color: red;
+  font-size: 13px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .form-group + .form-group {
   margin-top: 20px;
 }
@@ -197,6 +211,29 @@ input {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .text {
+    padding: 20px 0px 0px 0px;
+  }
+  .form-group .inputForm {
+    width: 100%;
+  }
+  h1 {
+    font-size: 40px;
+  }
+  h4 {
+    font-size: 20px;
+  }
+  .recoverPassword {
+    font-size: 10px;
+  }
+  .inputForm {
+    width: 80%;
+  }
+  .signupButton {
+    width: 80%;
+    color: red;
+    font-size: 10px;
   }
 }
 </style>

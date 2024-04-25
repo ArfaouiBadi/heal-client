@@ -151,6 +151,7 @@ h5 {
   color: #163300;
   flex: 1 0 15%;
   padding: 50px;
+  transition: all 150ms ease-in-out;
 }
 .Header {
   display: flex;
@@ -175,6 +176,7 @@ h5 {
   width: 100%;
   height: 100%;
   padding: 50px;
+  transition: all 150ms ease-in-out;
 }
 .filters {
   display: flex;
@@ -186,6 +188,7 @@ h5 {
   height: fit-content;
   padding: 20px;
   border-radius: 20px;
+  width: fit-content;
 }
 
 @media only screen and (max-width: 780px) {
@@ -197,6 +200,16 @@ h5 {
   }
   .mainContent {
     flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+  .Wrapper {
+    max-width: 100%;
+  }
+  .Header {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
   }
 }
 .categoryWrapper {
@@ -213,5 +226,13 @@ h5 {
 }
 .inputFilter::placeholder {
   font-size: 12px;
+}
+@media screen and (max-width: 600px) {
+  .productContainer {
+    padding: 5px;
+  }
+  .Wrapper {
+    padding: 5px;
+  }
 }
 </style>

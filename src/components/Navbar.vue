@@ -1,13 +1,40 @@
 <template>
   <div class="navBar">
-    <button class="toggleButton" @click="toggleNavbar">&#9776;</button>
-    <div class="navItems" :class="{ collapsed: isNavbarCollapsed }">
-      <div class="navItem hover-underline-animation"><a href="/">Home</a></div>
-      <div class="navItem hover-underline-animation"><a href="">About</a></div>
-      <div class="navItem hover-underline-animation">
-        <a href="">Contact</a>
+    <Sidebar v-model:visible="isNavbarCollapsed" header="" class="">
+      <div class="navItems">
+        <router-link
+          to="/"
+          class="routerLink navItem hover-underline-animation"
+        >
+          Home
+        </router-link>
+        <router-link
+          to="/auth/Signin"
+          class="routerLink navItem hover-underline-animation"
+        >
+          Signin
+        </router-link>
+        <router-link
+          to="/auth/Signup"
+          class="routerLink navItem hover-underline-animation"
+        >
+          Signup
+        </router-link>
+
+        <div class="navItem hover-underline-animation">
+          <a href="">About</a>
+        </div>
+        <div class="navItem hover-underline-animation">
+          <a href="">Contact</a>
+        </div>
       </div>
-    </div>
+    </Sidebar>
+    <Button
+      icon="pi pi-bars"
+      @click="isNavbarCollapsed = true"
+      class="collapser"
+    />
+
     <div class="navItemAuth">
       <router-link to="/auth/Signup" class="routerLink"
         ><ButtonAuth msg="Signup"
@@ -21,10 +48,13 @@
 
 <script lang="ts">
 import ButtonAuth from "./ButtonAuth.vue";
-
+import Sidebar from "primevue/sidebar";
+import Button from "primevue/button";
 export default {
   components: {
     ButtonAuth,
+    Sidebar,
+    Button,
   },
   data() {
     return {
@@ -67,47 +97,45 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  justify-content: flex-end;
-  padding-right: 60px;
+  justify-content: center;
 }
 
 .navBar {
   display: flex;
-  height: 15%;
+  height: 80px;
   background-color: white;
   width: 100%;
   justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .navItems {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  justify-content: flex-start;
-  padding-left: 50px;
-}
+  flex-direction: column;
 
+  background-color: white;
+  width: 100%;
+}
+.collapser {
+  border: none;
+  background-color: #14a800;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+}
 .navItem {
   margin-right: 10%;
   color: black;
   font-size: 15px;
   font-family: "Poppins";
   font-weight: 500;
+  padding-bottom: 5%;
 }
 
 /* Media query for small screens */
 @media screen and (max-width: 600px) {
-  .navItems {
-    flex-direction: column;
-    align-items: flex-start;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    background-color: white;
-    width: 100%;
-    text-align: left;
+  .navItemAuth {
     display: none;
   }
 

@@ -15,6 +15,7 @@ import ProductFailedVue from "./Home/afterPayment/ProductFailed.vue";
 import PlanFailedVue from "./Home/afterPayment/PlanFailed.vue";
 import afterPaymentVue from "./Home/afterPayment/AfterPayment.vue";
 import DashboarCommandsDataSet from "./Dashboard/DashboarCommandsDataSet.vue";
+import DashboarUsersDataSet from "./Dashboard/DashboarUsersDataSet.vue";
 import Test from "../Test.vue";
 const router = createRouter({
   history: createWebHistory(),
@@ -73,7 +74,11 @@ const router = createRouter({
           component: DashboarCommandsDataSet,
           props: true,
         },
-        
+        {
+          path: "users",
+          component: DashboarUsersDataSet,
+          props: true,
+        },
         {
           path: "profile",
           component: DashboardProfile,

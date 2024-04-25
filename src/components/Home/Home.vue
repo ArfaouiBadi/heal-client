@@ -3,16 +3,19 @@
     <HomeNavBar />
     <router-view></router-view>
     <HomePricingPlan />
+    <Footer />
   </div>
 </template>
 
 <script lang="ts" scoped>
 import HomeNavBar from "./HomeNavBar.vue";
 import HomePricingPlan from "./HomePricingPlan.vue";
+import Footer from "../Footer/Footer.vue";
 export default {
   components: {
     HomeNavBar,
     HomePricingPlan,
+    Footer,
   },
 };
 </script>

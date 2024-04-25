@@ -55,4 +55,12 @@ export default {
     box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
   }
 }
+@media screen and (max-width: 780px) {
+  .authButton {
+    margin-left: 0px;
+
+    font-size: 12px;
+  }
+  
+}
 </style>

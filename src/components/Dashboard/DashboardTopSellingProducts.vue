@@ -16,16 +16,20 @@ import axios from "axios";
 const getProductsByProductUserID = async () => {
   const user = localStorage.getItem("userId");
   const response = await axios.get(
-    `http://localhost:3000/commandproduct/allProduct/${user}`
+    `http://localhost:3000/commandproduct/allProduct/${user}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
   );
-  console.log("response", response.data);
 
   if (response.status === 200) {
     const labelCount: { [key: string]: number } = {};
 
     const labelArray: any[] = [];
     const dataArray: number[] = [];
-
+    console.log(response.data);
     response.data.map((product: any) => {
       const productName = product.product.productName;
 

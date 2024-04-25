@@ -26,7 +26,11 @@ export default {
   methods: {
     async fetchAllBrands() {
       try {
-        const response = await axios.get(`http://localhost:3000/brand`);
+        const response = await axios.get(`http://localhost:3000/brand`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         // Check if the response status is OK (status code 200)
         if (response.status === 200) {
           this.brands = response.data;
@@ -84,6 +88,16 @@ export default {
   }
   h5 {
     font-size: 15px;
+  }
+  .Header {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
+  .Wrapper {
+    margin-top: 50px;
+    max-width: 100%;
+    padding: 0;
   }
 }
 </style>

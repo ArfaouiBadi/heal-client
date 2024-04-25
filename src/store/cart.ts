@@ -39,7 +39,8 @@ export const useCartStore = defineStore("cart", {
           // Product already exists in the cart
           if (
             cart.products[existingProductIndex].quantity >=
-            cart.products[existingProductIndex].qty + 1
+              cart.products[existingProductIndex].qty + 1 &&
+            cart.products[existingProductIndex].quantity > 0
           ) {
             cart.products[existingProductIndex].qty += 1;
           }
