@@ -81,6 +81,7 @@ export default {
   },
   methods: {
     async processPayment() {
+      console.log(this.cartProducts.length);
       if (this.cartProducts.length > 0) {
         try {
           const requestBody = {
@@ -92,13 +93,9 @@ export default {
           };
           const response = await axios.post(
             "http://localhost:3000/payment/check/product",
-            requestBody.cartProducts,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
+            requestBody.cartProducts
           );
+          console.log(response.data);
           window.location.href = response.data.url;
           // Handle success or redirect user to success/cancel pages
         } catch (error) {

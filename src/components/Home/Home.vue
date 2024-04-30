@@ -1,5 +1,5 @@
 <template>
-  <div class="homeWrapper">
+  <div class="homeWrapper" >
     <HomeNavBar />
     <router-view></router-view>
     <HomePricingPlan />

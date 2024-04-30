@@ -88,7 +88,7 @@ export default {
         },
       });
       this.role = response.data.role;
-      console.log(this.role);
+      
     },
   },
   mounted() {

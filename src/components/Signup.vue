@@ -363,7 +363,6 @@ form {
   animation: pulse512 1.5s infinite;
 }
 
-
 h1 {
   font-size: 50px;
   font-weight: 700;

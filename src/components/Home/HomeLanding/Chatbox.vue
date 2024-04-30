@@ -84,7 +84,7 @@ export default {
       this.displayedProductsNames = this.displayedProducts.map(
         (product: any) => product.productName
       );
-      console.log();
+      
       if (messageSent) {
         this.$emit("newMessage", this.message);
         this.message = "";

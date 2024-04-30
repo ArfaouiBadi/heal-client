@@ -3,7 +3,7 @@
     text="Parapharmacy"
     image="https://i.ibb.co/2j4TZ1B/doctor1.png"
   />
-  <HomePescription />
+  <HomePescription v-if="this.user.plan.name !== 'Free'" />
   <home-brands />
   <HomeBestDealsProduct :products="products" :categories="categories" />
 </template>
@@ -24,18 +24,28 @@ export default {
     return {
       products: [],
       categories: [],
+      user: {
+        plan: {
+          name: "",
+        },
+      },
     };
   },
   mounted() {
     this.fetchDataProducts();
     this.fetchDataCategories();
+    this.user = JSON.parse(localStorage.getItem("user"));
+    console.log(this.user.plan.name);
   },
   methods: {
     async fetchDataProducts() {
+      const user = JSON.parse(localStorage.getItem("user"));
+
       try {
         const response = await axios.get(`http://localhost:3000/products`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            user: user.role,
           },
         });
         // Check if the response status is OK (status code 200)

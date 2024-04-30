@@ -294,9 +294,7 @@ export default {
 
         const fileInput = fileInputRef.value as HTMLInputElement | null;
         const file = fileInput?.files?.[0];
-        console.log(file);
-        console.log("Selected file:", file);
-        console.log(product.value);
+        
         await axios.post(
           "http://localhost:3000/products/addProduct",
           { file, ...product.value, userId },

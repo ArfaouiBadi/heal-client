@@ -95,11 +95,15 @@ export default {
       try {
         const userId = localStorage.getItem("userId");
 
-        await axios.put(`http://localhost:3000/user/${userId}`, this.user, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        await axios.put(
+          `http://localhost:3000/user/update/${userId}`,
+          this.user,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         localStorage.removeItem("token");
         localStorage.removeItem("userId");
         this.$router.push("/");

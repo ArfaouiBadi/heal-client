@@ -187,6 +187,7 @@ export default {
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
+              user: JSON.parse(localStorage.getItem("user")).role,
             },
           }
         );

@@ -121,11 +121,14 @@ const router = createRouter({
 });
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem("token") !== null;
-
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   // If the route requires authentication and the user is not authenticated, redirect to the signin page
   if (to.meta.requiresAuth && !isAuthenticated) {
     next("auth/signin");
   } else {
+    if (to.path === "/dashboard" && user.role === "USER") {
+      next("/");
+    }
     next();
   }
 });

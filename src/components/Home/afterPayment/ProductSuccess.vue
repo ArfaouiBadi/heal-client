@@ -56,7 +56,7 @@ export default {
   mounted() {
     const cart = JSON.parse(localStorage.getItem("cart") || "{}");
     const userId = localStorage.getItem("userId");
-    console.log(cart.products)
+   
     try {
       axios
         .post("http://localhost:3000/commandproduct", {

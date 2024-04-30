@@ -69,6 +69,7 @@ export default {
       cartStore: useCartStore(),
       toast: useToast(),
       showChatbox: false,
+      user: JSON.parse(localStorage.getItem("user")!),
     };
   },
   methods: {
@@ -86,7 +87,7 @@ export default {
           "http://localhost:3000/ocr/upload",
           fileFormData
         );
-        console.log(response.data);
+
         const products = await axios.get("http://localhost:3000/products", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -99,6 +100,12 @@ export default {
             console;
             this.cartStore.addToCart(product, 1);
           }
+        });
+        this.toast.add({
+          severity: "success",
+          summary: "Success",
+          detail: "Prescription uploaded successfully",
+          life: 3000,
         });
       }
     },

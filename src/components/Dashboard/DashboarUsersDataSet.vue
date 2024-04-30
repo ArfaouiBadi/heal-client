@@ -91,7 +91,6 @@
                   class="mr-2 p-button-success"
                   @click="editUserRole(slotProps.data)"
                 />
-                
               </template>
             </Column>
           </DataTable>
@@ -196,7 +195,6 @@ export default {
         },
       });
       this.role = response.data.role;
-      console.log(this.role);
     },
 
     async saveUser() {
@@ -231,6 +229,7 @@ export default {
         const response = await axios.get("http://localhost:3000/user", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
+            user: JSON.parse(localStorage.getItem("user")).role,
           },
         });
         this.users = response.data;
@@ -266,7 +265,7 @@ export default {
 
     editUserRole(user: any) {
       this.user = user;
-      console.log(this.user);
+      
       this.userDialog = true;
     },
     async deleteUser(data: any) {

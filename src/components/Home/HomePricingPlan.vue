@@ -63,12 +63,18 @@
 import axios from "axios";
 import { useCartStore } from "../../store/cart";
 import { usePlanStore } from "../../store/plan";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 export default {
+  components: {
+    Toast,
+  },
   data() {
     return {
       cartStore: useCartStore(),
       planStore: usePlanStore(),
       cartPlan: {},
+      toast: useToast(),
     };
   },
   mounted() {
@@ -84,7 +90,7 @@ export default {
         return;
       }
       this.planStore.addToPlan({ productName, price, qty: 1 });
-      console.log(this.planStore.$state.plan);
+      
       this.processPayment();
     },
     async processPayment() {
@@ -94,15 +100,10 @@ export default {
         };
         const response = await axios.post(
           "http://localhost:3000/payment/check/plan",
-          [requestBodyPlan.planStore],
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+          [requestBodyPlan.planStore]
         );
 
-        console.log(response.data.success);
+        
 
         window.location.href = response.data.url;
         // Handle success or redirect user to success/cancel pages

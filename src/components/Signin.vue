@@ -108,7 +108,15 @@ export default {
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("userId", response.data.userId);
         this.userStore.setUser(response.data.user);
-        this.$router.push("/");
+        console.log(response.data.user.role);
+        if (
+          response.data.user.role === "ADMIN" ||
+          response.data.user.role === "SUPERADMIN"
+        ) {
+          this.$router.push("/dashboard");
+        } else {
+          this.$router.push("/");
+        }
       } catch (error) {
         console.log(error);
         // Show the message if sign-in fails

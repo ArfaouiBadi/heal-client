@@ -98,7 +98,7 @@ export default {
       this.$router.push("/");
     },
     checkAutorizationToDashboard() {
-      console.log(this.userStore.user);
+      
       if (
         this.userStore.user.role === "ADMIN" ||
         this.userStore.user.plan.name !== "Free"

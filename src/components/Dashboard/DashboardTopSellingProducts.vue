@@ -29,7 +29,7 @@ const getProductsByProductUserID = async () => {
 
     const labelArray: any[] = [];
     const dataArray: number[] = [];
-    console.log(response.data);
+    
     response.data.map((product: any) => {
       const productName = product.product.productName;
 

@@ -1,4 +1,3 @@
-<!-- SidebarNavItem.vue template -->
 <template>
   <div class="navItem">
     <i :class="props.customClass" />
@@ -8,7 +7,6 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue";
-
 const props = defineProps({
   text: {
     type: String,
