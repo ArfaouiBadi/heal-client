@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.8",
+    "@types/vue": "^1.0.31",
     "@vitejs/plugin-vue": "^4.5.2",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
